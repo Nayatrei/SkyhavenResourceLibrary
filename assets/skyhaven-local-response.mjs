@@ -1,4 +1,4 @@
-import {readLocalFile} from './skyhaven-local-files.mjs?v=20261023-connect-v4';
+import {readLocalFile} from './skyhaven-local-files.mjs?v=20261023-connect-v5';
 const MIME={png:'image/png',jpg:'image/jpeg',jpeg:'image/jpeg',webp:'image/webp',gif:'image/gif',glb:'model/gltf-binary',gltf:'model/gltf+json',json:'application/json',txt:'text/plain',md:'text/plain',mp4:'video/mp4',webm:'video/webm',mp3:'audio/mpeg',wav:'audio/wav'};
 export async function localResponse(request,scope,{read=readLocalFile}={}){
   const prefix=new URL('__local/',scope).pathname,url=new URL(request.url);

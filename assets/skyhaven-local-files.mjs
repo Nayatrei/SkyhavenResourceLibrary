@@ -1,6 +1,6 @@
 // Directory permissions belong to this origin/browser; no paths or bytes are uploaded.
 const databases=new WeakMap();
-export const LOCAL_CONNECTION_VERSION='20261023-connect-v4';
+export const LOCAL_CONNECTION_VERSION='20261023-connect-v5';
 const LOCAL_TIMEOUT=15000;
 export function withLocalTimeout(work,{signal,timeoutMs=LOCAL_TIMEOUT}={}){
   return new Promise((resolve,reject)=>{
@@ -153,6 +153,23 @@ export function createFolderConnector({storage=localRootStorage(),worker=localWo
   }
   return {connect,cancel,get busy(){return !!current;}};
 }
+export async function restoreSavedCatalog(saved,{connector,storage=localRootStorage()}={}){
+  const previous=(await withLocalTimeout(()=>catalogIn(saved))).config;
+  const workspace=previous.roots.find(root=>root.id==='workspace');
+  const resource=workspace?await storage.get(previous.libraryId+'_workspace'):null;
+  const readable=resource&&await withLocalTimeout(()=>resource.queryPermission({mode:'read'}))==='granted';
+  const next=await connector.connect({handle:readable?resource:saved,restore:true});
+  if(!next||next.libraryId===previous.libraryId)return next;
+  // Reuse only existing grants for the very same declared folder. Never prompt on reload.
+  const normalized=path=>String(path||'').replace(/\\/g,'/').replace(/\/$/,'');
+  for(const root of next.roots){
+    const prior=previous.roots.find(item=>item.id===root.id&&item.originalPath&&normalized(item.originalPath)===normalized(root.originalPath));
+    if(!prior||await storage.get(next.libraryId+'_'+root.id))continue;
+    const handle=await storage.get(previous.libraryId+'_'+prior.id);
+    if(handle&&await withLocalTimeout(()=>handle.queryPermission({mode:'read'}))==='granted')await storage.put(next.libraryId+'_'+root.id,handle);
+  }
+  return next;
+}
 export async function prepareLocalLibrary(spec){
   if(!spec||spec.mode!=='local-catalog')return spec;
   const host=document.getElementById('main');
@@ -177,7 +194,7 @@ export async function prepareLocalLibrary(spec){
         if(!globalThis.isSecureContext||!globalThis.showDirectoryPicker||!globalThis.indexedDB||!navigator.serviceWorker)throw new Error('이 브라우저의 로컬 폴더 기능을 사용할 수 없습니다. HTTPS 주소를 데스크톱 Chrome/Edge에서 열어주세요.');
         [saved]=await Promise.all([withLocalTimeout(()=>localRootStorage().get('_catalog')),localWorker()]);prepared=true;
         if(saved&&await withLocalTimeout(()=>saved.queryPermission({mode:'read'}))==='granted'){
-          const config=await connector.connect({handle:saved,restore:true});if(config)resolve(config);return;
+          const config=await restoreSavedCatalog(saved,{connector});if(config)resolve(config);return;
         }
         render({phase:'select',busy:false,folder:saved?.name,message:saved?'이전에 연결한 라이브러리가 있습니다. 버튼을 눌러 읽기를 허용해 주세요.':'준비됐습니다. 평소 쓰는 리소스 폴더를 선택해 주세요.'});
       }catch(error){render({phase:'error',failedPhase:'preparing',busy:false,errorName:error.name,message:connectionError(error,'preparing')});}
