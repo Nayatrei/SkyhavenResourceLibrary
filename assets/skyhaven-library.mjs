@@ -2,7 +2,7 @@ import {sections,games,cleanName,matches,matchesPack,packInSection,filterPackIte
 import {createCatalogCache} from './skyhaven-library-cache.mjs?v=20261023-library-v15';
 import {loadingMarkup,startLoading} from './skyhaven-loading.mjs';
 import {createLibraryTransport} from './skyhaven-data-source.mjs';
-import {installLocalConnections,prepareLocalLibrary} from './skyhaven-local-files.mjs';
+import {installLocalConnections,prepareLocalLibrary,withLocalTimeout} from './skyhaven-local-files.mjs?v=20261023-connect-v2';
 const deployment=await prepareLocalLibrary(JSON.parse(document.getElementById('skyhaven-deployment')?.textContent||'null'));
 const transport=createLibraryTransport({deployment});
 const API=transport.api;
@@ -13,7 +13,7 @@ let data,motions=[],raw,category='',selected,variant,tab='3d',viewer,life,revisi
 const detailCache=new Map(),packCache=new Map();
 let rememberedCharacter,rememberedVariant;
 try{rememberedCharacter=localStorage.getItem('skyhaven.libraryCharacter');rememberedVariant=localStorage.getItem('skyhaven.libraryVariant');selectedMotion=localStorage.getItem('skyhaven.libraryMotion');}catch{}
-async function json(url,options){return transport.json(url,options);}
+async function json(url,options){return deployment?withLocalTimeout(()=>transport.json(url,options),{signal:options?.signal}):transport.json(url,options);}
 const catalogCache=createCatalogCache({api:API,fetchJSON:json,...(deployment?.libraryId?{schema:'local:'+deployment.libraryId}:{})});
 function catalogStatus(snapshot){$('scan-time').textContent=`${snapshot.local?'저장된 색인':'최신 색인'} · ${new Date(snapshot.savedAt).toLocaleString()} · ${catalogCache.persistent?'이 브라우저에 저장':'이번 방문에 보관'} · 새로고침으로 갱신`;}
 function toast(text){$('toast').textContent=text;$('toast').hidden=false;clearTimeout(toast.timer);toast.timer=setTimeout(()=>$('toast').hidden=true,3500);}
@@ -339,6 +339,6 @@ document.addEventListener('keydown',e=>{if(e.key==='/'&&!/INPUT|TEXTAREA|SELECT/
 let initialLoading;
 $('main').innerHTML='<div id="catalog-progress">'+loadingMarkup+'</div>';
 initialLoading=startLoading($('catalog-progress'));initialLoading.update('에셋 카탈로그 연결 중…','대표 모델·모션·팩 색인을 확인하고 있습니다.');
-try{await installLocalConnections(deployment);const snapshot=await catalogCache.load();data=snapshot.data;motions=snapshot.motions;initialLoading.finish();catalogStatus(snapshot);await route();}
-catch(error){$('main').innerHTML=`<div class="empty"><h1>라이브러리를 연결할 수 없습니다.</h1><p>${esc(error.message)}</p><a href="${esc(transport.endpoint('/comfy/skyhaven/api/resources'))}">파일 색인 열기</a></div>`;}
+try{installLocalConnections(deployment);const snapshot=await (deployment?withLocalTimeout(()=>catalogCache.load()):catalogCache.load());data=snapshot.data;motions=snapshot.motions;initialLoading.finish();catalogStatus(snapshot);await route();}
+catch(error){$('main').innerHTML=`<div class="empty"><h1>라이브러리를 연결할 수 없습니다.</h1><p>${esc(error.message)}</p>${deployment?'<p>폴더 연결에서 색인을 다시 선택하거나 읽기 권한을 확인해 주세요.</p><button id="retry-library" class="button primary">목록 다시 읽기</button>':''}<a href="${esc(transport.endpoint('/comfy/skyhaven/api/resources'))}">파일 색인 열기</a></div>`;if($('retry-library'))$('retry-library').onclick=()=>location.reload();}
 finally{initialLoading.finish();}
