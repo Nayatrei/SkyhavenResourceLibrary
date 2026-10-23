@@ -1,0 +1,14 @@
+{
+  "overview": {
+    "schemaVersion": 1,
+    "entities": [{"id":"character:Example","name":"Example","category":"characters","group":"My Characters","game":"shared","origin":"manifest","relatedCount":0,"variants":[{"id":"Example","name":"Example","model":{"name":"Example.fbx","path":"Characters/Example/Example.fbx","projectRelativePath":"Characters/Example/Example.fbx","localRef":{"root":"game","path":"Characters/Example/Example.fbx"},"extension":"fbx","kind":"model","sourceHash":null,"size":0},"textures":[],"thumbnail":{"ready":false,"url":""},"rig":"unknown","embeddedClips":[],"compatibility":{"candidate":false,"web":"unverified","unity":"unverified"}}]}],
+    "packs": [], "motionCount": 0,
+    "counts": {"forms":0,"identities":0,"polygon":0},
+    "issues": [], "taxonomy": {"categories":[]}
+  },
+  "assets": {
+    "character:Example": {"id":"character:Example","name":"Example","category":"characters","group":"My Characters","game":"shared","origin":"manifest","related":[],"variants":[{"id":"Example","name":"Example","model":{"name":"Example.fbx","path":"Characters/Example/Example.fbx","projectRelativePath":"Characters/Example/Example.fbx","localRef":{"root":"game","path":"Characters/Example/Example.fbx"},"extension":"fbx","kind":"model","sourceHash":null,"size":0},"textures":[],"thumbnail":{"ready":false,"url":""},"rig":"unknown","embeddedClips":[],"compatibility":{"candidate":false,"web":"unverified","unity":"unverified"}}]}
+  },
+  "packs": {}, "motions": [],
+  "resources": {"folders":[{"id":"all","name":"My Resources","files":[{"name":"Example.fbx","path":"Characters/Example/Example.fbx","localRef":{"root":"game","path":"Characters/Example/Example.fbx"},"extension":"fbx","kind":"model","game":"shared","size":0}]}]}
+}
