@@ -16,10 +16,10 @@
 3. 이 저장소의 exporter로 공통 앱과 개인 색인을 별도 폴더에 생성합니다.
 
 ```powershell
-py -3 tools/export_skyhaven_site.py --catalog examples/snapshot.json --roots examples/roots.json --output ../my-library-app --index-output ../my-private-library-index
+py -3 tools/export_skyhaven_site.py --catalog examples/snapshot.json --roots examples/roots.json --output ../my-library-app --index-output "D:/MyResources/Skyhaven Library"
 ```
 
-4. 웹앱에서 `my-private-library-index`를 선택한 뒤 원본 루트도 연결합니다. 이미 게시된 같은 웹앱을 사용해도 되므로 개인별 사이트를 만들 필요는 없습니다.
+4. 웹앱에서 `MyResources` 폴더를 선택합니다. 내부 목록과 같은 루트의 원본은 자동으로 연결합니다. 다른 프로젝트의 원본이 있다면 안내된 폴더만 추가로 연결합니다. 이미 게시된 같은 웹앱을 사용해도 되므로 개인별 사이트를 만들 필요는 없습니다.
 
 ## 배포
 

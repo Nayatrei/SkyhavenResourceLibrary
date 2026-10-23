@@ -47,6 +47,15 @@ class SiteExporter:
         self.output, self.roots, self.library = output, roots, library
         self.library_id = hashlib.sha256(json.dumps({key: str(path) for key, path in sorted(roots.items())}).encode()).hexdigest()[:16]
         self.previews, self.local_files, self.missing_previews = {}, {}, set()
+        self.character_sources = {}
+        profile = getattr(library, 'config', {}).get('browserLibrary', {})
+        if profile.get('characterProvider'):
+            mapping = library.cache / 'browser-sources.json'
+            if not mapping.is_file():
+                raise RuntimeError('Prepare CharacterViewer sources with scripts/prepare_skyhaven_browser_sources.py --apply first')
+            data = json.loads(mapping.read_text(encoding='utf-8'))
+            self.character_sources = {entry['source']: entry for entry in data['files']}
+            self.character_provider = profile['characterProvider']
 
     def local_reference(self, source):
         source = source.resolve()
@@ -67,6 +76,19 @@ class SiteExporter:
             return lib.resources.file(path[len(BASE + '/files/'):])
         if path.startswith(API + '/source/'):
             provider, relative = path[len(API + '/source/'):].split('/', 1)
+            if provider == 'rpg' and self.character_sources:
+                entry = self.character_sources.get(relative)
+                if not entry:
+                    raise RuntimeError('CharacterViewer source map needs refresh: ' + relative)
+                source = lib.source('rpg', relative)
+                target = lib.providers[self.character_provider] / entry['target']
+                if not target.resolve().is_relative_to(lib.providers[self.character_provider].resolve()) or not target.is_file():
+                    raise RuntimeError('CharacterViewer source is missing: ' + relative)
+                if lib.digest(source) != entry['sourceHash'] or lib.digest(target) != entry['targetHash']:
+                    raise RuntimeError('Character source changed; refresh the source map before publishing: ' + relative)
+                if lib.digest(Path(str(source) + '.meta')) != entry['sourceMetaHash'] or lib.digest(Path(str(target) + '.meta')) != entry['targetMetaHash']:
+                    raise RuntimeError('Character importer changed; refresh the source map before publishing: ' + relative)
+                return target
             return lib.source(provider, relative)
         for name in ['thumbnails', 'covers', 'bundles']:
             prefix = API + '/' + name + '/'
@@ -106,8 +128,14 @@ class SiteExporter:
                     elif source:
                         ref = self.local_reference(source)
                         result.update(localRef=ref, url=local_url(self.library_id + '_' + ref['root'], ref['path']))
+                        if value.get('provider') == 'rpg' and self.character_sources:
+                            from services.skyhaven_library import unity_meta
+                            result.update(provider=ref['root'], path=ref['path'], projectRelativePath=ref['path'], sourceHash=self.library.digest(source), size=source.stat().st_size, **unity_meta(source))
                 except (ValueError, OSError):
                     self.missing_previews.add(value['url'])
+            if value.get('materialPath') in self.character_sources:
+                material = self.character_sources[value['materialPath']]
+                result.update(materialPath=material['target'], materialHash=material['targetHash'])
             return result
         if isinstance(value, str) and value.startswith(BASE + '/'):
             if value.startswith(BASE + '/#'):
@@ -145,6 +173,12 @@ def live_snapshot():
         roots['animation'] = lib.resources.animation
     if lib.resources.motion_library and not lib.resources.motion_library.is_relative_to(lib.resources.workspace):
         roots['motions'] = lib.resources.motion_library
+    profile = lib.config.get('browserLibrary', {})
+    if profile:
+        allowed = set(profile['motionProviders'])
+        snapshot['motions'] = [motion for motion in snapshot['motions'] if motion.get('provider', 'workspace') in allowed]
+        snapshot['overview']['motionCount'] = len(snapshot['motions'])
+        roots = {key: value for key, value in roots.items() if key in {'workspace', profile['characterProvider']}}
     return snapshot, roots, lib, lib.resources.workspace / '.workspace/vendor/three'
 
 

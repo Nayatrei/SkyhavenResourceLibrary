@@ -1,4 +1,4 @@
-import {localResponse} from './assets/skyhaven-local-response.mjs?v=20261023-connect-v2';
+import {localResponse} from './assets/skyhaven-local-response.mjs?v=20261023-connect-v3';
 self.addEventListener('install',event=>event.waitUntil(self.skipWaiting()));
 self.addEventListener('activate',event=>event.waitUntil(self.clients.claim()));
 self.addEventListener('fetch',event=>{

@@ -1,6 +1,6 @@
 // Directory permissions belong to this origin/browser; no paths or bytes are uploaded.
 const databases=new WeakMap();
-export const LOCAL_CONNECTION_VERSION='20261023-connect-v2';
+export const LOCAL_CONNECTION_VERSION='20261023-connect-v3';
 const LOCAL_TIMEOUT=15000;
 export function withLocalTimeout(work,{signal,timeoutMs=LOCAL_TIMEOUT}={}){
   return new Promise((resolve,reject)=>{
@@ -77,11 +77,33 @@ function libraryConfig(config){
   for(const path of Object.values(config.routes))localPathParts(path);
   return config;
 }
+const folderName=path=>String(path||'').replace(/\\/g,'/').replace(/\/$/,'').split('/').at(-1);
+async function directoryAt(handle,parts){for(const part of parts)handle=await handle.getDirectoryHandle(part);return handle;}
+async function catalogIn(handle){
+  const file=await (await handle.getFileHandle('library.json')).getFile();
+  return {handle,config:libraryConfig(JSON.parse(await file.text()))};
+}
+export async function findLocalCatalog(folder,{signal}={}){
+  async function optional(work){try{return await work();}catch(error){if(error.name==='NotFoundError')return null;throw error;}}
+  // The user chooses their ordinary resource folder, never an internal cache path.
+  let found=await optional(()=>catalogIn(folder));if(found)return found;
+  found=await optional(async()=>catalogIn(await folder.getDirectoryHandle('Skyhaven Library')));if(found)return found;
+  const history=await optional(()=>directoryAt(folder,['.workspace','asset-library','browser-index']));
+  const candidates=[];
+  if(history)for await(const child of history.values()){
+    signal?.throwIfAborted();if(child.kind!=='directory')continue;
+    const candidate=await optional(()=>catalogIn(child));if(candidate)candidates.push(candidate);
+  }
+  signal?.throwIfAborted();
+  candidates.sort((a,b)=>(Date.parse(b.config.publishedAt)||0)-(Date.parse(a.config.publishedAt)||0)||b.handle.name.localeCompare(a.handle.name));
+  if(candidates.length)return candidates[0];
+  throw new DOMException('Library catalog missing','NotFoundError');
+}
 function connectionError(error,phase){
   if(error.name==='TimeoutError')return error.message;
   if(error.name==='AbortError')return phase==='select'?'폴더 선택이 완료되지 않았습니다. 취소했거나 브라우저가 접근을 허용하지 않았을 수 있습니다. 다시 선택해 주세요.':'연결 처리가 중단됐습니다. 읽기 권한을 확인한 뒤 다시 시도해 주세요.';
   if(error.name==='NotAllowedError'||error.name==='SecurityError')return '폴더 읽기 권한이 허용되지 않았습니다. 권한을 다시 허용하거나 데스크톱 Chrome/Edge에서 이 주소를 열어주세요.';
-  if(error.name==='NotFoundError')return '선택한 폴더에 library.json이 없습니다. 게시 도구가 만든 색인 폴더를 선택해 주세요.';
+  if(error.name==='NotFoundError')return '선택한 폴더에서 라이브러리 목록을 찾지 못했습니다. 캐릭터·모션을 모아둔 리소스 폴더를 선택해 주세요.';
   if(error.name==='SyntaxError')return 'library.json을 읽었지만 JSON 형식이 올바르지 않습니다. 색인을 다시 생성해 주세요.';
   if(error.name==='DataCloneError')return '이 브라우저가 폴더 연결을 저장하지 못했습니다. 데스크톱 Chrome/Edge에서 이 주소를 열어주세요.';
   return error.message||'연결을 완료하지 못했습니다. 다시 시도해 주세요.';
@@ -98,7 +120,7 @@ export function createFolderConnector({storage=localRootStorage(),worker=localWo
     const step=async(phase,message,work)=>{state(phase,message);try{return await withLocalTimeout(work,{signal,timeoutMs});}catch(error){attempt.controller.abort(error);throw error;}};
     let selection;
     try{
-      state(attempt.phase,handle?'저장된 폴더의 읽기 권한을 확인합니다.':'폴더 선택 창에서 library.json이 있는 색인 폴더를 선택해 주세요.');
+      state(attempt.phase,handle?'저장된 폴더의 읽기 권한을 확인합니다.':'캐릭터·모션을 모아둔 리소스 폴더를 선택해 주세요. 내부 목록은 자동으로 찾습니다.');
       selection=handle?(restore?undefined:handle.requestPermission({mode:'read'})):picker({id:'skyhaven-catalog',mode:'read'});
     }catch(error){selection=Promise.reject(error);}
     attempt.promise=(async()=>{
@@ -108,8 +130,13 @@ export function createFolderConnector({storage=localRootStorage(),worker=localWo
         signal.throwIfAborted();attempt.folder=handle.name;onSelected(handle);
         const permission=await step('permission','선택한 폴더의 읽기 권한을 확인합니다.',()=>handle.queryPermission({mode:'read'}));
         if(permission!=='granted')throw new DOMException('Permission denied','NotAllowedError');
-        const config=await step('manifest','library.json을 읽고 색인 형식을 확인합니다.',async()=>libraryConfig(JSON.parse(await (await (await handle.getFileHandle('library.json')).getFile()).text())));
-        await step('store','브라우저에 읽기 전용 폴더 연결을 저장합니다.',()=>storage.put('_catalog',handle,{signal}));
+        const found=await step('manifest','리소스 폴더에서 라이브러리 목록을 찾습니다.',()=>findLocalCatalog(handle,{signal}));
+        const config=found.config;
+        await step('store','브라우저에 읽기 전용 폴더 연결을 저장합니다.',async()=>{
+          await storage.put('_catalog',found.handle,{signal});
+          const matches=config.roots.filter(root=>folderName(root.originalPath).toLowerCase()===handle.name.toLowerCase());
+          if(matches.length===1)await storage.put(config.libraryId+'_'+matches[0].id,handle,{signal});
+        });
         await step('worker','로컬 파일 Worker 연결을 확인합니다.',worker);
         await step('verify','저장한 폴더를 Worker에서 실제로 다시 읽습니다.',async()=>{
           const response=await fetcher(new URL('__local/_catalog/library.json',base),{cache:'no-store',signal});
@@ -129,7 +156,7 @@ export function createFolderConnector({storage=localRootStorage(),worker=localWo
 export async function prepareLocalLibrary(spec){
   if(!spec||spec.mode!=='local-catalog')return spec;
   const host=document.getElementById('main');
-  host.innerHTML='<div class="library-heading local-onboarding"><h1>내 리소스 라이브러리 연결</h1><p>앱은 웹에서, 내 색인과 파일은 내 폴더에서 읽습니다. 파일을 업로드하지 않습니다.</p><p>게시 도구가 생성한 library.json이 있는 색인 폴더를 선택하세요.</p><div class="connection-actions"><button id="connect-local-catalog" class="button primary" disabled>연결 준비 중…</button><button id="choose-local-catalog" class="button ghost" disabled>다른 색인 폴더 선택</button><button id="cancel-local-catalog" class="button ghost" hidden>중단</button></div><p id="local-catalog-status" role="status" aria-live="polite">브라우저의 로컬 연결을 준비합니다.</p><p id="local-catalog-folder"></p><ol id="local-catalog-steps"><li data-step="select">폴더 선택</li><li data-step="permission">읽기 권한</li><li data-step="manifest">색인 검사</li><li data-step="store">연결 저장</li><li data-step="verify">실제 읽기 확인</li><li data-step="connected">카탈로그 열기</li></ol><details><summary>연결 진단</summary><pre id="local-catalog-diagnostic"></pre></details><p>내장 브라우저에서 연결되지 않으면 데스크톱 Chrome/Edge에서 같은 주소를 열어주세요.</p><p><code id="local-catalog-address"></code> <button id="copy-local-address" class="button ghost">주소 복사</button></p><a href="./manual.md" target="_blank" rel="noopener">MCP · 폴더 연결 매뉴얼 ↗</a></div>';
+  host.innerHTML='<div class="library-heading local-onboarding"><h1>내 리소스 폴더 연결</h1><p>캐릭터·모션을 모아둔 폴더를 선택하세요. 내부 목록은 자동으로 찾습니다.</p><p>예: FinalResources 같은 리소스 폴더를 선택하면 됩니다. 파일을 따로 고르거나 업로드하지 않습니다.</p><div class="connection-actions"><button id="connect-local-catalog" class="button primary" disabled>연결 준비 중…</button><button id="choose-local-catalog" class="button ghost" disabled>다른 리소스 폴더 선택</button><button id="cancel-local-catalog" class="button ghost" hidden>중단</button></div><p id="local-catalog-status" role="status" aria-live="polite">브라우저의 로컬 연결을 준비합니다.</p><p id="local-catalog-folder"></p><ol id="local-catalog-steps"><li data-step="select">폴더 선택</li><li data-step="permission">읽기 권한</li><li data-step="manifest">목록 찾기</li><li data-step="store">연결 저장</li><li data-step="verify">실제 읽기 확인</li><li data-step="connected">라이브러리 열기</li></ol><details><summary>연결 진단</summary><pre id="local-catalog-diagnostic"></pre></details><p>로컬 폴더 연결은 데스크톱 Chrome/Edge를 권장합니다.</p><p><code id="local-catalog-address"></code> <button id="copy-local-address" class="button ghost">주소 복사</button></p><a href="./manual.md" target="_blank" rel="noopener">연결 도움말 · MCP 매뉴얼 ↗</a></div>';
   const get=id=>document.getElementById(id),primary=get('connect-local-catalog'),choose=get('choose-local-catalog'),cancel=get('cancel-local-catalog');
   get('local-catalog-address').textContent=new URL('./',location.href).href;
   get('copy-local-address').onclick=()=>navigator.clipboard.writeText(new URL('./',location.href).href).catch(()=>{get('local-catalog-status').textContent='위 주소를 복사해 Chrome/Edge에서 열어주세요.';});
@@ -138,8 +165,8 @@ export async function prepareLocalLibrary(spec){
     function render(value){
       get('local-catalog-status').textContent=value.message;get('local-catalog-folder').textContent=value.folder?'선택한 폴더: '+value.folder:'';
       primary.disabled=choose.disabled=value.busy;cancel.hidden=!value.busy;cancel.disabled=!prepared;
-      primary.textContent=prepared?(saved?'선택한 폴더로 재시도 · 권한 허용':'내 라이브러리 폴더 선택'):'연결 준비 다시 시도';
-      host.querySelectorAll('[data-step]').forEach(el=>el.toggleAttribute('aria-current',el.dataset.step===(value.failedPhase||value.phase)));
+      primary.textContent=prepared?(saved?'다시 연결 · 읽기 허용':'리소스 폴더 선택'):'연결 준비 다시 시도';
+      host.querySelectorAll('[data-step]').forEach(el=>{if(el.dataset.step===(value.failedPhase||value.phase))el.setAttribute('aria-current','step');else el.removeAttribute('aria-current');});
       get('local-catalog-diagnostic').textContent='연결 버전: '+LOCAL_CONNECTION_VERSION+'\n단계: '+(value.failedPhase||value.phase)+(value.errorName?'\n오류: '+value.errorName:'');
     }
     const connector=createFolderConnector({onState:render,onSelected:handle=>{saved=handle;}});
@@ -152,7 +179,7 @@ export async function prepareLocalLibrary(spec){
         if(saved&&await withLocalTimeout(()=>saved.queryPermission({mode:'read'}))==='granted'){
           const config=await connector.connect({handle:saved,restore:true});if(config)resolve(config);return;
         }
-        render({phase:'select',busy:false,folder:saved?.name,message:saved?'저장된 색인이 있습니다. 버튼을 눌러 읽기 권한을 다시 허용해 주세요.':'연결 준비 완료. 내 라이브러리 폴더를 선택해 주세요.'});
+        render({phase:'select',busy:false,folder:saved?.name,message:saved?'이전에 연결한 라이브러리가 있습니다. 버튼을 눌러 읽기를 허용해 주세요.':'준비됐습니다. 평소 쓰는 리소스 폴더를 선택해 주세요.'});
       }catch(error){render({phase:'error',failedPhase:'preparing',busy:false,errorName:error.name,message:connectionError(error,'preparing')});}
     }
     primary.onclick=()=>prepared?connect(true):void initialize();choose.onclick=()=>prepared?connect(false):void initialize();cancel.onclick=()=>connector.cancel();
@@ -163,19 +190,23 @@ export function installLocalConnections(config){
   if(!config)return;
   const panel=document.createElement('dialog');panel.className='local-connections';
   const heading=document.createElement('h2');heading.textContent='내 리소스 폴더 연결';panel.append(heading);
-  const note=document.createElement('p');note.textContent='읽기 전용 연결입니다. 파일은 이 컴퓨터에서 읽으며 업로드하지 않습니다. 폴더 권한은 브라우저에 저장합니다.';panel.append(note);
+  const note=document.createElement('p');note.textContent='평소 쓰는 폴더만 선택하세요. 내부 파일은 자동으로 찾고, 읽기 전용으로 연결합니다.';panel.append(note);
   const message=document.createElement('p');message.setAttribute('role','status');panel.append(message);
   const storage=localRootStorage();
+  const advanced=document.createElement('details'),summary=document.createElement('summary');summary.textContent='고급 · 목록 위치와 이전 프로젝트 연결';advanced.append(summary);
   for(const root of config.roots){
     const storageId=root.id==='_catalog'?'_catalog':(config.libraryId?config.libraryId+'_':'')+root.id;
     const row=document.createElement('section'),label=document.createElement('strong'),status=document.createElement('span'),choose=document.createElement('button'),disconnect=document.createElement('button');
-    label.textContent=root.label;choose.textContent='폴더 연결';disconnect.textContent='연결 해제';row.append(label,status,choose,disconnect);panel.append(row);
+    label.textContent=root.id==='workspace'?'1. 리소스 폴더':root.id==='polygon'?'2. 캐릭터·배경 폴더':root.id==='_catalog'?'라이브러리 목록':root.label;
+    choose.textContent='폴더 선택';disconnect.textContent='연결 해제';row.append(label,status,choose);
+    if(root.originalPath){const path=document.createElement('code'),copy=document.createElement('button');path.textContent=root.originalPath;copy.textContent='위치 복사';copy.onclick=()=>navigator.clipboard.writeText(root.originalPath).then(()=>{message.textContent='위치를 복사했습니다. 폴더 선택 창의 주소에 붙여넣으면 됩니다.';}).catch(()=>{message.textContent='표시된 폴더 위치를 선택해 주세요.';});row.append(path,copy);}
+    if(['_catalog','rpg','bank'].includes(root.id)){row.append(disconnect);advanced.append(row);}else{panel.append(row);const extra=document.createElement('p');extra.append(document.createTextNode(root.label+' · '),disconnect);advanced.append(extra);}
     let saved;
     choose.disabled=true;status.textContent='연결 상태 확인 중…';
     async function refresh(){saved=await storage.get(storageId);const permission=saved?await withLocalTimeout(()=>saved.queryPermission({mode:'read'})):'missing';status.textContent=permission==='granted'?'연결됨 · '+saved.name:saved?'저장됨 · 읽기 권한 재허용 필요':'연결 필요';}
-    if(root.id==='_catalog')choose.textContent='색인 다시 선택';
+    if(root.id==='_catalog')choose.textContent='리소스 폴더 다시 선택';
     choose.onclick=()=>{
-      if(root.id==='_catalog'){
+      if(root.id==='_catalog'||root.id==='workspace'){
         choose.disabled=true;
         const connector=createFolderConnector({onState:value=>{message.textContent=value.message;}});
         void connector.connect().then(next=>{if(next)location.reload();}).finally(()=>{choose.disabled=false;});return;
@@ -184,12 +215,12 @@ export function installLocalConnections(config){
       try{
         if(!globalThis.showDirectoryPicker)throw new Error('로컬 폴더 연결은 데스크톱 Chrome/Edge에서 열어주세요.');
         // Saved handles were loaded before this click, preserving user activation.
-        selection=saved?saved.requestPermission({mode:'read'}):showDirectoryPicker({id:'skyhaven-'+root.id,mode:'read'});
+        selection=showDirectoryPicker({id:'skyhaven-'+root.id,mode:'read'});
       }catch(error){message.textContent=connectionError(error,'permission');return;}
       choose.disabled=true;disconnect.disabled=true;message.textContent=root.label+' · 폴더 선택 또는 읽기 권한을 확인해 주세요.';
       void (async()=>{
         try{
-          const handle=saved?(await withLocalTimeout(()=>selection)==='granted'?saved:null):await selection;
+          const handle=await selection;
           if(!handle||await withLocalTimeout(()=>handle.queryPermission({mode:'read'}))!=='granted')throw new DOMException('Permission denied','NotAllowedError');
           await storage.put(storageId,handle);await refresh();message.textContent=root.label+' 연결 완료. 에셋을 다시 열면 로컬 파일로 재생합니다.';
           window.dispatchEvent(new Event('skyhaven-local-roots-changed'));
@@ -200,6 +231,7 @@ export function installLocalConnections(config){
     disconnect.onclick=async()=>{try{await storage.remove(storageId);if(root.id==='_catalog'){location.reload();return;}await refresh();window.dispatchEvent(new Event('skyhaven-local-roots-changed'));}catch(error){message.textContent=connectionError(error,'store');}};
     void refresh().catch(error=>{status.textContent=connectionError(error,'store');}).finally(()=>{choose.disabled=false;});
   }
+  panel.append(advanced);
   const close=document.createElement('button');close.textContent='닫기';close.onclick=()=>panel.close();panel.append(close);document.body.append(panel);
   const button=document.createElement('button');button.className='button ghost';button.textContent='폴더 연결';button.onclick=()=>panel.showModal();document.getElementById('refresh').before(button);
 }

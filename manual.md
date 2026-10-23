@@ -12,7 +12,7 @@
 
 새 정적·로컬 연결 모드:
 - 웹 호스트에는 재사용할 HTML/JavaScript/CSS, Three.js와 이 공통 매뉴얼만 게시합니다. 개인 에셋 색인·썸네일도 웹 저장소에 올리지 않습니다.
-- 개인 색인 폴더에는 library.json, catalog.json, motions.json, resources.json, 상세 JSON과 previews가 있습니다. 첫 방문에 이 폴더를 연결합니다.
+- 개인 색인 폴더에는 library.json, catalog.json, motions.json, resources.json, 상세 JSON과 previews가 있습니다. 사용자는 리소스 루트를 선택하고 앱이 내부 목록을 찾습니다.
 - FBX/GLB/텍스처/원본 패키지는 사용자 폴더에 그대로 둡니다. 사이트에서 원본을 업로드하지 않습니다.
 - File System Access의 읽기 전용 디렉터리 핸들을 브라우저의 IndexedDB에 저장합니다.
 - 사이트 범위의 Service Worker가 `__local/<루트 ID>/<상대 경로>` GET/HEAD를 로컬 파일로 응답합니다. 파일 스트림과 영상용 byte range를 지원하며 쓰기 요청을 거절합니다.
@@ -26,20 +26,18 @@
 
 현재 Skyhaven 분류기의 논리 루트 예:
 workspace          FinalResources 폴더
-rpg                대표 캐릭터가 있는 Unity 프로젝트
-polygon            POLYGON/DETAILED가 있는 Unity 프로젝트
-bank               원본 모션 Unity 프로젝트
+polygon            대표 캐릭터와 POLYGON/DETAILED가 있는 CharacterViewer 프로젝트
 
-workspace 아래에는 Skyhaven, Legends, 04. Animations와 생성 캐시 .workspace가 있습니다. rpg는 GameSet 대표 모델과 텍스처, polygon은 POLYGON/DETAILED, bank는 공용 폴더에 아직 없는 모션을 읽습니다. 별도 animation/motions 루트가 실제 설정된 경우 게시물의 폴더 연결 화면에 추가로 표시합니다.
+workspace 아래에는 Skyhaven, Legends, 04. Animations와 생성 캐시 .workspace가 있습니다. 현재 기본 브라우저 목록은 workspace와 polygon 두 루트만 사용합니다. GameSet 정체성·대표 모델 규칙은 유지하고 실제 모델·텍스처는 GUID로 연결한 CharacterViewer 파일을 읽습니다. rpg/bank는 기존 제작·전체 개발 색인에서 쓰던 논리 루트이며 기본 브라우저 연결에 필요하지 않습니다.
 
 Mac에서는 같은 ID에 Mac의 실제 Dropbox/Unity 폴더를 연결합니다. Windows 드라이브 경로를 만들거나 원본을 이동할 필요가 없습니다. 다른 위치의 프로젝트라면 해당 폴더를 같은 논리 ID에 연결하면 됩니다.
 
 ## 3. 처음 사용하는 순서
 
 1. HTTPS 사이트를 데스크톱 Chrome/Edge로 엽니다.
-2. 첫 화면에서 library.json이 있는 개인 색인 폴더를 선택합니다. 이후 상단 ‘폴더 연결’에서 필요한 원본 루트도 선택하고 읽기 권한을 허용합니다.
-3. 연결됨을 확인한 뒤 캐릭터/팩을 고릅니다. 파일은 그 컴퓨터에서 직접 읽습니다.
-4. 캐릭터 애니메이션 탭에서 모션을 선택합니다. 모델과 모션이 각각 다른 루트에 있으면 양쪽 모두 연결해야 합니다.
+2. 첫 화면에서 평소 쓰는 리소스 폴더(FinalResources 등)를 선택합니다. 내부 목록은 코드가 자동으로 찾습니다. 숨겨진 폴더나 JSON 파일을 직접 고르지 않습니다.
+3. 상단 ‘폴더 연결’에서 캐릭터·배경 프로젝트 폴더(CharacterViewer 등)를 선택합니다. 각 위치는 화면에서 복사할 수 있습니다. 연결 후 캐릭터/팩을 고르면 그 컴퓨터에서 직접 읽습니다.
+4. 캐릭터 애니메이션 탭에서 모션을 선택합니다. 현재 기본 라이브러리는 FinalResources의 모션과 CharacterViewer의 모델·배경을 사용합니다. RPG_Lab과 Animation Bank는 브라우저에 연결하지 않아도 됩니다. Animation Bank에만 있는 모션은 기본 목록에서 제외합니다.
 5. 참조 복사의 프로젝트 상대 경로·GUID를 사용합니다. `__local` 웹 URL은 폴더가 연결된 그 브라우저 전용이며 다른 컴퓨터용 다운로드 URL이 아닙니다.
 
 재방문 시 저장된 핸들의 권한을 확인합니다. 브라우저가 권한을 만료시키거나 데이터를 지운 경우 ‘폴더 연결’을 다시 누릅니다. 폴더를 다른 위치로 바꿨다면 연결 해제 후 새 위치를 선택합니다. 색인 연결 해제는 시작 화면으로 돌아갑니다. 연결 해제는 브라우저의 연결 기록만 지우고 파일을 삭제하지 않습니다. 원본 루트 권한은 라이브러리 ID별로 구분해 다른 사람의 색인과 섞이지 않게 합니다.
@@ -77,8 +75,8 @@ POLYGON/DETAILED의 팩·프리팹·GUID와 생성 썸네일을 연결합니다.
 {
   "path": "Assets/Characters/Elara/Models/Elara.fbx",
   "projectRelativePath": "Assets/Characters/Elara/Models/Elara.fbx",
-  "localRef": {"root": "rpg", "path": "Assets/Characters/Elara/Models/Elara.fbx"},
-  "url": "__local/LIBRARY_ID_rpg/Assets/Characters/Elara/Models/Elara.fbx",
+  "localRef": {"root": "polygon", "path": "Assets/Characters/Elara/Models/Elara.fbx"},
+  "url": "__local/LIBRARY_ID_polygon/Assets/Characters/Elara/Models/Elara.fbx",
   "extension": "fbx",
   "sourceHash": null,
   "guid": null
@@ -125,11 +123,15 @@ entities의 id는 assets의 키, 팩 id는 packs의 키와 일치해야 합니�
 py -3 scripts/export_skyhaven_site.py --catalog snapshot.json --roots roots.json --vendor path/to/three --previews prepared-images --output NEW_SITE_DIRECTORY
 ```
 
-독립 GitHub 저장소에는 같은 도구가 `tools/export_skyhaven_site.py`에 있고 Three.js도 동봉되어 있습니다. 그 저장소에서는 `py -3 tools/export_skyhaven_site.py --catalog examples/snapshot.json --roots examples/roots.json --output NEW_SITE_DIRECTORY`로 시작할 수 있습니다. examples의 파일 위치를 자기 파일에 맞추세요.
+독립 GitHub 저장소에는 같은 도구가 `tools/export_skyhaven_site.py`에 있고 Three.js도 동봉되어 있습니다. 그 저장소에서는 `py -3 tools/export_skyhaven_site.py --catalog examples/snapshot.json --roots examples/roots.json --output NEW_SITE_DIRECTORY --index-output "D:/MyResources/Skyhaven Library"`로 시작할 수 있습니다. examples의 파일 위치를 자기 파일에 맞추세요. 사용자는 MyResources 폴더만 선택하면 됩니다.
 
 `--previews`는 이미지 전용 폴더입니다. 모델/텍스처 원본 폴더를 지정하지 않습니다. 산출물은 공통 앱 폴더와 별도 개인 색인 폴더로 나뉩니다. 개인 색인 폴더의 build-report.json, sourceFilesCopied=0, 로컬 참조와 썸네일 존재를 검토합니다. 정적 호스트에는 공통 앱 폴더만 게시합니다. 다른 사용자도 이미 게시된 같은 공통 앱을 사용할 수 있으므로 개인별 웹 호스트를 만들 필요는 없습니다.
 
 ## 7. 현재 라이브러리 갱신과 배포
+
+현재 Nourish 게시 프로필은 `config/skyhaven-library.json`의 browserLibrary를 사용합니다. `py -3 scripts/prepare_skyhaven_browser_sources.py --apply`가 GameSet의 GUID를 CharacterViewer에서 찾아 재사용하고 없는 모델·텍스처·재질과 파일 메타만 `Assets/SkyhavenLibrary/Characters`에 추가합니다. 기존 파일과 다른 광택 맵은 덮어쓰지 않습니다. 생성한 browser-sources.json의 양쪽 파일·메타 해시가 달라지면 게시를 중단하고 연결 기록 갱신을 요구합니다. 이 작업은 새 리깅이나 Unity 실행 검증이 아닙니다.
+
+리소스 폴더 연결은 표준 `Skyhaven Library` 하위 폴더를 우선하고 기존 내부 browser-index 기록은 게시 시각을 기준으로 최신 유효 목록을 찾습니다. 이미 연결한 예전 색인 폴더도 계속 읽을 수 있습니다. 리소스 폴더를 다시 연결하면 최신 목록과 원본 모션 루트를 한 번에 연결합니다. 고급 메뉴에만 내부 목록 위치와 이전 프로젝트 연결을 둡니다.
 
 ```powershell
 py -3 scripts/export_skyhaven_site.py --output NEW_SITE_DIRECTORY --index-output NEW_PRIVATE_INDEX_DIRECTORY --domain skyhaven.genesisframeworks.com
