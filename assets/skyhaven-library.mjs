@@ -2,7 +2,7 @@ import {sections,games,cleanName,matches,matchesPack,packInSection,filterPackIte
 import {createCatalogCache} from './skyhaven-library-cache.mjs?v=20261023-library-v15';
 import {loadingMarkup,startLoading} from './skyhaven-loading.mjs';
 import {createLibraryTransport} from './skyhaven-data-source.mjs';
-import {installLocalConnections,prepareLocalLibrary,withLocalTimeout} from './skyhaven-local-files.mjs?v=20261023-connect-v3';
+import {installLocalConnections,prepareLocalLibrary,withLocalTimeout} from './skyhaven-local-files.mjs?v=20261023-connect-v4';
 const deployment=await prepareLocalLibrary(JSON.parse(document.getElementById('skyhaven-deployment')?.textContent||'null'));
 const transport=createLibraryTransport({deployment});
 const API=transport.api;

@@ -1,6 +1,6 @@
 // Directory permissions belong to this origin/browser; no paths or bytes are uploaded.
 const databases=new WeakMap();
-export const LOCAL_CONNECTION_VERSION='20261023-connect-v3';
+export const LOCAL_CONNECTION_VERSION='20261023-connect-v4';
 const LOCAL_TIMEOUT=15000;
 export function withLocalTimeout(work,{signal,timeoutMs=LOCAL_TIMEOUT}={}){
   return new Promise((resolve,reject)=>{
@@ -193,6 +193,7 @@ export function installLocalConnections(config){
   const note=document.createElement('p');note.textContent='평소 쓰는 폴더만 선택하세요. 내부 파일은 자동으로 찾고, 읽기 전용으로 연결합니다.';panel.append(note);
   const message=document.createElement('p');message.setAttribute('role','status');panel.append(message);
   const storage=localRootStorage();
+  const checks=[];
   const advanced=document.createElement('details'),summary=document.createElement('summary');summary.textContent='고급 · 목록 위치와 이전 프로젝트 연결';advanced.append(summary);
   for(const root of config.roots){
     const storageId=root.id==='_catalog'?'_catalog':(config.libraryId?config.libraryId+'_':'')+root.id;
@@ -203,7 +204,7 @@ export function installLocalConnections(config){
     if(['_catalog','rpg','bank'].includes(root.id)){row.append(disconnect);advanced.append(row);}else{panel.append(row);const extra=document.createElement('p');extra.append(document.createTextNode(root.label+' · '),disconnect);advanced.append(extra);}
     let saved;
     choose.disabled=true;status.textContent='연결 상태 확인 중…';
-    async function refresh(){saved=await storage.get(storageId);const permission=saved?await withLocalTimeout(()=>saved.queryPermission({mode:'read'})):'missing';status.textContent=permission==='granted'?'연결됨 · '+saved.name:saved?'저장됨 · 읽기 권한 재허용 필요':'연결 필요';}
+    async function refresh(){saved=await storage.get(storageId);const permission=saved?await withLocalTimeout(()=>saved.queryPermission({mode:'read'})):'missing';status.textContent=permission==='granted'?'연결됨 · '+saved.name:saved?'저장됨 · 읽기 권한 재허용 필요':'연결 필요';return permission==='granted';}
     if(root.id==='_catalog')choose.textContent='리소스 폴더 다시 선택';
     choose.onclick=()=>{
       if(root.id==='_catalog'||root.id==='workspace'){
@@ -229,9 +230,11 @@ export function installLocalConnections(config){
       })();
     };
     disconnect.onclick=async()=>{try{await storage.remove(storageId);if(root.id==='_catalog'){location.reload();return;}await refresh();window.dispatchEvent(new Event('skyhaven-local-roots-changed'));}catch(error){message.textContent=connectionError(error,'store');}};
-    void refresh().catch(error=>{status.textContent=connectionError(error,'store');}).finally(()=>{choose.disabled=false;});
+    const ready=refresh().catch(error=>{status.textContent=connectionError(error,'store');return false;}).finally(()=>{choose.disabled=false;});
+    if(!['_catalog','rpg','bank'].includes(root.id))checks.push(ready);
   }
   panel.append(advanced);
-  const close=document.createElement('button');close.textContent='닫기';close.onclick=()=>panel.close();panel.append(close);document.body.append(panel);
+  const close=document.createElement('button');close.textContent='라이브러리 보기';close.onclick=()=>panel.close();panel.append(close);document.body.append(panel);
   const button=document.createElement('button');button.className='button ghost';button.textContent='폴더 연결';button.onclick=()=>panel.showModal();document.getElementById('refresh').before(button);
+  void Promise.all(checks).then(states=>{if(states.some(ready=>!ready)&&!panel.open)panel.showModal();});
 }
