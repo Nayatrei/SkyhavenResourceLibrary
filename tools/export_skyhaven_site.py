@@ -201,7 +201,7 @@ def build(output, snapshot, roots, vendor, library=None, preview_dir=None, domai
     document = document.replace('/comfy/assets/', './assets/').replace(BASE + '/.workspace/vendor/three/', './vendor/three/')
     settings = json.dumps({'schemaVersion': 1, 'mode': 'local-catalog'})
     document = document.replace('</head>', '<script type="application/json" id="skyhaven-deployment">' + settings + '</script>\n</head>')
-    document = document.replace('폴더에서 바로 연결', '내 폴더에서 읽는 라이브러리').replace('파일을 정리하면<br>라이브러리도 함께 바뀝니다.', '색인은 웹에서,<br>원본은 내 폴더에서 읽습니다.')
+    document = document.replace('폴더에서 바로 연결', '내 폴더에서 읽는 라이브러리').replace('파일을 정리하면<br>라이브러리도 함께 바뀝니다.', '화면은 웹에서,<br>색인·원본은 내 폴더에서 읽습니다.')
     (output / 'index.html').write_text(document, encoding='utf-8')
     manual = WEB / 'skyhaven-manual.ko.md' if WEB.name == 'web' else REPO / 'manual.md'
     shutil.copy2(manual, output / 'manual.md')
