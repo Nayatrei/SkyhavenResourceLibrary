@@ -1,153 +1,81 @@
-# Skyhaven — 웹 화면·로컬 파일·MCP 사용 매뉴얼
+# 리소스 저장·폴더 관리 매뉴얼
 
-이 문서는 사이트의 ‘MCP · 폴더 연결 매뉴얼’ 메뉴에서도 읽습니다.
-2026-10-23. 구현, 빌드 검사, 실제 브라우저 권한/시각 검사, 외부 배포는 별도 상태입니다.
+## 가장 먼저 알아둘 것
 
-## 1. 무엇이 어디에 있는가
+원본은 FinalResources와 등록된 Unity 프로젝트에만 있습니다. 웹사이트는 목록·분류·상대 경로만 보관하며 이미지·모델·모션을 복사하지 않습니다.
 
-기존 Comfy 모드:
-- Nourish가 로컬 폴더를 색인하고 `/comfy/skyhaven/api/library`로 JSON을 제공합니다.
-- `/comfy/skyhaven/files/...`와 `api/library/source/...`가 원본을 읽습니다.
-- 이 모드는 Nourish 호스트가 실행 중이어야 합니다. 기존 API를 정적 GitHub Pages API라고 부르지 않습니다.
+- 원본 서버 ONLINE: 원본 이미지와 3D·모션을 읽습니다.
+- OFFLINE 또는 확인 불가: 마지막으로 게시된 목록·검색·경로만 제공합니다.
+- 다른 기기에서도 폴더 선택 없이 목록을 볼 수 있습니다. PC를 껐을 때 이미지를 보장하는 서비스가 아닙니다.
+- 사진·썸네일 별도 저장, 일괄 생성, R2 업로드는 하지 않습니다. 원래 존재하던 Preview·원화·썸네일은 삭제하거나 복사하지 않고 참조합니다.
 
-새 정적·로컬 연결 모드:
-- 웹 호스트에는 재사용할 HTML/JavaScript/CSS, Three.js와 이 공통 매뉴얼만 게시합니다. 개인 에셋 색인·썸네일도 웹 저장소에 올리지 않습니다.
-- 개인 색인 폴더에는 library.json, catalog.json, motions.json, resources.json, 상세 JSON과 previews가 있습니다. 사용자는 리소스 루트를 선택하고 앱이 내부 목록을 찾습니다.
-- FBX/GLB/텍스처/원본 패키지는 사용자 폴더에 그대로 둡니다. 사이트에서 원본을 업로드하지 않습니다.
-- File System Access의 읽기 전용 디렉터리 핸들을 브라우저의 IndexedDB에 저장합니다.
-- 사이트 범위의 Service Worker가 `__local/<루트 ID>/<상대 경로>` GET/HEAD를 로컬 파일로 응답합니다. 파일 스트림과 영상용 byte range를 지원하며 쓰기 요청을 거절합니다.
-- localhost 서버, Comfy 실행, 공유 드라이브 공개, R2 저장소가 필요하지 않습니다.
+## 어디에 저장하나요?
 
-주소 문자열을 안다고 디스크 읽기 권한이 생기지는 않습니다. 각 컴퓨터/브라우저에서 사용자가 폴더를 직접 선택해야 합니다. 사이트와 MCP 클라이언트의 권한은 서로 전달되지 않습니다.
+| 자료 | 위치 | 예시 |
+| --- | --- | --- |
+| 정체가 아직 정해지지 않은 자료 | Inbox | Inbox/새로받은자료 |
+| 캐릭터 묶음 | Library/Characters/<AssetID> | Library/Characters/Elara |
+| 공용 모션 원본 | Library/Animations/Shared | 기존 팩 내부 이름·meta·클립 보존 |
+| 새 제작 모션 | Library/Animations/<AssetID> | Library/Animations/HeroWalk |
+| 배경·소품·재질 | Library/Environments·Props·Materials/<AssetID> | Library/Environments/Map02-Homestead |
+| 원화·UI·음성·이펙트 | Library/Art·UI·Audio·VFX/<AssetID> | 해당 자료와 소유 에셋을 명시 |
+| 구매·외부 패키지 원본 | Library/Packages/<Package> | 내부 폴더·GUID·이름 유지 |
+| 프로젝트 구성 | Projects/<Project> | Projects/Skyhaven/GameSets |
+| 제작 중·후보·실험 | Work/<Project>/<Task> | Work/Skyhaven/Hero-v002 |
+| 관리 도구 | Tools | 현재 사용하는 도구만 |
+| 자동 생성되는 목록·기록 | .workspace | 직접 에셋을 저장하지 않음 |
 
-## 2. 현재 Skyhaven 루트 연결
+에셋 폴더 안에서는 Models, Textures, Blender, References, Candidates, Review처럼 역할을 구분하세요. 기존 묶음은 이 구조에 억지로 맞추지 않습니다. FBX와 텍스처의 상대 위치, Blender의 연결 파일, manifest를 같이 보존합니다. 원화가 특정 캐릭터에 속한다면 공용 Art에 또 복사하지 말고 그 캐릭터의 References를 사용합니다.
 
-연결한 색인의 library.json → roots에 실제 연결 구조가 있습니다. 앱의 이 매뉴얼 위 ‘현재 색인의 연결 구조’에도 같은 내용을 표시합니다. 공통 앱에 다른 사용자의 실제 폴더 경로를 박아 넣지 않습니다.
+## 새 자료를 추가하는 가장 짧은 순서
 
-현재 Skyhaven 분류기의 논리 루트 예:
-workspace          FinalResources 폴더
-polygon            대표 캐릭터와 POLYGON/DETAILED가 있는 CharacterViewer 프로젝트
+1. 소속이 불분명하면 Inbox, 제작 중이면 Work, 보관할 에셋이면 Library의 해당 종류에 저장합니다.
+2. 같은 에셋은 기존 AssetID 폴더를 사용합니다. 다른 캐릭터와 이름이 같아도 임의로 합치지 않습니다.
+3. 대표 모델·에셋 ID·분류·상태·공개 범위를 manifest에 한 번 등록합니다. 기존 manifest의 파일 해시와 제작 기록은 유지합니다.
+4. 모델·텍스처·원화 등 관련 파일을 에셋 묶음 안에서 관리합니다. 같은 이미지를 사이트용으로 따로 만들지 않습니다.
+5. 원본 서비스가 시작되거나 실행 중 15분 간격으로 목록 변경을 확인합니다. 내용이 바뀌었을 때만 목록을 게시합니다. 웹의 새로고침은 마지막 게시 목록을 다시 읽습니다.
 
-workspace 아래에는 Skyhaven, Legends, 04. Animations와 생성 캐시 .workspace가 있습니다. 현재 기본 브라우저 목록은 workspace와 polygon 두 루트만 사용합니다. GameSet 정체성·대표 모델 규칙은 유지하고 실제 모델·텍스처는 GUID로 연결한 CharacterViewer 파일을 읽습니다. rpg/bank는 기존 제작·전체 개발 색인에서 쓰던 논리 루트이며 기본 브라우저 연결에 필요하지 않습니다.
-
-Mac에서는 같은 ID에 Mac의 실제 Dropbox/Unity 폴더를 연결합니다. Windows 드라이브 경로를 만들거나 원본을 이동할 필요가 없습니다. 다른 위치의 프로젝트라면 해당 폴더를 같은 논리 ID에 연결하면 됩니다.
-
-## 3. 처음 사용하는 순서
-
-1. HTTPS 사이트를 데스크톱 Chrome/Edge로 엽니다.
-2. 첫 화면에서 평소 쓰는 리소스 폴더(FinalResources 등)를 선택합니다. 내부 목록은 코드가 자동으로 찾습니다. 숨겨진 폴더나 JSON 파일을 직접 고르지 않습니다.
-3. 상단 ‘폴더 연결’에서 캐릭터·배경 프로젝트 폴더(CharacterViewer 등)를 선택합니다. 각 위치는 화면에서 복사할 수 있습니다. 연결 후 캐릭터/팩을 고르면 그 컴퓨터에서 직접 읽습니다.
-4. 캐릭터 애니메이션 탭에서 모션을 선택합니다. 현재 기본 라이브러리는 FinalResources의 모션과 CharacterViewer의 모델·배경을 사용합니다. RPG_Lab과 Animation Bank는 브라우저에 연결하지 않아도 됩니다. Animation Bank에만 있는 모션은 기본 목록에서 제외합니다.
-5. 참조 복사의 프로젝트 상대 경로·GUID를 사용합니다. `__local` 웹 URL은 폴더가 연결된 그 브라우저 전용이며 다른 컴퓨터용 다운로드 URL이 아닙니다.
-
-재방문 시 저장된 핸들의 권한을 확인합니다. 리소스 폴더의 읽기 권한이 남아 있으면 그 안의 최신 색인을 자동으로 찾습니다. 새 색인에 선언된 원본 위치가 이전과 정확히 같으면 이미 허용한 폴더 연결도 재사용합니다. 브라우저가 권한을 만료시키거나 데이터를 지운 경우 ‘폴더 연결’을 다시 누릅니다. 폴더를 다른 위치로 바꿨다면 연결 해제 후 새 위치를 선택합니다. 색인 연결 해제는 시작 화면으로 돌아갑니다. 연결 해제는 브라우저의 연결 기록만 지우고 파일을 삭제하지 않습니다. 원본 루트 권한은 라이브러리 ID별로 구분하며, 경로가 달라진 루트의 권한을 자동 재사용하지 않습니다.
-
-Safari/Firefox/내장 WebView에서는 지원 차이가 있습니다. 지원하지 않는 환경에서 개인 색인·로컬 3D 접근을 약속하지 않습니다. 공통 매뉴얼은 읽을 수 있습니다. Dropbox ‘온라인 전용’ 파일은 운영체제가 다운로드해야 읽을 수 있으므로 필요한 폴더를 오프라인 사용 가능 상태로 두는 것이 좋습니다.
-
-파일이 없는 방문자에게 다른 사용자의 로컬 디스크나 개인 목록이 공유되지는 않습니다. 각자 자기 색인과 원본 폴더를 연결합니다. 같은 Dropbox 자료를 공유한 팀은 같은 색인을 사용하고 각 컴퓨터의 원본 루트를 연결할 수 있습니다.
-
-연결 중에는 선택한 폴더 이름과 권한·색인 검사·저장·실제 읽기 단계를 표시합니다. 폴더 선택 창을 기다리는 시간에는 자동 제한을 두지 않으며, 나머지 단계가 15초 동안 응답하지 않으면 재시도를 안내합니다. ‘중단’ 후 이전 응답은 현재 연결을 바꾸지 않습니다. 선택 취소와 브라우저 접근 거절은 같은 AbortError일 수 있어 임의로 사용자 취소라고 단정하지 않습니다. ‘연결 진단’에는 단계·오류 종류·연결 버전만 표시하며 외부로 전송하지 않습니다.
-
-## 4. 현재 분류·대표 모델 규칙
-
-카테고리는 캐릭터/애니메이션/배경·프랍/비인간형이고 게임은 필터입니다. 원화·초상화·대사·구형 모델은 같은 정체성의 상세 자료입니다.
-
-GameSet manifest와 명시된 modelNames가 대표 Humanoid를 정합니다. 수정일·짧은 이름·최신 파일만으로 자동 교체하지 않습니다. 직접 제작 34개 형태는 33개 정체성으로 묶으며 DynamicRobot은 형태를 선택합니다. SD 데모는 Human Basic Motions를 우선합니다.
-
-POLYGON/DETAILED의 팩·프리팹·GUID와 생성 썸네일을 연결합니다. 배경의 실시간 3D 변환은 하지 않습니다. 소스 용량/LOD/텍스처 해상도와 Unity 실행 비용을 구분합니다.
-
-설정의 실제 기준은 `config/skyhaven-library.json`, `config/skyhaven-environment-packs.json`, GameSet manifest입니다. 원본 .meta/GUID/내부 리그·클립 이름·구매 팩 구조를 보존합니다. Humanoid 설정, 호환 후보, 웹 재생 기록, Unity 실행 검증을 서로 대체하지 않습니다.
-
-## 5. MCP/다른 에이전트에서 사용
-
-이 웹 기능 자체는 MCP 서버를 설치하지 않습니다. `get_skyhaven_asset` 같은 전용 MCP 도구가 이미 존재한다고 가정하지 마세요. 기존 MCP 클라이언트의 웹 읽기와 승인된 로컬 파일 도구로 아래 절차를 사용합니다. 일반 도구의 실제 이름과 허용 루트는 클라이언트 설정에서 확인하세요.
-
-1. 사용자가 지정한 로컬 색인 폴더의 `library.json`과 `catalog.json`을 읽어 그룹/에셋 ID를 찾습니다. GitHub의 공통 앱 주소에는 개인 catalog.json이 없습니다.
-2. 같은 색인 폴더 기준 에셋 또는 팩의 `detailUrl` JSON을 읽습니다. 모션은 `motions.json`, 전체 파일은 `resources.json`입니다. 동적 Comfy 모드에서는 기존 library API를 사용합니다.
-3. 파일 descriptor의 `localRef.root`와 `localRef.path`를 읽습니다.
-4. MCP가 실행되는 컴퓨터의 루트 대응표에서 root를 찾고, 그 루트 내부로만 path를 결합합니다.
-5. 존재/크기/해시/GUID와 실제 골격을 검사합니다. 다른 플랫폼의 절대 경로나 브라우저 전용 URL을 파일 경로로 쓰지 않습니다.
-6. 먼저 읽기 전용으로 검토합니다. 색인 생성은 출력 폴더에만 기록하며 원본 이동·리깅·변환·삭제를 자동으로 수행하지 않습니다.
-
-브라우저용 descriptor 예:
-
-```json
-{
-  "path": "Assets/Characters/Elara/Models/Elara.fbx",
-  "projectRelativePath": "Assets/Characters/Elara/Models/Elara.fbx",
-  "localRef": {"root": "polygon", "path": "Assets/Characters/Elara/Models/Elara.fbx"},
-  "url": "__local/LIBRARY_ID_polygon/Assets/Characters/Elara/Models/Elara.fbx",
-  "extension": "fbx",
-  "sourceHash": null,
-  "guid": null
-}
-```
-
-실제 데이터에는 계산한 SHA-256 또는 미확인 null을 기록하고 검증 완료로 꾸미지 않습니다. 브라우저용 URL의 LIBRARY_ID는 생성된 네임스페이스입니다. MCP는 이 URL을 파싱하지 말고 localRef를 사용합니다.
-
-에이전트에게 전달할 작업 지침:
-
-```text
-이 사이트의 공통 MCP 매뉴얼과 내가 지정한 로컬 색인의 library.json/catalog.json을 읽어라.
-내가 허용한 폴더만 조사하고 roots.json에 논리 루트와 내 컴퓨터의 실제 경로를 연결하라.
-GameSet/manifest/Unity GUID를 우선하며 대표 모델이 불분명하면 질문하고 임의로 고르지 마라.
-동일 인물의 버전·원화는 한 에셋의 related로 묶고 변형은 variants로 연결하라.
-모션의 rig/클립/검증 기록을 구분하고 브라우저 재생을 Unity 검증이라고 부르지 마라.
-원본은 읽기만 하고 portable snapshot과 썸네일을 별도 출력에 생성하라.
-기존 스냅샷과 비교한 새 누락·충돌을 보고하고 과거 검토 항목을 매번 새 문제로 반복하지 마라.
-```
-
-## 6. 다른 사용자의 폴더로 만드는 방법
-
-웹 연결 계층은 특정 드라이브에 묶여 있지 않습니다. 다른 사용자는 자기 루트와 같은 스키마의 portable snapshot을 준비합니다. 현재 GameSet/Synty 분류기를 모든 임의 폴더에 보편적인 자동 분류기라고 주장하지 않습니다. 자기 폴더가 다르면 MCP가 읽기 조사 후 manifest/색인을 명시적으로 작성합니다.
-
-roots.json 예:
-```json
-{"game": "D:/MyResources"}
-```
-
-snapshot.json 최상위 필드:
-```json
-{
-  "overview": {"schemaVersion": 1, "entities": [], "packs": [], "motionCount": 0, "counts": {"forms": 0, "identities": 0, "polygon": 0}, "issues": [], "taxonomy": {}},
-  "assets": {},
-  "packs": {},
-  "motions": [],
-  "resources": {"folders": [{"id": "all", "name": "내 리소스", "files": []}]}
-}
-```
-
-entities의 id는 assets의 키, 팩 id는 packs의 키와 일치해야 합니다. 파일마다 localRef를 넣습니다. 프로젝트 상대 path, name, extension, size, game을 기록하고 대표 variant에는 model/textures/thumbnail/rig/compatibility를 명시합니다. 기존 catalog.json과 상세 JSON이 완전한 실제 사례입니다. 준비된 썸네일은 previews/ 상대 URL로 연결합니다. 모션/리그를 모르면 unknown으로 두며 빈 목록도 허용합니다.
+새 자료는 아래 도구로 기존 manifest를 덮어쓰지 않고 등록할 수 있습니다. `path`는 경로만 출력하고 파일을 만들지 않습니다. 모델은 출력된 폴더에 직접 저장한 뒤 `register`로 대표 파일을 명시하세요.
 
 ```powershell
-py -3 scripts/export_skyhaven_site.py --catalog snapshot.json --roots roots.json --vendor path/to/three --previews prepared-images --output NEW_SITE_DIRECTORY
+python scripts/resource_library.py path Characters MyHero
+python scripts/resource_library.py register Characters MyHero --model Models/MyHero.glb --game skyhaven --group MyCharacters
 ```
 
-독립 GitHub 저장소에는 같은 도구가 `tools/export_skyhaven_site.py`에 있고 Three.js도 동봉되어 있습니다. 그 저장소에서는 `py -3 tools/export_skyhaven_site.py --catalog examples/snapshot.json --roots examples/roots.json --output NEW_SITE_DIRECTORY --index-output "D:/MyResources/Skyhaven Library"`로 시작할 수 있습니다. examples의 파일 위치를 자기 파일에 맞추세요. 사용자는 MyResources 폴더만 선택하면 됩니다.
+등록 기본값은 검토 후보이며 공개 3D 미리보기는 꺼져 있습니다. 본인에게 공개 권한이 있는 자료만 등록 시 `--public-preview`를 명시하거나 manifest의 publication.livePreview를 변경하세요. 이 선택은 품질 승인이 아닙니다.
 
-`--previews`는 이미지 전용 폴더입니다. 모델/텍스처 원본 폴더를 지정하지 않습니다. 산출물은 공통 앱 폴더와 별도 개인 색인 폴더로 나뉩니다. 개인 색인 폴더의 build-report.json, sourceFilesCopied=0, 로컬 참조와 썸네일 존재를 검토합니다. 정적 호스트에는 공통 앱 폴더만 게시합니다. 다른 사용자도 이미 게시된 같은 공통 앱을 사용할 수 있으므로 개인별 웹 호스트를 만들 필요는 없습니다.
+새 경로를 코드에서 얻을 때는 드라이브 문자열을 여러 곳에 하드코딩하지 않습니다.
 
-## 7. 현재 라이브러리 갱신과 배포
-
-현재 Nourish 게시 프로필은 `config/skyhaven-library.json`의 browserLibrary를 사용합니다. `py -3 scripts/prepare_skyhaven_browser_sources.py --apply`가 GameSet의 GUID를 CharacterViewer에서 찾아 재사용하고 없는 모델·텍스처·재질과 파일 메타만 `Assets/SkyhavenLibrary/Characters`에 추가합니다. 기존 파일과 다른 광택 맵은 덮어쓰지 않습니다. 생성한 browser-sources.json의 양쪽 파일·메타 해시가 달라지면 게시를 중단하고 연결 기록 갱신을 요구합니다. 이 작업은 새 리깅이나 Unity 실행 검증이 아닙니다.
-
-리소스 폴더 연결은 표준 `Skyhaven Library` 하위 폴더를 우선하고 기존 내부 browser-index 기록은 게시 시각을 기준으로 최신 유효 목록을 찾습니다. 이미 연결한 예전 색인 폴더도 계속 읽을 수 있습니다. 리소스 폴더를 다시 연결하면 최신 목록과 원본 모션 루트를 한 번에 연결합니다. 고급 메뉴에만 내부 목록 위치와 이전 프로젝트 연결을 둡니다.
-
-```powershell
-py -3 scripts/export_skyhaven_site.py --output NEW_SITE_DIRECTORY --index-output NEW_PRIVATE_INDEX_DIRECTORY --domain skyhaven.genesisframeworks.com
+```python
+from services.skyhaven_resources import SkyhavenResources
+layout = SkyhavenResources().layout
+folder = layout.asset_directory('Characters', 'MyHero')
 ```
 
-명령은 새 폴더에만 빌드하며 기존 산출물을 덮어쓰지 않습니다. index-output을 생략하면 공통 앱 옆에 `이름-index` 폴더를 만듭니다. 원본 변경·서버 시작·Git push·DNS 변경·클라우드 업로드를 하지 않습니다. 공통 앱 폴더만 GitHub Pages에 게시하고 개인 색인 폴더를 포함하지 않습니다. `.nojekyll`을 보존해야 __local 경로와 모듈이 처리됩니다. HTTPS 도메인과 실제 Pages 배포를 따로 확인합니다.
+Windows의 실제 루트는 config/skyhaven-resources.json의 workspace 한 곳에서 정합니다. Mac도 자신의 Dropbox 루트 아래 같은 상대 구조를 사용합니다. HTTP 링크와 manifest의 이식 가능한 참조에는 Windows 드라이브 문자나 Mac 홈 경로를 쓰지 않습니다.
 
-새 폴더/파일은 로컬 색인 생성 → 대표 모델·의존성 검토 → 개인 색인 폴더 교체/재연결 순서입니다. 사이트 ‘새로고침’은 연결한 개인 색인을 다시 읽습니다. 공통 앱은 기능 변경 때만 다시 배포합니다. GitHub Actions가 로컬 K:/H:/ 폴더를 자동으로 읽는 것은 아닙니다. 기존 일일 organizer는 원본 검토를 계속하며 이 변경만으로 새로운 업로드 자동화를 만들지 않습니다.
+## 자동으로 하는 일 / 사람이 결정할 일
 
-## 8. 검증과 문제 해결
+자동: 신규·변경 파일 검사, 크기·해시 비교, 의존성 누락 보고, 변경된 목록 게시. 파일 저장 중·원본 접근 불가·게시 오류가 있으면 마지막 정상 게시본을 유지합니다. 브라우저에서 모델을 열어도 썸네일 파일을 새로 저장하지 않습니다.
 
-- 연결 필요: 폴더 선택/읽기 권한을 허용합니다. 브라우저 저장 핸들은 로그인 계정 간 자동 공유되지 않습니다.
-- 파일 누락: 루트 폴더를 한 단계 위/아래로 잘못 선택했는지, 파일명이 색인과 같은지, Dropbox가 로컬 파일을 제공하는지 확인합니다.
-- 텍스처 누락: 모델과 텍스처의 루트 및 상대 경로, materialBindings, GLTF의 외부 .bin 의존성을 확인합니다.
-- 색인에 없음: 원본을 다시 스캔하고 게시물을 갱신합니다. 브라우저 폴더 권한만으로 서버 색인이 자동 갱신되는 것은 아닙니다.
-- 예전 색인: 새로고침 실패 시 기존 IndexedDB 색인을 보존합니다. 저장 시각과 게시 시각을 확인합니다.
-- 썸네일/검증 생성: 정적 사이트에서는 원본 호스트의 POST 기능을 실행하지 않습니다. 로컬 제작 도구에서 생성 후 다시 게시합니다.
+수동: 소속 에셋, 대표 버전, 공개 가능 여부, 후보에서 채택으로의 변경. Final 또는 Library라는 이름만으로 품질 승인·리깅 검증·Unity 실행 확인을 주장하지 않습니다. 공개 여부를 모르는 구매 모델·모션은 공개 납품물로 올리지 않습니다.
 
-자동 검사 통과, 실제 폴더 선택/재권한, 3D·텍스처·모션의 시각 재생, GitHub Pages 배포, DNS/HTTPS 검증은 별도 기록으로 확인합니다. 메뉴얼이 있다는 이유로 미검증 단계를 완료로 간주하지 않습니다.
+기존 일일 organizer는 이름을 추측해서 이동시키는 대신 문제 목록을 확인하는 용도입니다. 분류가 불분명한 파일은 임의로 이름을 바꾸거나 삭제하지 않습니다.
+
+## 기존 파일과 보호 위치
+
+- 이관 규칙의 기준은 config/resource-library-layout.json입니다. 과거 URL·참조는 이 대응표로 새 실제 경로를 읽습니다. 실제 폴더 바로가기나 호환용 복사본은 만들지 않습니다.
+- Reference/Codex, _Claude·_Codex 교신 기록, uploads/brand 등 기존 고정 연동 위치는 유지합니다.
+- 외부 Unity 프로젝트, .meta GUID, 구매 패키지 내부, 실행 설정이 연결된 UniMate 폴더는 임의로 이동하지 않습니다.
+- 01.USD·02.Character·03. Blender 등의 혼합 자료와 개발 저장소는 소유권·외부 참조 확인 후에만 이관합니다. 보류 목록은 이동 보고서에 남습니다.
+- 과거 실행 로그의 경로는 당시 출처입니다. 현재 경로로 무차별 치환하지 않습니다.
+
+## 문제 해결과 복구
+
+- 목록은 보이는데 이미지가 없음: 헤더의 원본 서버 상태를 확인합니다. OFFLINE이면 정상적인 제한입니다. ONLINE이면 원본 파일과 의존성 경로를 확인합니다.
+- 새 자료가 안 보임: 원본 서비스 가동, manifest, 파일 저장·Dropbox 동기화 완료, 게시 오류 여부를 확인합니다. 브라우저 새로고침만으로 로컬 폴더가 클라우드에 올라가는 것은 아닙니다.
+- 대표 파일이 여러 개임: 최근 수정 파일을 자동 선택하지 않습니다. manifest에서 대표 파일을 정합니다.
+- 게시 실패: 이전 정상 목록은 유지됩니다. 원본 파일을 이동하거나 지우면서 해결하지 않습니다.
+- 이관 복구: 기록된 이동 보고서에 대해서만 migrate_resource_library.py --rollback을 사용합니다. 현재 바이트 해시가 달라졌거나 원위치에 파일이 있으면 멈춥니다. 덮어쓰기·재귀 삭제를 하지 않습니다.
+
+목록 게시와 실제 렌더 확인, 웹 모션 재생과 Unity 검증은 서로 다른 상태입니다.

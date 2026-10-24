@@ -3,6 +3,6 @@
 /resources.json
 /library.json
 /previews/
-/data/
+# data/ contains generated public JSON metadata only; never source media.
 /*-index/
 __pycache__/

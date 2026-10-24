@@ -2,7 +2,8 @@ const LIBRARY='/comfy/skyhaven/api/library';
 export function createLibraryTransport({deployment=null,base=globalThis.location?.href,fetcher=globalThis.fetch}={}){
   function endpoint(path){
     if(!deployment)return new URL(path,base).href;
-    const key=new URL(path,base).pathname,value=deployment.routes[key];
+    const url=new URL(path,base),key=url.pathname,value=deployment.routes[key];
+    if(!value&&deployment.mode==='hosted-catalog'&&url.origin===deployment.origin&&key.startsWith('/comfy/skyhaven/'))return url.href;
     if(!value)throw new Error('게시된 색인에 없는 요청입니다: '+key);
     return new URL(value,base).href;
   }
