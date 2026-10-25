@@ -1,0 +1,46 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {createRequire} from 'node:module';
+import {filterOwned,ownedFilters,ownedRow,createOwnedAssetList,OWNED_API} from './skyhaven-owned-assets.mjs';
+
+const item=(id,name,hidden=false)=>({id,name,hidden,publisher:'Artist',category:'3D',styles:['stylized-3d'],
+  styleEvidence:{level:'inferred',reason:'시리즈 기준',sources:[]},
+  contents:{items:['건축','식기'],level:'inferred',reason:'제품명 기준',sources:[]},storeUrl:'https://assetstore.unity.com/search?q=test'});
+const data={available:true,snapshotDate:'2026-10-25',counts:{visible:52,hidden:1,total:53},categories:{'3D':52},
+  styles:[{id:'stylized-3d',label:'스타일라이즈드'}],styleEvidenceLabels:{inferred:'추정'},contentsEvidenceLabels:{inferred:'제품명 기준'},
+  assets:[...Array.from({length:52},(_,i)=>item(String(i),'Village '+i)),item('hidden','Hidden',true)]};
+
+test('search includes contents and styles; category and hidden are independent',()=>{
+  assert.equal(filterOwned(data,{query:'식기 스타일라이즈드'}).length,52);
+  assert.equal(filterOwned(data,{query:'Village 15'}).length,1);
+  assert.equal(filterOwned(data,{style:'realistic'}).length,0);
+  assert.equal(filterOwned(data,{hidden:true}).length,53);
+  assert.equal(filterOwned(data,{category:'도구'}).length,0);
+  assert.deepEqual(ownedFilters('https://catalog.test/?ownedStyle=stylized-3d&ownedHidden=1#owned'),{style:'stylized-3d',category:'',hidden:true});
+});
+test('row exposes content in the list and escapes metadata',()=>{
+  const row=ownedRow(item('1','<img src=x>'),data);
+  assert.ok(row.includes('식기'));
+  assert.ok(row.includes('제품명 기준'));
+  assert.ok(row.includes('&lt;img'));
+  assert.ok(!row.includes('<img'));
+});
+test('DOM: paging, filters, refresh recovery, route change, and lazy request reuse',async()=>{
+  const {JSDOM}=createRequire(import.meta.url)(process.env.JSDOM_PATH||'jsdom');
+  const dom=new JSDOM('<main></main>',{url:'https://catalog.test/#owned'});
+  const w=dom.window,host=w.document.querySelector('main');let active=true,calls=0,fail=false;
+  const ui=createOwnedAssetList({host,isActive:()=>active,getURL:()=>w.location.href,replaceURL:u=>w.history.replaceState(null,'',u),
+    fetchJSON:async url=>{assert.equal(url,OWNED_API);calls++;if(fail)throw new Error('offline');return data;}});
+  await ui.render();assert.equal(host.querySelectorAll('tbody tr').length,50);
+  host.querySelector('#owned-next').click();assert.equal(host.querySelectorAll('tbody tr').length,2);
+  ui.search('Village 15');assert.equal(host.querySelectorAll('tbody tr').length,1);
+  ui.search('');const hidden=host.querySelector('#owned-hidden');hidden.checked=true;hidden.dispatchEvent(new w.Event('change'));
+  assert.ok(w.location.search.includes('ownedHidden=1'));assert.ok(host.textContent.includes('53개 결과'));
+  const style=host.querySelector('#owned-style');style.value='stylized-3d';style.dispatchEvent(new w.Event('change'));
+  assert.equal(ownedFilters(w.location.href).style,'stylized-3d');
+  await ui.render();assert.equal(calls,1,'cached visits do not re-fetch');
+  fail=true;await ui.render({refresh:true});assert.ok(host.textContent.includes('이전 목록'));assert.equal(ui.count,52);
+  active=false;host.innerHTML='<p>Character view</p>';await ui.render({refresh:true});assert.equal(host.textContent,'Character view');
+  active=true;fail=false;await ui.render({refresh:true});host.querySelector('#owned-reset').click();assert.equal(w.location.search,'');
+  assert.equal(host.querySelectorAll('tbody tr').length,50);dom.window.close();
+});
