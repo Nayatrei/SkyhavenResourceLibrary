@@ -1,6 +1,6 @@
 import {sections,games,cleanName,matches,matchesPack,packInSection,filterPackItems,formatBytes,sortPackItems,candidateMotions,rankMotions,recommendedMotions,readState,filterEntities,smokeMotions} from './skyhaven-library-state.mjs?v=20261023-library-v15';
 import {createCatalogCache} from './skyhaven-library-cache.mjs?v=20261023-library-v15';
-import {createOwnedAssetList} from './skyhaven-owned-assets.mjs?v=20261025-owned-v1';
+import {createOwnedAssetList} from './skyhaven-owned-assets.mjs?v=20261025-owned-v2';
 import {loadingMarkup,startLoading} from './skyhaven-loading.mjs';
 import {createLibraryTransport} from './skyhaven-data-source.mjs?v=20261023-hosted-v1';
 import {installLocalConnections,prepareLocalLibrary,withLocalTimeout} from './skyhaven-local-files.mjs?v=20261023-connect-v5';
@@ -41,7 +41,7 @@ function navigation(){
   const ownedLink=document.createElement('a');ownedLink.href='#owned';ownedLink.className='nav-item'+(category==='owned'?' active':'');ownedLink.innerHTML='<span>05</span>보유 에셋<small>'+String(owned.count??'목록')+'</small>';$('navigation').insertBefore(ownedLink,$('navigation').querySelector('.aux-nav'));
   $('game-filters').hidden=category==='owned';
   $('search').placeholder=category==='owned'?'에셋명, 스타일, 포함 내용 검색…':'이름, 모션, 폴더 검색…';
-  if(category==='owned')$('breadcrumb').textContent='보유 에셋 / Unity My Assets';
+  if(category==='owned')$('breadcrumb').textContent='보유 에셋 / Unity · Fab';
 }
 function cards(){
   const entities=filterEntities(data.entities,state,category);

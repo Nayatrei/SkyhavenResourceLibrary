@@ -25,6 +25,14 @@ test('row exposes content in the list and escapes metadata',()=>{
   assert.ok(row.includes('&lt;img'));
   assert.ok(!row.includes('<img'));
 });
+test('Fab products are searchable and retain their own product links',()=>{
+  const fab={...item('fab:451487b4-7336-4eb8-b63d-05c533dec13c','Test Pack'),source:'Fab',
+    publisher:'Dekogon Studios',storeUrl:'https://www.fab.com/listings/451487b4-7336-4eb8-b63d-05c533dec13c'};
+  assert.equal(filterOwned({...data,assets:[fab]},{query:'Fab Dekogon'}).length,1);
+  const row=ownedRow(fab,data);
+  assert.ok(row.includes('Fab 제품 ↗'));
+  assert.ok(row.includes(fab.storeUrl));
+});
 test('DOM: paging, filters, refresh recovery, route change, and lazy request reuse',async()=>{
   const {JSDOM}=createRequire(import.meta.url)(process.env.JSDOM_PATH||'jsdom');
   const dom=new JSDOM('<main></main>',{url:'https://catalog.test/#owned'});
