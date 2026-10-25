@@ -17,3 +17,5 @@
 
 목록 UI 검사: Node 20+에서 `node --test assets/skyhaven-owned-assets.test.mjs`.
 DOM 검사는 설치된 jsdom 경로를 `JSDOM_PATH`로 지정하면 함께 실행됩니다.
+
+Unity My Assets와 확인된 Fab 제품을 출처별로 합쳐 표시합니다. 같은 이름을 자동 병합하지 않으며 Fab 제품은 UUID 기반 공식 제품 페이지로 연결합니다. Fab 목록은 확인된 로컬 반입분이며 계정 전체 소유 목록을 뜻하지 않습니다.
