@@ -23,7 +23,7 @@ export function createSourceStatus({origin,fetcher=globalThis.fetch,onChange=()=
     })().finally(()=>{pending=null;});return pending;
   }};
 }
-export function installSourceStatus({deployment,onDisconnect=()=>{},document=globalThis.document}={}){
+export function installSourceStatus({deployment,onDisconnect=()=>{},onConnect=()=>{},document=globalThis.document}={}){
   if(deployment?.mode!=='hosted-catalog')return null;
   document.body.dataset.sourceState='checking';
   const badge=document.createElement('button');badge.className='source-status';badge.type='button';badge.setAttribute('aria-live','polite');
@@ -38,10 +38,11 @@ export function installSourceStatus({deployment,onDisconnect=()=>{},document=glo
     document.body.dataset.sourceState=state;
     badge.textContent='● 원본 서버 '+({online:'ONLINE',offline:'OFFLINE',unknown:'확인 불가'}[state]);
     badge.title='마지막 목록 게시: '+new Date(deployment.publishedAt).toLocaleString()+' · 눌러서 연결 재확인';
-    sync();if(state!=='online')onDisconnect();
+    sync();if(state==='online')onConnect();else onDisconnect();
   }});
   badge.textContent='○ 원본 서버 확인 중';badge.onclick=()=>status.check();
   const observer=new MutationObserver(sync);observer.observe(document.getElementById('main'),{childList:true,subtree:true});
+  const navigation=document.getElementById('navigation');if(navigation)observer.observe(navigation,{childList:true,subtree:true});
   const timer=setInterval(()=>{if(!document.hidden)void status.check();},60000);
   globalThis.addEventListener('pagehide',()=>{clearInterval(timer);observer.disconnect();},{once:true});
   void status.check();

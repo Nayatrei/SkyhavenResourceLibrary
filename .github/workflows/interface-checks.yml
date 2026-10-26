@@ -1,0 +1,16 @@
+name: Interface checks
+on:
+  pull_request:
+    paths: ['assets/**', 'index.html', '.github/workflows/interface-checks.yml']
+permissions:
+  contents: read
+jobs:
+  interface:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test assets/skyhaven-command.test.mjs
+      - run: for file in assets/*.mjs; do node --check "$file"; done
