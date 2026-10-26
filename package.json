@@ -1,0 +1,9 @@
+{
+  "name": "skyhaven-resource-library",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test assets/skyhaven-command.test.mjs assets/skyhaven-environments.test.mjs assets/skyhaven-owned-assets.test.mjs"
+  },
+  "devDependencies": { "jsdom": "26.1.0" }
+}

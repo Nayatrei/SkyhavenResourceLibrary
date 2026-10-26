@@ -27,7 +27,7 @@ export function installSourceStatus({deployment,onDisconnect=()=>{},onConnect=()
   if(deployment?.mode!=='hosted-catalog')return null;
   document.body.dataset.sourceState='checking';
   const badge=document.createElement('button');badge.className='source-status';badge.type='button';badge.setAttribute('aria-live','polite');
-  document.getElementById('refresh').before(badge);
+  const slot=document.getElementById('source-slot');if(slot)slot.append(badge);else document.getElementById('refresh').before(badge);
   function sync(){
     const online=status.online;
     document.querySelectorAll('[data-live-src]').forEach(el=>{if(online){if(!el.hasAttribute('src'))el.setAttribute('src',el.dataset.liveSrc);}else el.removeAttribute('src');});
@@ -36,13 +36,14 @@ export function installSourceStatus({deployment,onDisconnect=()=>{},onConnect=()
   }
   const status=createSourceStatus({origin:deployment.origin,onChange:state=>{
     document.body.dataset.sourceState=state;
-    badge.textContent='● 원본 서버 '+({online:'ONLINE',offline:'OFFLINE',unknown:'확인 불가'}[state]);
+    badge.textContent='● SOURCE '+({online:'ONLINE',offline:'OFFLINE',unknown:'UNKNOWN'}[state])+'  ⌄';
     badge.title='마지막 목록 게시: '+new Date(deployment.publishedAt).toLocaleString()+' · 눌러서 연결 재확인';
     sync();if(state==='online')onConnect();else onDisconnect();
   }});
-  badge.textContent='○ 원본 서버 확인 중';badge.onclick=()=>status.check();
+  badge.textContent='○ CHECKING SOURCE';badge.onclick=()=>status.check();
   const observer=new MutationObserver(sync);observer.observe(document.getElementById('main'),{childList:true,subtree:true});
   const navigation=document.getElementById('navigation');if(navigation)observer.observe(navigation,{childList:true,subtree:true});
+  const navigator=document.getElementById('preview-navigator');if(navigator)observer.observe(navigator,{childList:true,subtree:true});
   const timer=setInterval(()=>{if(!document.hidden)void status.check();},60000);
   globalThis.addEventListener('pagehide',()=>{clearInterval(timer);observer.disconnect();},{once:true});
   void status.check();

@@ -1,42 +1,38 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {categoryEntry,categoryImage,categoryCount,commandImage,commandNavigation,commandOverview} from './skyhaven-command.mjs';
+import {categoryEntry,categoryImage,categoryCount,commandImage,commandNavigation,commandIcon} from './skyhaven-command.mjs';
 const data={motionCount:120,entities:[
   {id:'character:Elara',name:'Elara',category:'characters',game:'skyhaven',group:'Village',variants:[{thumbnail:{ready:true,url:'https://source.test/elara.png'}}]},
   {id:'creature:Cat',name:'Cat',category:'companions',game:'companion',group:'Creatures',cover:{url:'https://source.test/cat.png'}},
-],packs:[{id:'Castle',name:'Castle',category:'environments',game:'shared',group:'DETAILED',availability:'local',cover:{url:'https://source.test/castle.png',source:'Original pack cover'}}]};
-test('category artwork reuses real cover or ready model thumbnails and respects game',()=>{
+],packs:[{id:'Castle',name:'Castle',category:'environments',game:'shared',group:'DETAILED',cover:{url:'https://source.test/castle.png'}}]};
+test('category art and counts preserve original source and game filtering',()=>{
   assert.equal(categoryImage(categoryEntry(data,'characters')),'https://source.test/elara.png');
   assert.equal(categoryImage(categoryEntry(data,'animations')),'https://source.test/elara.png');
-  assert.equal(categoryImage(categoryEntry(data,'environments')),'https://source.test/castle.png');
   assert.equal(categoryEntry(data,'characters','shared'),undefined);
-  assert.equal(categoryCount(data,'characters'),1);
-  assert.equal(categoryCount(data,'characters','shared'),0);
+  assert.equal(categoryCount(data,'characters'),1);assert.equal(categoryCount(data,'characters','shared'),0);
   assert.equal(categoryCount(data,'animations'),120);
 });
-test('hosted art has no src or background request before source health is online',()=>{
+test('hosted source art is not requested until source health is ONLINE',()=>{
   const html=commandImage(data.entities[0],{hosted:true});
   assert.match(html,/data-live-src="https:\/\/source.test\/elara.png"/);
   assert.doesNotMatch(html,/(?<!-)\bsrc=/);
-  assert.doesNotMatch(html,/background-image/);
   assert.match(commandImage(data.entities[0]),/ src=/);
+  assert.match(commandImage(null),/No source preview/);
 });
-test('overview uses existing metadata, deep links, category cards and no personal paths',()=>{
-  const html=commandOverview(data,{hosted:true});
-  for(const route of ['characters','animations','environments','companions','owned'])assert.match(html,new RegExp('href="#'+route));
-  assert.match(html,/href="#environments\/pack\/Castle"/);
-  assert.match(html,/href="#characters\/character%3AElara"/);
-  assert.match(html,/Original pack cover/);
-  assert.doesNotMatch(html,/file:|[A-Z]:\\|generated_images|localhost/);
-  const filtered=commandOverview(data,{game:'companion'});
-  assert.doesNotMatch(filtered,/elara.png|castle.png/);
+test('approved rail uses four icon categories followed by pack families; home opens environments',()=>{
+  const html=commandNavigation(data,{active:'home'});
+  for(const title of ['Characters','Animations','Environments','Creatures'])assert.match(html,new RegExp('>'+title+'<'));
+  assert.match(html,/href="#environments" aria-current="page"/);
+  for(const family of ['POLYGON','DETAILED','Dekogon'])assert.match(html,new RegExp('data-group="'+family+'"'));
+  assert.match(html,/rts-symbol-helmet/);assert.match(html,/rts-symbol-run/);
+  assert.doesNotMatch(html,/nav-thumbnail|command-home-link|<img/);
+  assert.ok(html.indexOf('PACKS')>html.indexOf('Creatures'));
 });
-test('navigation exposes active category, escaping and graceful missing art',()=>{
-  assert.match(commandNavigation(data,{active:'characters'}),/href="#characters" aria-current="page"/);
-  assert.match(commandNavigation(data,{active:'home'}),/href="#home" aria-current="page"/);
-  const hostile={entities:[],packs:[{name:'<script>',id:'a" onclick="bad',category:'environments',game:'shared',cover:{url:'https://source.test/a?x="<',source:'<b>bad</b>'}}],motionCount:0};
-  const html=commandOverview(hostile);
-  assert.doesNotMatch(html,/<script>|<b>bad<\/b>| onclick="bad/);
-  assert.match(html,/&lt;script&gt;/);
-  assert.match(commandImage(null),/command-no-image/);
+test('character groups are catalog-derived and metadata is escaped',()=>{
+  const html=commandNavigation(data,{active:'characters',group:'Village'});
+  assert.match(html,/GROUPS/);assert.match(html,/data-group="Village" class="active"/);
+  assert.doesNotMatch(html,/data-group="DETAILED"/);
+  const hostile=commandNavigation({...data,entities:[{category:'characters',group:'<img src=x>',game:'skyhaven'}]},{active:'characters'});
+  assert.match(hostile,/&lt;img src=x&gt;/);assert.doesNotMatch(hostile,/<img src=x>/);
+  assert.match(commandIcon('star'),/<svg/);
 });

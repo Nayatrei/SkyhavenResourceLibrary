@@ -1,19 +1,23 @@
-# Skyhaven RTS 라이브러리
+# Skyhaven visual target
 
-2026-10-25 사용자가 승인한 세 번째 RTS 목업의 구조와 두 번째 캐릭터 목업의 로스터를 기존 라이브러리에 적용합니다.
+2026-10-26: The approved target is the 1672 × 941 Environment Library image supplied by the user. The earlier skin-only release retained a different navigation and page composition; this design replaces it.
 
-- 본부: 실제 카탈로그의 기존 팩 대표 이미지와 카테고리 썸네일로 탐색합니다.
-- 왼쪽: 같은 원본 썸네일을 사용하는 캐릭터 / 애니메이션 / 배경·프랍 / 비인간형 카테고리와 보유 에셋.
-- 캐릭터: 상단 큰 미리보기·모션 비교, 하단 그룹별 썸네일 로스터. 게임은 필터로 유지합니다.
-- 배경: 기존 팩 → 씬·조합·개별 에셋 흐름과 상대 경로·GUID·용량 정보를 유지합니다.
-- 소재: Imagegen의 gunmetal 패널과 brass 버튼을 CSS nine-slice로 사용합니다. 글자·아이콘·조작은 HTML입니다. 소재 2개는 공개 앱 UI이며 개인 에셋이 아닙니다.
-- 원본 서버 OFFLINE: 목록·경로는 유지하고 이미지·3D·모션은 요청하지 않습니다. UI 소재는 앱과 함께 제공됩니다.
-- 좁은 화면: 가로 카테고리, 2열 카테고리 카드, 3열 에셋 카드, 세로 미리보기와 모션. 키보드 포커스·reduced-motion 유지.
+| Region | Target geometry at 1672 × 941 | Implementation |
+| --- | --- | --- |
+| Header | full width, about 70px high | castle brand, search, game tabs, source, settings, library menu in one row |
+| Primary rail | x14 y74, width236, bottom620 | four gold icon categories, divider, pack families |
+| Content toolbar | x258 y74, height64 | Environment Library, Packs, Props, context search, filters |
+| Scene viewport | x258 y145, about1043 × 580 | original pack or owned environment preview |
+| Inspector | x1310 y145, about345 × 580 | favorite, Overview/Scene/Models/Textures, real metadata, Copy Path, related files |
+| Asset dock | x374 y735, about1288 × 185 | one horizontal row, current collection outlined in gold |
+| Navigator | x14 y629, about350 × 292 | library map with pack-family markers and source preview controls |
 
-범위 제외: 원본 이동, 새 에셋 썸네일·씬 생성/복사, 배경 3D 변환, UI에 넣는 가짜 에셋·수치, 리깅·모션 변경.
+The map and category icon atlas are generated application UI. The map is labeled LIBRARY MAP; it does not represent a real game scene, source asset or geographic location. Its markers select catalog pack families. Models, source scene images, artwork, counts, authors and licenses are never invented to match the example.
 
-검증: 본부와 각 카테고리, 게임·그룹·검색 URL 상태, 캐릭터 상세/모션, 팩/소품 경로 복사, 보유 에셋 필터, 새로고침, ONLINE/OFFLINE, 데스크톱/모바일, 기존 자동 검사. 렌더·모션 관찰과 코드 검사를 구분합니다.
+The home route opens the environment screen, with the indexed DETAILED Medieval Castle selected when available. Existing game/group/search filters are preserved. Own environment collections and their original files remain alongside store packs. Props/model/texture browsing is bounded and offers More assets; the full catalog is still searchable.
 
-생성 프롬프트와 스타일 참조는 assets/skyhaven-ui/prompts.json에 보관합니다. JSON 목록 자동 게시기는 UI를 수정하지 않습니다.
+Characters, animations and creatures retain the same shell, original thumbnails, 3D viewer, motion recommendations, loading/cancellation, references and source paths. Owned assets, files, MCP and storage help remain in the top library menu. Shorter screens and mobile reflow; only the desktop layout is fixed to the target composition.
 
-재방문 시 저장된 색인이 원본 health 확인보다 먼저 열리더라도, ONLINE 전환 직후 선택된 모델의 대기 화면을 재시도합니다. 이미 재생 중인 뷰어는 연결 알림 때문에 재생성하지 않습니다.
+Original media requires the source service ONLINE. Public UI textures do not. Catalog JSON, source hashes, GUIDs, rigs and file API formats are unchanged. The hosted builder allows only four named UI images and the prompt manifest, never source media. Warm-cache previews retry when the source health check becomes ONLINE.
+
+Acceptance evidence must include a rendered screenshot at target resolution, measured region bounds, actual pack and item switching, search focus preservation, game/family filters, copied original paths, favorites/revisit, model/motion replay, offline behavior, narrow desktop and mobile checks. Checks must cover the changed workflow, and both source and public changes must reach main before deployment is reported complete.
