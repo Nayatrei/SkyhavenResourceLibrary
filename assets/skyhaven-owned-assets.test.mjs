@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
-import {filterOwned,ownedFilters,ownedRow,ownedStyleCounts,createOwnedAssetList,OWNED_API} from './skyhaven-owned-assets.mjs';
+import {filterOwned,ownedFilters,ownedRow,ownedStyleCounts,ownedTypes,ownedTypeCounts,createOwnedAssetList,OWNED_API} from './skyhaven-owned-assets.mjs';
 
 const item=(id,name,hidden=false)=>({id,name,hidden,publisher:'Artist',category:'3D',styles:['stylized-3d'],
   styleEvidence:{level:'inferred',reason:'시리즈 기준',sources:[]},
@@ -16,7 +16,7 @@ test('search includes contents and styles; category and hidden are independent',
   assert.equal(filterOwned(data,{style:'realistic'}).length,0);
   assert.equal(filterOwned(data,{hidden:true}).length,53);
   assert.equal(filterOwned(data,{category:'도구'}).length,0);
-  assert.deepEqual(ownedFilters('https://catalog.test/?ownedStyle=stylized-3d&ownedHidden=1#owned'),{style:'stylized-3d',category:'',hidden:true});
+  assert.deepEqual(ownedFilters('https://catalog.test/?ownedStyle=stylized-3d&ownedHidden=1#owned'),{type:'',style:'stylized-3d',category:'',hidden:true});
 });
 test('row exposes content in the list and escapes metadata',()=>{
   const row=ownedRow(item('1','<img src=x>'),data);
@@ -77,4 +77,51 @@ test('thumbnail renders lazily and a failed image has an accessible fallback lin
   assert.equal(img.hidden,true);assert.equal(img.nextElementSibling.hidden,false);
   assert.ok(!host.querySelector('#owned-style'),'dropdown is replaced, not duplicated');
   dom.window.close();
+});
+
+test('asset fields separate content from tools and leave unrelated or unknown assets in All',()=>{
+  const asset=(name,category,items)=>({...item('1',name),category,contents:{items}});
+  assert.deepEqual(ownedTypes(asset('Nature Pack','3D',['식생·자연 환경'])),['environment']);
+  assert.deepEqual(ownedTypes(asset('Suntail','3D',['건축 모듈','식기·도구·병·음식'])),['environment']);
+  assert.deepEqual(ownedTypes(asset('Amplify Animation Pack','3D',['이동·검방패·총기·피격 모션'])),['character']);
+  assert.deepEqual(ownedTypes(asset('Monster','3D',['몬스터·크리처'])),['character']);
+  assert.deepEqual(ownedTypes(asset('Terrain Editor','도구',['지형 제작·편집 기능'])),['tool']);
+  assert.deepEqual(ownedTypes(asset('Character Controller','템플릿',['캐릭터 이동 제어'])),['tool']);
+  assert.deepEqual(ownedTypes(asset('Ice Magic','시각 효과',[])),['vfx']);
+  assert.deepEqual(ownedTypes(asset('Simple Water Shader','2D',[])),['vfx','environment']);
+  assert.deepEqual(ownedTypes(asset('Castle People','3D',['캐릭터 모델','건물·마을 구성'])),['character','environment']);
+  assert.deepEqual(ownedTypes(asset('Music','음향',['음향·효과음 자료'])),[]);
+  assert.deepEqual(ownedTypes(asset('Mystery Pack','3D',[])),[]);
+  assert.equal(ownedFilters('https://catalog.test/?ownedType=invalid').type,'');
+});
+
+test('type counts predict tab results while style counts are scoped to the selected type',()=>{
+  const assets=[item('env','Village'),{...item('char','Hero'),contents:{items:['캐릭터 모델']}},
+    {...item('tool','Editor'),category:'도구'},item('hidden','Hidden Village',true)];
+  const mixed={...data,assets};
+  assert.deepEqual(ownedTypeCounts(mixed,{type:'tool',style:'realistic',category:'2D'}).map(t=>t.count),[1,1,0,1]);
+  assert.deepEqual(ownedTypeCounts(mixed,{query:'Village',hidden:true}).map(t=>t.count),[2,0,0,0]);
+  assert.equal(filterOwned(mixed,{type:'character'}).length,1);
+  assert.deepEqual(ownedStyleCounts(mixed,{type:'character'}).map(s=>s.count),[1,1]);
+});
+
+test('DOM: four type tabs reset subordinate filters, retain search and restore on revisit',async()=>{
+  const {JSDOM}=createRequire(import.meta.url)(process.env.JSDOM_PATH||'jsdom');
+  const dom=new JSDOM('<main></main>',{url:'https://catalog.test/?q=Test&ownedStyle=toon&ownedCategory=3D#owned'});
+  const w=dom.window,host=w.document.querySelector('main');
+  const mixed={...data,assets:[item('env','Test Village'),{...item('tool','Test Editor'),category:'도구'}]};
+  const ui=createOwnedAssetList({host,isActive:()=>true,getURL:()=>w.location.href,replaceURL:u=>w.history.replaceState(null,'',u),fetchJSON:async()=>mixed});
+  await ui.render({search:'Test'});
+  assert.equal(host.querySelectorAll('[data-owned-type]').length,4);
+  host.querySelector('[data-owned-type="tool"]').click();
+  assert.deepEqual(ownedFilters(w.location.href),{type:'tool',style:'',category:'',hidden:false});
+  assert.equal(new URL(w.location.href).searchParams.get('q'),'Test');
+  assert.equal(host.querySelectorAll('tbody tr').length,1);
+  assert.ok(host.querySelector('tbody').textContent.includes('Test Editor'));
+  await ui.render();assert.equal(host.querySelector('[data-owned-type="tool"]').getAttribute('aria-pressed'),'true');
+  host.querySelector('[data-owned-type="tool"]').click();assert.equal(ownedFilters(w.location.href).type,'');
+  host.querySelector('[data-owned-type="environment"]').click();
+  host.querySelector('#owned-type-all').click();assert.equal(host.querySelectorAll('tbody tr').length,2);
+  host.querySelector('[data-owned-type="tool"]').click();host.querySelector('#owned-reset').click();
+  assert.equal(w.location.search,'?q=Test');dom.window.close();
 });
