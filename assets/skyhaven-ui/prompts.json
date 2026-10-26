@@ -1,0 +1,20 @@
+{
+  "generator": "built-in image_gen",
+  "createdAt": "2026-10-25",
+  "purpose": "UI chrome only; original catalog media is referenced, never copied.",
+  "references": [
+    "Accepted RTS world-builder concept",
+    "Genesis AI Studio gunmetal panel material",
+    "Genesis AI Studio brass button material"
+  ],
+  "assets": [
+    {
+      "name": "command-panel",
+      "prompt": "Use case: ui-mockup. Asset type: reusable production CSS nine-slice panel texture, square 1024x1024. Images 1-3 are STYLE REFERENCES only, no scene reproduction. Create ONE straight-on perfectly square dark gunmetal command-console panel with softly chamfered slightly rounded corners. Fine brushed blackened steel, thin aged champagne-brass perimeter, raised bevel and subtle edge highlights, photorealistic tactile RTS game HUD craftsmanship. The whole panel fits almost edge-to-edge on an actually transparent background with only 2% outer transparent margin. Flat blank dark charcoal center occupies the middle 82% of width and height, for live HTML content. The frame has equal uniform thickness on all four sides, aligned to a square. No decorative corner protrusions, no bolts, no symbols, no lettering, no separate pieces, no content, no scenery. Fine restrained metal grain, calm dark center, rich convincing contact shadow inside rim. Transparent outside only. Not a screenshot. This is a usable isolated interface panel for border-image slicing."
+    },
+    {
+      "name": "command-button",
+      "prompt": "Use case: ui-mockup. Asset type: reusable production CSS nine-slice button texture, square 1024x1024. Images 1-3 are STYLE REFERENCES only. ONE isolated straight-on perfectly square tactile command button with subtly rounded chamfered corners, raised champagne-brass rim and dark navy gunmetal inset face. Thin double bevel rim, understated antique brass rather than bright yellow gold, warm narrow highlight at top, rich contact shadow under brass edge, brushed steel dark center. Blank central 82% of width and height suitable for white HTML text. Uniform frame thickness on all four sides for nine-slice scaling into a wide button. Entire shape almost edge-to-edge, only 2% external transparent margin, genuinely transparent outside. No text, no icons, no branding, no graphics, no extra elements, no background, no perspective. Premium realistic fantasy RTS command interface matching reference materials."
+    }
+  ]
+}

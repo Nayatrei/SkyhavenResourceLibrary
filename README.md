@@ -18,6 +18,8 @@
 목록 UI 검사: Node 20+에서 `node --test assets/skyhaven-owned-assets.test.mjs`.
 DOM 검사는 설치된 jsdom 경로를 `JSDOM_PATH`로 지정하면 함께 실행됩니다.
 
+RTS 화면은 기존 원본 썸네일로 카테고리와 로스터를 구성합니다. 금속 패널·버튼 2개만 Imagegen으로 생성한 공개 앱 UI 소재입니다. 개인 에셋 미디어는 계속 원본 서버에서만 읽습니다. 설계와 프롬프트: [화면 설계](design/rts-interface.ko.md), [UI 프롬프트](assets/skyhaven-ui/prompts.json). 화면 검사: `node --test assets/skyhaven-command.test.mjs`.
+
 Unity My Assets와 확인된 Fab 제품을 출처별로 합쳐 표시합니다. 같은 이름을 자동 병합하지 않으며 Fab 제품은 UUID 기반 공식 제품 페이지로 연결합니다. Fab 목록은 확인된 로컬 반입분이며 계정 전체 소유 목록을 뜻하지 않습니다.
 
 보유 에셋 표는 공식 Unity/Fab CDN의 제품 썸네일을 직접 참조합니다. 이미지 파일을 복사하지 않으며 화면 근처 항목만 지연 로드합니다. 스타일 pill의 개수는 현재 검색·분류·숨김 조건을 반영하고 스타일 선택 자체와는 독립적입니다.
