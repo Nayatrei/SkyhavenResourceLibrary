@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
-import {filterOwned,ownedFilters,ownedRow,createOwnedAssetList,OWNED_API} from './skyhaven-owned-assets.mjs';
+import {filterOwned,ownedFilters,ownedRow,ownedStyleCounts,createOwnedAssetList,OWNED_API} from './skyhaven-owned-assets.mjs';
 
 const item=(id,name,hidden=false)=>({id,name,hidden,publisher:'Artist',category:'3D',styles:['stylized-3d'],
   styleEvidence:{level:'inferred',reason:'시리즈 기준',sources:[]},
@@ -44,11 +44,37 @@ test('DOM: paging, filters, refresh recovery, route change, and lazy request reu
   ui.search('Village 15');assert.equal(host.querySelectorAll('tbody tr').length,1);
   ui.search('');const hidden=host.querySelector('#owned-hidden');hidden.checked=true;hidden.dispatchEvent(new w.Event('change'));
   assert.ok(w.location.search.includes('ownedHidden=1'));assert.ok(host.textContent.includes('53개 결과'));
-  const style=host.querySelector('#owned-style');style.value='stylized-3d';style.dispatchEvent(new w.Event('change'));
+  host.querySelector('[data-owned-style="stylized-3d"]').click();
   assert.equal(ownedFilters(w.location.href).style,'stylized-3d');
+  assert.equal(host.querySelector('[data-owned-style="stylized-3d"]').getAttribute('aria-pressed'),'true');
+  assert.ok(host.querySelector('[data-owned-style="stylized-3d"]').textContent.includes('53'));
   await ui.render();assert.equal(calls,1,'cached visits do not re-fetch');
   fail=true;await ui.render({refresh:true});assert.ok(host.textContent.includes('이전 목록'));assert.equal(ui.count,52);
   active=false;host.innerHTML='<p>Character view</p>';await ui.render({refresh:true});assert.equal(host.textContent,'Character view');
   active=true;fail=false;await ui.render({refresh:true});host.querySelector('#owned-reset').click();assert.equal(w.location.search,'');
   assert.equal(host.querySelectorAll('tbody tr').length,50);dom.window.close();
+});
+
+test('style counts follow search/category/hidden without being narrowed by the selected style',()=>{
+  const mixed={...data,styles:[...data.styles,{id:'realistic',label:'실사'}],assets:[
+    {...item('1','Castle'),styles:['stylized-3d','realistic']},
+    {...item('2','Castle Real'),styles:['realistic'],category:'Environment'},item('3','Hidden Castle',true)]};
+  assert.deepEqual(ownedStyleCounts(mixed,{style:'realistic'}).map(s=>s.count),[2,1,2]);
+  assert.deepEqual(ownedStyleCounts(mixed,{query:'Real'}).map(s=>s.count),[1,0,1]);
+  assert.deepEqual(ownedStyleCounts(mixed,{category:'3D',hidden:true}).map(s=>s.count),[2,2,1]);
+});
+test('thumbnail renders lazily and a failed image has an accessible fallback link',async()=>{
+  const {JSDOM}=createRequire(import.meta.url)(process.env.JSDOM_PATH||'jsdom');
+  const dom=new JSDOM('<main></main>',{url:'https://catalog.test/#owned'});
+  const host=dom.window.document.querySelector('main');
+  const asset={...item('1','Castle'),thumbnailUrl:'https://media.fab.com/image_previews/example.jpg'};
+  const ui=createOwnedAssetList({host,isActive:()=>true,getURL:()=>dom.window.location.href,fetchJSON:async()=>({...data,assets:[asset]})});
+  await ui.render();
+  const img=host.querySelector('.owned-thumb img');
+  assert.equal(img.getAttribute('loading'),'lazy');assert.equal(img.getAttribute('referrerpolicy'),'no-referrer');
+  assert.equal(img.parentElement.getAttribute('aria-label'),'Castle 제품 보기');
+  img.dispatchEvent(new dom.window.Event('error'));
+  assert.equal(img.hidden,true);assert.equal(img.nextElementSibling.hidden,false);
+  assert.ok(!host.querySelector('#owned-style'),'dropdown is replaced, not duplicated');
+  dom.window.close();
 });
