@@ -36,3 +36,10 @@ test('character groups are catalog-derived and metadata is escaped',()=>{
   assert.match(hostile,/&lt;img src=x&gt;/);assert.doesNotMatch(hostile,/<img src=x>/);
   assert.match(commandIcon('star'),/<svg/);
 });
+test('owned downloads is a visible sibling after local pack families, including offline catalogs',()=>{
+  const html=commandNavigation(data,{active:'owned'});
+  assert.ok(html.indexOf('data-owned-downloads')>html.indexOf('data-group="Dekogon"'));
+  assert.match(html,/rts-owned-downloads active/);
+  assert.match(html,/소유 에셋 · Download/);
+  assert.match(html,/href="#owned" data-owned-downloads/);
+});

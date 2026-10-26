@@ -82,3 +82,17 @@ Windows의 실제 루트는 config/skyhaven-resources.json의 workspace 한 곳�
 - 이관 복구: 기록된 이동 보고서에 대해서만 migrate_resource_library.py --rollback을 사용합니다. 현재 바이트 해시가 달라졌거나 원위치에 파일이 있으면 멈춥니다. 덮어쓰기·재귀 삭제를 하지 않습니다.
 
 목록 게시와 실제 렌더 확인, 웹 모션 재생과 Unity 검증은 서로 다른 상태입니다.
+
+## 소유 에셋 · Download와 원본 서비스 시작
+
+왼쪽 PACKS 아래 소유 에셋 · Download는 모든 보유 Unity/Fab 제품을 보여줍니다. 파일 상태에서 로컬 파일 확인과 다운로드·설치 미확인을 나눕니다. 표시가 없는 항목은 미설치 확정이 아닙니다. Download는 본인의 공식 제품 페이지를 열며 구매나 자동 다운로드를 실행하지 않습니다. Dekogon은 ResourceCatalog/organized.json의 제품 ID와 실제 파일로 팩에 연결합니다. Pack과 Prop, 공급자 원본과 URP 변형을 구분합니다.
+
+SOURCE UNREACHABLE은 웹에서 원본 서비스 응답을 읽지 못했다는 뜻입니다. PC 전원과 서비스 실행은 별개입니다. 원본 서비스 정지, 외부 연결 실패나 브라우저 차단을 확인합니다. 헤더의 SOURCE를 누르면 오류 이유·재확인과 원본 서비스 켜기가 있습니다.
+
+Windows에서 한 번 아래 명령으로 이 사용자 전용 런처를 등록하세요. 실행 위치는 본인의 Nourish 저장소입니다.
+
+```powershell
+.\scripts\Install-SkyhavenSourceLauncher.ps1
+```
+
+그 뒤 웹의 원본 서비스 켜기 · 이 PC를 누르고 Windows 런처 열기를 허용합니다. skyhaven-source://start만 받는 고정 런처이며 경로나 명령을 전달하지 않습니다. 기존 CPU control plane 8187만 127.0.0.1에서 시작하고 GPU workers·watchdog·CC 프로젝트 작업은 시작하지 않습니다. 이미 실행 중이면 재사용하고 다른 프로세스의 포트를 빼앗지 않습니다. 웹은 실제 health 응답을 확인한 뒤에만 ONLINE으로 바뀝니다. 다른 컴퓨터에는 그 컴퓨터의 Nourish 경로로 별도 등록해야 하며 웹페이지가 원격 PC를 켜는 기능은 아닙니다.

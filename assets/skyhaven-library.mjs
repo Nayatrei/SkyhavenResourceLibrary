@@ -1,12 +1,12 @@
 import {sections,games,cleanName,matches,matchesPack,packInSection,filterPackItems,formatBytes,sortPackItems,candidateMotions,rankMotions,recommendedMotions,readState,filterEntities,smokeMotions} from './skyhaven-library-state.mjs?v=20261023-library-v15';
 import {createCatalogCache} from './skyhaven-library-cache.mjs?v=20261023-library-v15';
-import {createOwnedAssetList} from './skyhaven-owned-assets.mjs?v=20261025-owned-v5';
-import {commandNavigation,categoryEntry,commandImage,commandIcon} from './skyhaven-command.mjs?v=20261026-target-v1';
-import {createEnvironmentView,environmentPacks,defaultEnvironmentPack,environmentSnapshot} from './skyhaven-environments.mjs?v=20261026-target-v1';
+import {createOwnedAssetList} from './skyhaven-owned-assets.mjs?v=20261026-access-v2';
+import {commandNavigation,categoryEntry,commandImage,commandIcon} from './skyhaven-command.mjs?v=20261026-access-v2';
+import {createEnvironmentView,environmentPacks,defaultEnvironmentPack,environmentSnapshot} from './skyhaven-environments.mjs?v=20261026-access-v2';
 import {loadingMarkup,startLoading} from './skyhaven-loading.mjs';
 import {createLibraryTransport} from './skyhaven-data-source.mjs?v=20261023-hosted-v1';
 import {installLocalConnections,prepareLocalLibrary,withLocalTimeout} from './skyhaven-local-files.mjs?v=20261023-connect-v5';
-import {loadHostedDeployment,installSourceStatus} from './skyhaven-source-status.mjs?v=20261026-target-v1';
+import {loadHostedDeployment,installSourceStatus} from './skyhaven-source-status.mjs?v=20261026-access-v2';
 const deploymentSpec=JSON.parse(document.getElementById('skyhaven-deployment')?.textContent||'null');
 const deployment=deploymentSpec?.mode==='hosted-catalog'?await loadHostedDeployment(deploymentSpec):await prepareLocalLibrary(deploymentSpec);
 const hosted=deployment?.mode==='hosted-catalog';
@@ -17,7 +17,7 @@ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const state=readState(location.href);
 let data,motions=[],raw,category='',selected,variant,tab='3d',viewer,life,revision=0,packData,limit=70,motionLimit=60,selectedMotion,pendingMotion;
 let environmentView;
-const sourceStatus=installSourceStatus({deployment,onConnect:()=>{if(selected&&$('library-viewer')?.querySelector('.source-offline-note'))void detail();else if($('raw-media')?.querySelector('.source-offline-note'))void route();},onDisconnect:()=>{if(viewer)stop();if(selected&&$('library-detail'))void detail();else{const host=$('raw-media');if(host)host.innerHTML=offlineNotice;}}});
+const sourceStatus=installSourceStatus({deployment,onConnect:()=>{if(selected&&$('library-detail')&&['characters','companions'].includes(category))void detail();else if(category==='file'&&$('raw-media'))void route();},onDisconnect:()=>{if(viewer)stop();if(selected&&$('library-detail'))void detail();else{const host=$('raw-media');if(host)host.innerHTML=offlineNotice;}}});
 const offlineNotice='<div class="source-offline-note"><h3>원본 서버 연결 필요</h3><p>목록과 경로는 볼 수 있습니다. 이미지·3D·모션은 원본 서버가 ONLINE일 때 표시됩니다.</p><button data-recheck-source>연결 재확인</button></div>';
 const sourceAvailable=()=>!hosted||sourceStatus.online;
 const mediaSrc=url=>`${hosted?'data-live-src':'src'}="${esc(url)}"`;
@@ -349,6 +349,7 @@ document.addEventListener('click',event=>{
   if(el.dataset.game){state.game=el.dataset.game;state.group='';saveState();navigation();if(category==='environments'){history.replaceState(null,'',location.pathname+location.search+'#environments');void route();}else if(packData)void route();else if($('asset-cards'))cards();else if(category==='files')void filesPage();}
 });
 $('search').value=state.query;let searchTimer;
+document.addEventListener('click',event=>{if(event.target.closest('[data-owned-downloads]')){state.query='';$('search').value='';saveState();if(category==='owned')owned.search('');}});
 $('search').oninput=e=>{state.query=e.target.value;if(category==='animations')state.motionQuery=state.query;saveState();clearTimeout(searchTimer);searchTimer=setTimeout(()=>{limit=70;if(category==='environments')environmentView?.refresh();else if(category==='owned')owned.search(state.query);else if(packData)packItems();else if($('asset-cards'))cards();else if(category==='animations')motionBrowser($('inline-motions'));else if(category==='files')void filesPage();},180);};
 $('refresh').onclick=async()=>{
   const button=$('refresh');button.disabled=true;button.textContent='Refreshing catalog…';
