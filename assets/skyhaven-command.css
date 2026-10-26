@@ -22,7 +22,7 @@ footer{padding:18px 10px!important;color:#98a99e;font-size:9px;border-color:#706
 .command-category-art img{position:absolute;inset:0;min-width:0;min-height:0}.command-category-art .command-tile-count{z-index:1}
 .asset-model-column{display:flex;flex-direction:column}.asset-model-column .preview-primary-actions{order:-1;margin:0 0 12px}.command-browse{scroll-padding-top:95px;scroll-padding-bottom:12px}
 /* Keep the stage and the scrollable roster visible together on desktop. */
-@media(min-width:1100px) and (min-height:780px){
+@media(min-width:1100px) and (min-height:950px){
   body:has(.command-workbench) main{height:calc(100dvh - 151px);min-height:0;display:flex;flex-direction:column;padding-top:14px!important;padding-bottom:12px!important}
   body:has(.command-workbench) footer{display:none}
   .command-workbench{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(300px,1fr) 265px;gap:12px}
