@@ -5,7 +5,8 @@
   "references": [
     "Accepted RTS world-builder concept",
     "Genesis AI Studio gunmetal panel material",
-    "Genesis AI Studio brass button material"
+    "Genesis AI Studio brass button material",
+    "Approved Environment Library command-screen visual target (1672 x 941)"
   ],
   "assets": [
     {
@@ -15,6 +16,16 @@
     {
       "name": "command-button",
       "prompt": "Use case: ui-mockup. Asset type: reusable production CSS nine-slice button texture, square 1024x1024. Images 1-3 are STYLE REFERENCES only. ONE isolated straight-on perfectly square tactile command button with subtly rounded chamfered corners, raised champagne-brass rim and dark navy gunmetal inset face. Thin double bevel rim, understated antique brass rather than bright yellow gold, warm narrow highlight at top, rich contact shadow under brass edge, brushed steel dark center. Blank central 82% of width and height suitable for white HTML text. Uniform frame thickness on all four sides for nine-slice scaling into a wide button. Entire shape almost edge-to-edge, only 2% external transparent margin, genuinely transparent outside. No text, no icons, no branding, no graphics, no extra elements, no background, no perspective. Premium realistic fantasy RTS command interface matching reference materials."
+    },
+    {
+      "name": "category-icons.png",
+      "role": "application UI icon atlas",
+      "prompt": "Use case: ui-mockup. Asset type: PRODUCTION transparent game UI icon sprite atlas, 2 by 2 equal square cells, 1024x1024 total. Reference image is only a STYLE reference for the four gold category icons at the top left. Create FOUR isolated solid sculpted antique champagne-gold interface symbols with subtle raised metal bevel, warm ivory top faces, restrained dark bronze edge and a tiny drop shadow, as seen in the reference left menu. Top left: front view Spartan warrior helmet; top right: running human figure silhouette; bottom left: two mountain peaks; bottom right: animal paw with four toes. Each symbol centered exactly in its own 512x512 cell, one symbol per cell. Each icon fits inside a central 320x320 region in its cell; no overlap between cells. Straight-on orthographic UI icons, same visual weight, medium detail suitable at 28 pixels, calm warm gold, highly legible silhouettes. Whole background genuinely transparent including between symbols. No cell borders, no backing squares, no text, no lettering, no numbers, no labels, no scene, no extra symbols. Not a screenshot. This atlas will be used directly via CSS background positioning for a live web app."
+    },
+    {
+      "name": "library-map.png",
+      "role": "decorative application navigation map, not a game level or library asset",
+      "prompt": "Use case: ui-mockup. Asset type: square 1024x1024 decorative library-navigation map background for a real fantasy RTS style asset browser, NOT an asset screenshot or game level. The reference image is STYLE reference only, specifically its small top-down map at the bottom left. Create one detailed orthographic directly-overhead fantasy wilderness map. A winding deep blue river splits a lush mossy green temperate landscape, forest patches of tiny conifers, grassy meadows, worn tan paths linking natural clearings, rocky ridges and small sandy banks. Photorealistic rendered RTS minimap terrain, sunlight from upper left, readable broad terrain masses at 260 pixels, restrained olive green and muted blue, atmospheric but crisply top-down. Composition has three clearings at upper center, middle-right and lower-left for live HTML navigation markers, but do NOT draw markers. Crop square edge to edge, fill entire canvas. No text, no labels, no numbers, no icons, no symbols, no borders, no buildings, no castles, no UI controls, no selection rings. This is generic application UI art and must not reproduce the large castle screenshot. It will be labeled LIBRARY MAP in the app."
     }
   ]
 }

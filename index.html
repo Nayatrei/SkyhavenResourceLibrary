@@ -8,25 +8,29 @@
   <link rel="stylesheet" href="./assets/skyhaven.css?v=20261022-polygon-library">
   <link rel="stylesheet" href="./assets/skyhaven-library.css?v=20261023-hosted-v1">
   <link rel="stylesheet" href="./assets/skyhaven-owned-assets.css?v=20261025-owned-v5">
-  <link rel="stylesheet" href="./assets/skyhaven-command.css?v=20261025-rts-v1">
+  <link rel="stylesheet" href="./assets/skyhaven-command.css?v=20261026-target-v1">
   <script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.js","three/addons/":"./vendor/three/examples/jsm/"}}</script>
-  <script type="module" src="./assets/skyhaven-library.mjs?v=20261025-rts-v1"></script>
+  <script type="module" src="./assets/skyhaven-library.mjs?v=20261026-target-v1"></script>
 <script type="application/json" id="skyhaven-deployment">{"mode": "hosted-catalog", "origin": "https://comfy.genesisframeworks.com"}</script>
 </head>
-<body>
+<body class="rts-shell">
   <a class="skip" href="#main">리소스로 건너뛰기</a>
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="Skyhaven library"><svg class="rts-brand-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M4 2h4v3h2V2h4v3h2V2h4v7l-2 2 1 10H5l1-10-2-2V2Zm5 12v7h6v-7H9ZM8 8h2v3H8V8Zm6 0h2v3h-2V8Z"/></svg><span>SKYHAVEN</span></a>
+    <label class="global-search"><svg class="rts-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 2a8 8 0 1 0 4.9 14.3l6 6 1.4-1.4-6-6A8 8 0 0 0 10 2Zm0 2a6 6 0 1 1 0 12 6 6 0 0 1 0-12Z"/></svg><input id="search" type="search" placeholder="Search assets, packs, environments..." aria-label="Search library"></label>
+    <div id="game-filters" class="game-filters" role="group" aria-label="Game filter"></div>
+    <div id="source-slot"></div>
+    <a class="rts-top-tool" href="#maintenance" aria-label="Library settings"><svg class="rts-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 1 6 0 .7 3 2 .8 2.7-1.5 2.8 2.8L21 9l.8 2 3 .7v4l-3 .7-.8 2 1.5 2.7-2.8 2.8-2.7-1.5-2 .8-.7 3h-6l-.7-3-2-.8-2.7 1.5-2.8-2.8L3 18l-.8-2-3-.7v-4l3-.7.8-2L1.5 6l2.8-2.8L7 4.7l2-.8L9 1Zm3 7a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"/></svg></a>
+    <details class="rts-library-menu"><summary aria-label="Library menu"><svg class="rts-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8ZM5 21v-4c0-3 3-5 7-5s7 2 7 5v4H5Z"/></svg></summary><div><a href="#owned">Owned assets · Unity / Fab</a><a href="#files">All files / production history</a><a href="#agents">Agent / MCP reference</a><a href="#manual">Storage manual</a><a href="#maintenance">Library settings</a><button id="refresh">Refresh catalog ↻</button><small id="scan-time"></small></div></details>
+    <strong id="breadcrumb" class="sr-only">Skyhaven</strong>
+  </header>
   <aside class="sidebar">
-    <a class="brand" href="#home"><span class="brand-mark">S</span><span>SKYHAVEN<small>YOUR WORLD, CONNECTED</small></span></a>
-    <p class="nav-label">RESOURCE COMMAND</p>
     <nav id="navigation" aria-label="리소스 카테고리"></nav>
-    <div class="sidebar-bottom"><span class="live-dot"></span> 원본 연결형 라이브러리<p>목록은 웹에서,<br>파일은 원본 서버에서 읽습니다.</p><a href="#agents">다른 세션에서 사용 ↗</a></div>
   </aside>
   <div class="workspace">
-    <header class="topbar"><a href="#home">Workspace</a><span>/</span><strong id="breadcrumb">Skyhaven</strong><label class="global-search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="이름, 모션, 폴더 검색…" aria-label="전체 리소스 검색"><kbd>/</kbd></label><button id="refresh" class="button ghost">새로고침 ↻</button></header>
-    <div id="game-filters" class="game-filters" role="group" aria-label="게임 필터"></div>
     <main id="main" tabindex="-1"><div class="loading" role="status">폴더에서 리소스를 불러오는 중…</div></main>
-    <footer><span>SKYHAVEN RESOURCE LIBRARY</span><span id="scan-time"></span></footer>
   </div>
+  <aside id="preview-navigator" class="rts-navigator" aria-label="Source preview navigator" hidden></aside>
   <dialog id="preview-dialog" aria-labelledby="preview-title"><header class="preview-header"><div><p class="eyebrow">RESOURCE PREVIEW</p><h2 id="preview-title"></h2></div><button id="close-preview" class="button ghost" aria-label="미리보기 닫기">닫기 ×</button></header><div class="preview-layout"><section id="preview-body"></section><aside id="preview-files"></aside></div></dialog>
   <div id="toast" role="status" hidden></div>
 </body>

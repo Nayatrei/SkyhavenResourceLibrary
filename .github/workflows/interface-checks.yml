@@ -1,7 +1,7 @@
 name: Interface checks
 on:
   pull_request:
-    paths: ['assets/**', 'index.html', '.github/workflows/interface-checks.yml']
+    paths: ['assets/**', 'index.html', 'package*.json', '.github/workflows/interface-checks.yml']
 permissions:
   contents: read
 jobs:
@@ -12,5 +12,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node --test assets/skyhaven-command.test.mjs
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm test
       - run: for file in assets/*.mjs; do node --check "$file"; done
