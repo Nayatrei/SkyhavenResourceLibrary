@@ -1,15 +1,40 @@
 export const OWNED_API='/comfy/skyhaven/api/library/owned-assets';
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+export const OWNED_TYPES=[
+  {id:'environment',label:'배경',detail:'건물 · 자연 · 프롭'},
+  {id:'character',label:'캐릭터',detail:'인물 · 몬스터 · 모션'},
+  {id:'vfx',label:'VFX',detail:'이펙트 · 셰이더'},
+  {id:'tool',label:'Tool',detail:'제작 도구 · 시스템'},
+];
+
+// Navigation groups reuse the catalog's product/category evidence, not a claim of inspected files.
+export function ownedTypes(asset){
+  const name=asset.name||'',items=(asset.contents?.items||[]).join(' ');
+  if(asset.category==='도구'||asset.category==='템플릿')return ['tool'];
+  if(asset.category==='시각 효과')return ['vfx'];
+  if(asset.category==='음향'||/UI 그래픽|아이콘/.test(items))return [];
+  if(/도구(?:\s|$)|기능|프레임워크|제어|프레임 성능/.test(items)||/\b(toolkit|controller|editor|exporter|cinemachine|generator|starter assets|UMA 3)\b/i.test(name))return ['tool'];
+  const types=[];
+  if(/시각 효과|셰이더/.test(items)||/\b(vfx|shader|effects?|particles?|fluids?)\b/i.test(name))types.push('vfx');
+  if(/캐릭터|몬스터|크리처|동물|생물|모션|드래곤/.test(items)||/\b(characters?|creatures?|monsters?|animals?|animation|mecanim|humans?|npc|robots?|boss|fighters?|archers?|warriors?|wizards?|dragons?|dwarfs?|dwarven|orcs?|elf|elves|skeletons?|zombies?|boars?|cats?|mechs?|male|female|k-pop|wyrms|unity-chan)\b/i.test(name))types.push('character');
+  if(/환경|자연|울타리|출입문|운반 가방|건축|건물|주택|소품|아이템|가구|식기|차량|탈것|무기|장비|스카이박스|텍스처·재질|타일·지형|표지판|간판|묘지|묘비|영묘|성$|나무|식생|식물/.test(items)||/\b(environments?|villages?|towns?|city|cities|forest|foliage|tree|grass|terrain|landscape|mountain|rock|stone|cliff|water|oceans?|rivers?|lakes?|volcano|asteroids|planets?|garden|hedge|conifers|grounds?|prison|school|gymnasium|fences?|gates?|bridges?|tunnels?|pagoda|night club|medical equipments?|obstacles|courtyard|castle|stronghold|medieval constructor|building|residential|architectur\w*|dungeon|level|scenes?|base|station|facility|slums?|district|room|interior|props?|furniture|flags?|signs?|materials?|textures?|weapons?|swords?|missiles?|shields?|vehicles?|cars?|boats?)\b/i.test(name))types.push('environment');
+  return types;
+}
 
 export function ownedFilters(url){
   const p=new URL(url).searchParams;
-  return {style:p.get('ownedStyle')||'',category:p.get('ownedCategory')||'',hidden:p.get('ownedHidden')==='1'};
+  const type=p.get('ownedType')||'';
+  return {type:OWNED_TYPES.some(t=>t.id===type)?type:'',style:p.get('ownedStyle')||'',category:p.get('ownedCategory')||'',hidden:p.get('ownedHidden')==='1'};
 }
-export function filterOwned(data,{query='',style='',category='',hidden=false}={}){
+export function filterOwned(data,{query='',type='',style='',category='',hidden=false}={}){
   const labels=new Map(data.styles.map(s=>[s.id,s.label]));
   const words=query.toLocaleLowerCase().trim().split(/\s+/).filter(Boolean);
-  return data.assets.filter(a=>(hidden||!a.hidden)&&(!style||a.styles.includes(style))&&(!category||a.category===category)
+  return data.assets.filter(a=>(hidden||!a.hidden)&&(!type||ownedTypes(a).includes(type))&&(!style||a.styles.includes(style))&&(!category||a.category===category)
     &&words.every(word=>[a.id,a.name,a.publisher,a.source||'Unity My Assets',a.category,...a.styles.map(s=>labels.get(s)||s),...a.contents.items].join(' ').toLocaleLowerCase().includes(word)));
+}
+export function ownedTypeCounts(data,filters={}){
+  const rows=filterOwned(data,{...filters,type:'',style:'',category:''});
+  return OWNED_TYPES.map(type=>({...type,count:rows.filter(a=>ownedTypes(a).includes(type.id)).length}));
 }
 export function ownedStyleCounts(data,filters={}){
   const rows=filterOwned(data,{...filters,style:''});
@@ -33,14 +58,22 @@ export function createOwnedAssetList({host,fetchJSON,isActive,onLoad=()=>{},getU
     if(!data?.available){host.innerHTML='<div class="empty"><h1>보유 에셋 목록</h1><p>등록된 보유 에셋 목록이 아직 없습니다.</p></div>';return;}
     const filters=ownedFilters(getURL()),rows=filterOwned(data,{query,...filters});
     const styleCounts=ownedStyleCounts(data,{query,...filters});
+    const typeCounts=ownedTypeCounts(data,{query,...filters});
+    const typeTabs=`<div class="owned-type-heading"><span>에셋 분야</span><button type="button" id="owned-type-all" aria-pressed="${!filters.type}">전체 보기</button></div><div class="owned-types" role="group" aria-label="에셋 분야 필터">${typeCounts.map(t=>`<button type="button" class="owned-type-tab" data-owned-type="${t.id}" aria-pressed="${t.id===filters.type}"><strong>${t.label} <span>${t.count.toLocaleString()}</span></strong><small>${t.detail}</small></button>`).join('')}</div><p class="owned-type-note">제품명·분류·포함 내용 기준 · 복합 팩은 여러 분야에 표시됩니다. 음향·UI·미분류는 전체 보기에서 확인하세요.</p>`;
     page=Math.max(0,Math.min(page,Math.ceil(rows.length/pageSize)-1));
     const options=(items,value)=>items.map(([id,label])=>`<option value="${esc(id)}" ${id===value?'selected':''}>${esc(label)}</option>`).join('');
-    host.innerHTML=`<section class="owned-assets"><div class="library-heading"><h1>보유 에셋</h1><p>스타일과 포함 내용을 에셋별로 확인하세요.</p></div><p class="owned-summary">${esc(data.snapshotDate)} · ${Object.entries(data.sourceCounts||{'Unity My Assets':data.counts.total}).map(([name,count])=>`${esc(name)} ${count.toLocaleString()}개`).join(' · ')} · 일반 ${data.counts.visible.toLocaleString()}개 + 숨김 ${data.counts.hidden}개. 제품명 기준 요약은 세부 파일 검사와 구분합니다.</p><div class="owned-styles" role="group" aria-label="스타일 필터">${styleCounts.filter(s=>s.count||s.id===filters.style||!s.id).map(s=>`<button type="button" class="owned-style-pill" data-owned-style="${esc(s.id)}" aria-pressed="${s.id===filters.style}">${esc(s.label)} <span>${s.count.toLocaleString()}</span></button>`).join('')}</div><div class="owned-filters"><label>분류<select id="owned-category">${options([['','모든 분류'],...Object.keys(data.categories||{}).sort().map(s=>[s,s])],filters.category)}</select></label><label class="owned-checkbox"><input id="owned-hidden" type="checkbox" ${filters.hidden?'checked':''}>숨긴 에셋 포함</label><button id="owned-reset" class="button ghost">필터 초기화</button></div><p class="owned-count" role="status">${rows.length.toLocaleString()}개 결과 <span>보유 ≠ 설치·실행 검증</span></p><div class="owned-table-wrap"><table class="owned-table"><thead><tr><th>에셋 / 제작사</th><th>스타일</th><th>포함 모델·소품·기능</th><th>분류</th><th>제품</th></tr></thead><tbody>${rows.slice(page*pageSize,(page+1)*pageSize).map(a=>ownedRow(a,data)).join('')}</tbody></table></div>${rows.length?`<div class="owned-paging"><button id="owned-prev" class="button ghost" ${page?'':'disabled'}>이전</button><span>${page+1} / ${Math.ceil(rows.length/pageSize)}</span><button id="owned-next" class="button ghost" ${(page+1)*pageSize>=rows.length?'disabled':''}>다음</button></div>`:'<p class="empty">조건에 맞는 에셋이 없습니다.</p>'}</section>`;
+    host.innerHTML=`<section class="owned-assets"><div class="library-heading"><h1>보유 에셋</h1><p>스타일과 포함 내용을 에셋별로 확인하세요.</p></div><p class="owned-summary">${esc(data.snapshotDate)} · ${Object.entries(data.sourceCounts||{'Unity My Assets':data.counts.total}).map(([name,count])=>`${esc(name)} ${count.toLocaleString()}개`).join(' · ')} · 일반 ${data.counts.visible.toLocaleString()}개 + 숨김 ${data.counts.hidden}개. 제품명 기준 요약은 세부 파일 검사와 구분합니다.</p>${typeTabs}<div class="owned-styles" role="group" aria-label="스타일 필터">${styleCounts.filter(s=>s.count||s.id===filters.style||!s.id).map(s=>`<button type="button" class="owned-style-pill" data-owned-style="${esc(s.id)}" aria-pressed="${s.id===filters.style}">${esc(s.label)} <span>${s.count.toLocaleString()}</span></button>`).join('')}</div><div class="owned-filters"><label>분류<select id="owned-category">${options([['','모든 분류'],...Object.keys(data.categories||{}).sort().map(s=>[s,s])],filters.category)}</select></label><label class="owned-checkbox"><input id="owned-hidden" type="checkbox" ${filters.hidden?'checked':''}>숨긴 에셋 포함</label><button id="owned-reset" class="button ghost">필터 초기화</button></div><p class="owned-count" role="status">${rows.length.toLocaleString()}개 결과 <span>보유 ≠ 설치·실행 검증</span></p><div class="owned-table-wrap"><table class="owned-table"><thead><tr><th>에셋 / 제작사</th><th>스타일</th><th>포함 모델·소품·기능</th><th>분류</th><th>제품</th></tr></thead><tbody>${rows.slice(page*pageSize,(page+1)*pageSize).map(a=>ownedRow(a,data)).join('')}</tbody></table></div>${rows.length?`<div class="owned-paging"><button id="owned-prev" class="button ghost" ${page?'':'disabled'}>이전</button><span>${page+1} / ${Math.ceil(rows.length/pageSize)}</span><button id="owned-next" class="button ghost" ${(page+1)*pageSize>=rows.length?'disabled':''}>다음</button></div>`:'<p class="empty">조건에 맞는 에셋이 없습니다.</p>'}</section>`;
     host.querySelectorAll('[data-owned-style]').forEach(button=>button.onclick=()=>setFilter('ownedStyle',button.dataset.ownedStyle===filters.style?'':button.dataset.ownedStyle));
+    function selectType(type){
+      const u=new URL(getURL());for(const key of ['ownedType','ownedStyle','ownedCategory'])u.searchParams.delete(key);
+      if(type)u.searchParams.set('ownedType',type);replaceURL(u);page=0;draw();
+    }
+    host.querySelectorAll('[data-owned-type]').forEach(button=>button.onclick=()=>selectType(button.dataset.ownedType===filters.type?'':button.dataset.ownedType));
+    host.querySelector('#owned-type-all').onclick=()=>selectType('');
     host.querySelectorAll('.owned-thumb img').forEach(img=>img.onerror=()=>{img.hidden=true;img.nextElementSibling.hidden=false;});
     host.querySelector('#owned-category').onchange=e=>setFilter('ownedCategory',e.target.value);
     host.querySelector('#owned-hidden').onchange=e=>setFilter('ownedHidden',e.target.checked?'1':'');
-    host.querySelector('#owned-reset').onclick=()=>{const u=new URL(getURL());for(const k of ['ownedStyle','ownedCategory','ownedHidden'])u.searchParams.delete(k);replaceURL(u);page=0;draw();};
+    host.querySelector('#owned-reset').onclick=()=>{const u=new URL(getURL());for(const k of ['ownedType','ownedStyle','ownedCategory','ownedHidden'])u.searchParams.delete(k);replaceURL(u);page=0;draw();};
     const prev=host.querySelector('#owned-prev'),next=host.querySelector('#owned-next');
     if(prev)prev.onclick=()=>{page--;draw();};if(next)next.onclick=()=>{page++;draw();};
   }
