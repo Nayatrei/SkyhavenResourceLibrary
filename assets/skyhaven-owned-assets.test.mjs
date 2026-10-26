@@ -16,7 +16,7 @@ test('search includes contents and styles; category and hidden are independent',
   assert.equal(filterOwned(data,{style:'realistic'}).length,0);
   assert.equal(filterOwned(data,{hidden:true}).length,53);
   assert.equal(filterOwned(data,{category:'도구'}).length,0);
-  assert.deepEqual(ownedFilters('https://catalog.test/?ownedStyle=stylized-3d&ownedHidden=1#owned'),{type:'',style:'stylized-3d',category:'',hidden:true});
+  assert.deepEqual(ownedFilters('https://catalog.test/?ownedStyle=stylized-3d&ownedHidden=1#owned'),{type:'',project:'',style:'stylized-3d',category:'',hidden:true});
 });
 test('row exposes content in the list and escapes metadata',()=>{
   const row=ownedRow(item('1','<img src=x>'),data);
@@ -99,7 +99,7 @@ test('type counts predict tab results while style counts are scoped to the selec
   const assets=[item('env','Village'),{...item('char','Hero'),contents:{items:['캐릭터 모델']}},
     {...item('tool','Editor'),category:'도구'},item('hidden','Hidden Village',true)];
   const mixed={...data,assets};
-  assert.deepEqual(ownedTypeCounts(mixed,{type:'tool',style:'realistic',category:'2D'}).map(t=>t.count),[1,1,0,1]);
+  assert.deepEqual(ownedTypeCounts(mixed,{type:'tool',project:'',style:'realistic',category:'2D'}).map(t=>t.count),[1,1,0,1]);
   assert.deepEqual(ownedTypeCounts(mixed,{query:'Village',hidden:true}).map(t=>t.count),[2,0,0,0]);
   assert.equal(filterOwned(mixed,{type:'character'}).length,1);
   assert.deepEqual(ownedStyleCounts(mixed,{type:'character'}).map(s=>s.count),[1,1]);
@@ -114,7 +114,7 @@ test('DOM: four type tabs reset subordinate filters, retain search and restore o
   await ui.render({search:'Test'});
   assert.equal(host.querySelectorAll('[data-owned-type]').length,4);
   host.querySelector('[data-owned-type="tool"]').click();
-  assert.deepEqual(ownedFilters(w.location.href),{type:'tool',style:'',category:'',hidden:false});
+  assert.deepEqual(ownedFilters(w.location.href),{type:'tool',project:'',style:'',category:'',hidden:false});
   assert.equal(new URL(w.location.href).searchParams.get('q'),'Test');
   assert.equal(host.querySelectorAll('tbody tr').length,1);
   assert.ok(host.querySelector('tbody').textContent.includes('Test Editor'));
@@ -124,4 +124,38 @@ test('DOM: four type tabs reset subordinate filters, retain search and restore o
   host.querySelector('#owned-type-all').click();assert.equal(host.querySelectorAll('tbody tr').length,2);
   host.querySelector('[data-owned-type="tool"]').click();host.querySelector('#owned-reset').click();
   assert.equal(w.location.search,'?q=Test');dom.window.close();
+});
+
+test('RPG_Lab filter intersects type/style/search and never treats unknown as installed',()=>{
+  const installed={method:'asset-origin',fileCount:7,paths:['Assets/Pack/a.fbx']};
+  const mixed={...data,assets:[{...item('yes','Village Installed'),rpgLab:installed},item('no','Village Unknown')]};
+  assert.equal(filterOwned(mixed,{project:'rpg-lab'}).length,1);
+  assert.equal(filterOwned(mixed,{project:'rpg-lab',type:'character'}).length,0);
+  assert.equal(filterOwned(mixed,{project:'rpg-lab',query:'Unknown'}).length,0);
+  assert.deepEqual(ownedStyleCounts(mixed,{project:'rpg-lab'}).map(s=>s.count),[1,1]);
+  assert.equal(ownedFilters('https://catalog.test/?ownedProject=rpg-lab').project,'rpg-lab');
+  assert.equal(ownedFilters('https://catalog.test/?ownedProject=unknown').project,'');
+});
+
+test('DOM: installed pill counts, evidence, URL restoration, type change and reset',async()=>{
+  const {JSDOM}=createRequire(import.meta.url)(process.env.JSDOM_PATH||'jsdom');
+  const dom=new JSDOM('<main></main>',{url:'https://catalog.test/#owned'});
+  const w=dom.window,host=w.document.querySelector('main');
+  const installed={method:'asset-origin',fileCount:7,paths:['Assets/Pack/a.fbx']};
+  const mixed={...data,installation:{id:'rpg-lab',label:'RPG_Lab',checkedAt:'2026-10-25T20:00:00+00:00'},assets:[
+    {...item('yes','Village Installed'),rpgLab:installed},item('no','Village Unknown')]};
+  const options={host,isActive:()=>true,getURL:()=>w.location.href,replaceURL:u=>w.history.replaceState(null,'',u),fetchJSON:async()=>mixed};
+  const ui=createOwnedAssetList(options);await ui.render();
+  assert.equal(host.querySelector('#owned-project').textContent,'RPG_Lab 1');
+  host.querySelector('#owned-project').click();assert.equal(host.querySelectorAll('tbody tr').length,1);
+  assert.equal(ownedFilters(w.location.href).project,'rpg-lab');
+  assert.ok(host.textContent.includes('Asset Store 제품 ID'));
+  assert.ok(host.textContent.includes('Assets/Pack/a.fbx'));
+  await createOwnedAssetList(options).render();
+  assert.equal(host.querySelector('#owned-project').getAttribute('aria-pressed'),'true');
+  host.querySelector('[data-owned-type="environment"]').click();
+  assert.equal(ownedFilters(w.location.href).project,'rpg-lab');
+  host.querySelector('#owned-reset').click();assert.equal(w.location.search,'');
+  assert.equal(host.querySelectorAll('tbody tr').length,2);
+  dom.window.close();
 });
