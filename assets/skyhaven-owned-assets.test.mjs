@@ -16,7 +16,7 @@ test('search includes contents and styles; category and hidden are independent',
   assert.equal(filterOwned(data,{style:'realistic'}).length,0);
   assert.equal(filterOwned(data,{hidden:true}).length,53);
   assert.equal(filterOwned(data,{category:'도구'}).length,0);
-  assert.deepEqual(ownedFilters('https://catalog.test/?ownedStyle=stylized-3d&ownedHidden=1#owned'),{type:'',project:'',style:'stylized-3d',category:'',hidden:true});
+  assert.deepEqual(ownedFilters('https://catalog.test/?ownedStyle=stylized-3d&ownedHidden=1#owned'),{availability:'',type:'',project:'',style:'stylized-3d',category:'',hidden:true});
 });
 test('row exposes content in the list and escapes metadata',()=>{
   const row=ownedRow(item('1','<img src=x>'),data);
@@ -24,6 +24,17 @@ test('row exposes content in the list and escapes metadata',()=>{
   assert.ok(row.includes('제품명 기준'));
   assert.ok(row.includes('&lt;img'));
   assert.ok(!row.includes('<img'));
+});
+test('all owned products remain listed and local evidence is separate from download actions',()=>{
+  const local={...item('fab:one','Local Pack'),downloadUrl:'https://www.fab.com/listings/one',localLibrary:{packId:'Dekogon-one'}};
+  const missing=item('two','Not checked');
+  const values={...data,assets:[local,missing]};
+  assert.equal(filterOwned(values).length,2);
+  assert.deepEqual(filterOwned(values,{availability:'local'}).map(a=>a.id),['fab:one']);
+  assert.deepEqual(filterOwned(values,{availability:'download'}).map(a=>a.id),['two']);
+  assert.match(ownedRow(local,data),/#environments\/pack\/Dekogon-one/);
+  assert.match(ownedRow(local,data),/Download · 받기/);
+  assert.match(ownedRow(missing,data),/다운로드·설치 미확인/);
 });
 test('Fab products are searchable and retain their own product links',()=>{
   const fab={...item('fab:451487b4-7336-4eb8-b63d-05c533dec13c','Test Pack'),source:'Fab',
@@ -80,6 +91,8 @@ test('thumbnail renders lazily and a failed image has an accessible fallback lin
 });
 
 test('asset fields separate content from tools and leave unrelated or unknown assets in All',()=>{
+  assert.deepEqual(ownedTypes({...item('fab:one','Ambiguous title'),productCategory:'Environments'}),['environment']);
+  assert.deepEqual(ownedTypes({...item('fab:two','Tool-shaped prop'),productCategory:'Tools, Objects & Decor'}),['environment']);
   const asset=(name,category,items)=>({...item('1',name),category,contents:{items}});
   assert.deepEqual(ownedTypes(asset('Nature Pack','3D',['식생·자연 환경'])),['environment']);
   assert.deepEqual(ownedTypes(asset('Suntail','3D',['건축 모듈','식기·도구·병·음식'])),['environment']);
@@ -114,7 +127,7 @@ test('DOM: four type tabs reset subordinate filters, retain search and restore o
   await ui.render({search:'Test'});
   assert.equal(host.querySelectorAll('[data-owned-type]').length,4);
   host.querySelector('[data-owned-type="tool"]').click();
-  assert.deepEqual(ownedFilters(w.location.href),{type:'tool',project:'',style:'',category:'',hidden:false});
+  assert.deepEqual(ownedFilters(w.location.href),{availability:'',type:'tool',project:'',style:'',category:'',hidden:false});
   assert.equal(new URL(w.location.href).searchParams.get('q'),'Test');
   assert.equal(host.querySelectorAll('tbody tr').length,1);
   assert.ok(host.querySelector('tbody').textContent.includes('Test Editor'));
