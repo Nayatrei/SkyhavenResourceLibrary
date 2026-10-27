@@ -37,3 +37,7 @@ Unity product-page og:image URLs are refreshed by scripts/refresh_owned_asset_im
 ## Compact navigation follow-up (2026-10-27)
 
 At 1280px desktop width the category rail overflowed horizontally and owned/manual pages still reserved the hidden navigator map space, pushing pack links and Download below the fold. Use compact category spacing at 1201–1500px and extend the desktop rail to the bottom only when the existing navigator is hidden. Preserve the environment map reservation, the 1672px target and mobile scrolling behavior. Verify full label bounds, Download visibility, environment map separation and gallery/local-pack links across 1280, 1440, 1672 and mobile widths. No resource data, native service or editor changes.
+
+## Source connection feedback (2026-10-27)
+
+Keep connection recovery in the existing SOURCE panel: a dedicated recheck button, disabled/busy feedback during the shared health probe, and a last-check time distinct from catalog publication. Keep the last verified media state during a probe; only an actual health result changes availability. Invalid JSON/HTML is an invalid service response, not a network failure. Returning to a visible tab rechecks without waiting for the periodic timer. Escape closes the panel and restores badge focus. Verify delayed/duplicate probes, unchanged results, HTTP/network/timeout/invalid response, source recovery without losing search/selection, narrow viewport bounds and dynamic Comfy mode. Do not invoke the native launcher, start services or alter assets as part of these checks.
