@@ -32,3 +32,8 @@ The native modal keeps the gallery DOM, search and scroll intact and returns key
 Verify real Unity and Fab covers, keyboard open/Escape/focus, close and reload, direct download/local-pack destinations, filter combinations/paging/cache/error recovery, offline-source browsing and desktop/mobile overflow. Both source and public checks/main integration and Pages deployment remain completion requirements.
 
 Unity product-page og:image URLs are refreshed by scripts/refresh_owned_asset_images.py and cached as metadata in .workspace/asset-library/store-product-images.json. Only the public store CDN image URL enters the existing thumbnailUrl field; HTML, image bytes and private cache provenance are never published. Existing small icons remain a fallback. UI visits reuse the published JSON without querying product pages; --refresh explicitly rechecks the URL cache.
+
+
+## Compact navigation follow-up (2026-10-27)
+
+At 1280px desktop width the category rail overflowed horizontally and owned/manual pages still reserved the hidden navigator map space, pushing pack links and Download below the fold. Use compact category spacing at 1201–1500px and extend the desktop rail to the bottom only when the existing navigator is hidden. Preserve the environment map reservation, the 1672px target and mobile scrolling behavior. Verify full label bounds, Download visibility, environment map separation and gallery/local-pack links across 1280, 1440, 1672 and mobile widths. No resource data, native service or editor changes.
