@@ -21,3 +21,14 @@ Characters, animations and creatures retain the same shell, original thumbnails,
 Original media requires the source service ONLINE. Public UI textures do not. Catalog JSON, source hashes, GUIDs, rigs and file API formats are unchanged. The hosted builder allows only four named UI images and the prompt manifest, never source media. Warm-cache previews retry when the source health check becomes ONLINE.
 
 Acceptance evidence must include a rendered screenshot at target resolution, measured region bounds, actual pack and item switching, search focus preservation, game/family filters, copied original paths, favorites/revisit, model/motion replay, offline behavior, narrow desktop and mobile checks. Checks must cover the changed workflow, and both source and public changes must reach main before deployment is reported complete.
+
+
+## Owned asset gallery (2026-10-26)
+
+Replace the text table at #owned with large official Unity/Fab product-image cards. Keep the existing type, search, availability, style, category, project-evidence, hidden and paging behavior. Secondary filters open from one compact control so cards dominate the screen. Clicking a card opens a large product image and an RTS inspector with publisher, category/style, contents, file evidence, official Download and an indexed local-pack link where available. This is product marketing imagery, not a claim of local rendering or compatibility.
+
+The native modal keeps the gallery DOM, search and scroll intact and returns keyboard focus on close/Escape. ownedAsset in the existing URL query restores the exact product and containing page on reload; closing clears that preview query without clearing filters. Missing/failed images show a labelled fallback. Cards lazy-load existing remote image URLs; the selected image loads immediately. No asset data, source files, thumbnail files, APIs or native source launcher behavior change.
+
+Verify real Unity and Fab covers, keyboard open/Escape/focus, close and reload, direct download/local-pack destinations, filter combinations/paging/cache/error recovery, offline-source browsing and desktop/mobile overflow. Both source and public checks/main integration and Pages deployment remain completion requirements.
+
+Unity product-page og:image URLs are refreshed by scripts/refresh_owned_asset_images.py and cached as metadata in .workspace/asset-library/store-product-images.json. Only the public store CDN image URL enters the existing thumbnailUrl field; HTML, image bytes and private cache provenance are never published. Existing small icons remain a fallback. UI visits reuse the published JSON without querying product pages; --refresh explicitly rechecks the URL cache.

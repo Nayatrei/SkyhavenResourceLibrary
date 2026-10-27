@@ -85,7 +85,7 @@ Windows의 실제 루트는 config/skyhaven-resources.json의 workspace 한 곳�
 
 ## 소유 에셋 · Download와 원본 서비스 시작
 
-왼쪽 PACKS 아래 소유 에셋 · Download는 모든 보유 Unity/Fab 제품을 보여줍니다. 파일 상태에서 로컬 파일 확인과 다운로드·설치 미확인을 나눕니다. 표시가 없는 항목은 미설치 확정이 아닙니다. Download는 본인의 공식 제품 페이지를 열며 구매나 자동 다운로드를 실행하지 않습니다. Dekogon은 ResourceCatalog/organized.json의 제품 ID와 실제 파일로 팩에 연결합니다. Pack과 Prop, 공급자 원본과 URP 변형을 구분합니다.
+왼쪽 PACKS 아래 소유 에셋 · Download는 모든 보유 Unity/Fab 제품을 큰 이미지 카드로 보여줍니다. 카드를 누르면 큰 제품 이미지와 상세 패널에서 구성·근거·다운로드·연결된 로컬 팩을 확인합니다. 닫기 또는 Esc는 검색·필터·스크롤과 키보드 포커스를 유지한 목록으로 돌아갑니다. 스타일·분류·프로젝트 필터는 상세 필터에서 열며, ownedAsset URL로 선택한 제품을 다시 열 수 있습니다. 제품 이미지는 공식 CDN 주소를 직접 읽으며 별도로 생성·복사하지 않습니다. 파일 상태에서 로컬 파일 확인과 다운로드·설치 미확인을 나눕니다. 표시가 없는 항목은 미설치 확정이 아닙니다. Download는 본인의 공식 제품 페이지를 열며 구매나 자동 다운로드를 실행하지 않습니다. Dekogon은 ResourceCatalog/organized.json의 제품 ID와 실제 파일로 팩에 연결합니다. Pack과 Prop, 공급자 원본과 URP 변형을 구분합니다.
 
 SOURCE UNREACHABLE은 웹에서 원본 서비스 응답을 읽지 못했다는 뜻입니다. PC 전원과 서비스 실행은 별개입니다. 원본 서비스 정지, 외부 연결 실패나 브라우저 차단을 확인합니다. 헤더의 SOURCE를 누르면 오류 이유·재확인과 원본 서비스 켜기가 있습니다.
 
@@ -96,3 +96,5 @@ Windows에서 한 번 아래 명령으로 이 사용자 전용 런처를 등록�
 ```
 
 그 뒤 웹의 원본 서비스 켜기 · 이 PC를 누르고 Windows 런처 열기를 허용합니다. skyhaven-source://start만 받는 고정 런처이며 경로나 명령을 전달하지 않습니다. 기존 CPU control plane 8187만 127.0.0.1에서 시작하고 GPU workers·watchdog·CC 프로젝트 작업은 시작하지 않습니다. 이미 실행 중이면 재사용하고 다른 프로세스의 포트를 빼앗지 않습니다. 웹은 실제 health 응답을 확인한 뒤에만 ONLINE으로 바뀝니다. 다른 컴퓨터에는 그 컴퓨터의 Nourish 경로로 별도 등록해야 하며 웹페이지가 원격 PC를 켜는 기능은 아닙니다.
+
+제품 이미지 주소 갱신: `py -3 scripts/refresh_owned_asset_images.py`. 기존 결과는 `.workspace/asset-library/store-product-images.json`에서 재사용하며 `--refresh`를 명시할 때 다시 확인합니다. 공식 제품 페이지의 큰 표지 주소를 우선하며 작은 아이콘은 보조로 유지합니다. HTML·이미지 파일은 저장하지 않습니다. 새 주소는 기존 JSON 목록 게시 경로로 전달되므로 웹 방문마다 제품 페이지를 다시 읽지 않습니다.
