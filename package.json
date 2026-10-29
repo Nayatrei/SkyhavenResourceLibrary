@@ -3,7 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test assets/skyhaven-source-status.test.mjs assets/skyhaven-command.test.mjs assets/skyhaven-environments.test.mjs assets/skyhaven-owned-assets.test.mjs"
+    "test": "node --test assets/skyhaven-source-status.test.mjs assets/skyhaven-command.test.mjs assets/skyhaven-environments.test.mjs assets/skyhaven-owned-assets.test.mjs assets/skyhaven-character-art.test.mjs"
   },
-  "devDependencies": { "jsdom": "26.1.0" }
+  "devDependencies": {
+    "jsdom": "26.1.0"
+  }
 }

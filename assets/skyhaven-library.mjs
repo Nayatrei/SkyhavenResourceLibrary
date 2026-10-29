@@ -1,5 +1,6 @@
 import {sections,games,cleanName,matches,matchesPack,packInSection,filterPackItems,formatBytes,sortPackItems,candidateMotions,rankMotions,recommendedMotions,readState,filterEntities,smokeMotions} from './skyhaven-library-state.mjs?v=20261023-library-v15';
-import {createCatalogCache} from './skyhaven-library-cache.mjs?v=20261023-library-v15';
+import {createCatalogCache} from './skyhaven-library-cache.mjs?v=20261028-art-v1';
+import {createCharacterArtArchive,characterTabs,linkedArt} from './skyhaven-character-art.mjs?v=20261028-art-v1';
 import {createOwnedAssetList} from './skyhaven-owned-assets.mjs?v=20261026-owned-gallery-v1';
 import {commandNavigation,categoryEntry,commandImage,commandIcon} from './skyhaven-command.mjs?v=20261026-access-v2';
 import {createEnvironmentView,environmentPacks,defaultEnvironmentPack,environmentSnapshot} from './skyhaven-environments.mjs?v=20261026-access-v2';
@@ -29,6 +30,8 @@ let rememberedCharacter,rememberedVariant;
 try{rememberedCharacter=localStorage.getItem('skyhaven.libraryCharacter');rememberedVariant=localStorage.getItem('skyhaven.libraryVariant');selectedMotion=localStorage.getItem('skyhaven.libraryMotion');}catch{}
 async function json(url,options){return deployment?withLocalTimeout(()=>transport.json(url,options),{signal:options?.signal}):transport.json(url,options);}
 const catalogCache=createCatalogCache({api:API,fetchJSON:json,...(hosted?{schema:'hosted:'+deployment.revision}:deployment?.libraryId?{schema:'local:'+deployment.libraryId}:{})});
+const artRoute=()=>category==='characters'&&location.hash.split('/')[1]==='art';
+const art=createCharacterArtArchive({host:$('main'),fetchJSON:(path,options)=>catalogCache.read(path,options),isActive:artRoute,hosted,sourceOnline:sourceAvailable});
 function catalogStatus(snapshot){$('scan-time').textContent=hosted?`마지막 목록 게시 · ${new Date(deployment.publishedAt).toLocaleString()} · 이미지 별도 보관 없음`:`${snapshot.local?'저장된 색인':'최신 색인'} · ${new Date(snapshot.savedAt).toLocaleString()} · ${catalogCache.persistent?'이 브라우저에 저장':'이번 방문에 보관'} · 새로고침으로 갱신`;}
 function toast(text){$('toast').textContent=text;$('toast').hidden=false;clearTimeout(toast.timer);toast.timer=setTimeout(()=>$('toast').hidden=true,3500);}
 async function copy(value){try{await navigator.clipboard.writeText(value);toast('경로와 참조를 복사했습니다.');}catch{toast('브라우저의 복사 권한을 확인해 주세요.');}}
@@ -39,9 +42,10 @@ const fileRows=files=>files.map(f=>`<div class="asset-file"><span><a class="raw-
 const thumb=v=>v?.thumbnail?.ready?`<img ${mediaSrc(v.thumbnail.url)} alt="${esc(v.name)} 정면 모델" loading="lazy">`:'<span class="model-placeholder" aria-label="저장된 원본 미리보기 없음">◇</span>';
 function navigation(){
   $('navigation').innerHTML=commandNavigation(data,{active:category,game:state.game,group:state.group});
+  if(artRoute())$('navigation').querySelectorAll('.rts-family-heading,.rts-family-nav').forEach(el=>el.remove());
   $('game-filters').innerHTML=games.map(([id,title])=>`<button data-game="${id}" aria-pressed="${state.game===id}">${id==='all'?'All':id==='shared'?'Shared':title}</button>`).join('');
   $('breadcrumb').textContent=games.find(g=>g[0]===state.game)[1]+' / '+(sections.find(s=>s[0]===category)?.[1]||'자료·관리');
-  $('game-filters').hidden=category==='owned';
+  $('game-filters').hidden=category==='owned'||artRoute();
   $('search').placeholder=category==='owned'?'Search owned assets, styles, contents...':'Search assets, packs, environments...';
   if(category==='owned')$('breadcrumb').textContent='보유 에셋 / Unity · Fab';
   if(category==='home')$('breadcrumb').textContent='라이브러리 본부';
@@ -67,7 +71,7 @@ function cards(){
 }
 function shell(){
   const entry=categoryEntry(data,category,state.game);
-  $('main').innerHTML=`<div class="library-heading"><h1>${category==='companions'?'Creature Library':'Character Library'}</h1></div><div class="library-workbench command-workbench"><section class="library-detail" id="library-detail"><div class="command-stage-empty"><div><h2>Select an asset</h2><p>Choose a source model from the dock.</p></div>${commandImage(entry,{hosted,className:'command-empty-image '+category,alt:'Collection source preview'})}</div></section><section class="library-browse command-browse" aria-label="Asset roster"><div id="browse-filters"></div><div id="asset-cards"></div></section></div>`;
+  $('main').innerHTML=`<div class="library-heading"><h1>${category==='companions'?'Creature Library':'Character Library'}</h1>${category==='characters'?characterTabs('3d'):''}</div><div class="library-workbench command-workbench"><section class="library-detail" id="library-detail"><div class="command-stage-empty"><div><h2>Select an asset</h2><p>Choose a source model from the dock.</p></div>${commandImage(entry,{hosted,className:'command-empty-image '+category,alt:'Collection source preview'})}</div></section><section class="library-browse command-browse" aria-label="Asset roster"><div id="browse-filters"></div><div id="asset-cards"></div></section></div>`;
 }
 async function asset(id,{signal}={}){if(!detailCache.has(id))detailCache.set(id,await catalogCache.read(API+'/assets/'+encodeURIComponent(id),{signal}));return detailCache.get(id);}
 async function environmentAsset(id){
@@ -130,8 +134,9 @@ async function detail(){
     }catch(error){if(!signal.aborted){content.querySelector('.compatibility-note').textContent=error.message;}}
   }else if(tab==='art'){
     const images=selected.related.filter(f=>f.kind==='image');
-    if(!sourceAvailable()){content.innerHTML=offlineNotice+fileRows(images);return;}
-    content.innerHTML=`<div class="art-grid">${images.map(f=>`<figure><a ${sourceHref(f.url)} target="_blank"><img ${mediaSrc(f.url)} alt="${esc(f.name)}" loading="lazy"></a><figcaption>${esc(f.name)}</figcaption></figure>`).join('')}</div>`||'<p>연결된 이미지가 없습니다.</p>';
+    let archiveHTML='';
+    try{const archive=await art.load({signal});if(version!==revision)return;archiveHTML=linkedArt(archive,selected.id,{hosted});}catch(error){if(signal.aborted)return;}
+    content.innerHTML=archiveHTML+(images.length?`<div class="art-grid">${images.map(f=>`<figure><a ${sourceHref(f.url)} target="_blank"><img ${mediaSrc(f.url)} alt="${esc(f.name)}" loading="lazy"></a><figcaption>${esc(f.name)}</figcaption></figure>`).join('')}</div>`:archiveHTML?'':'<p>연결된 이미지가 없습니다.</p>');
   }else if(tab==='dialogue'){
     const files=selected.related.filter(f=>/Dialogue\/.*\.json$/i.test(f.path));content.innerHTML=fileRows(selected.related.filter(f=>/Dialogue\//i.test(f.path)))+'<div id="dialogue-text"></div>';
     if(!sourceAvailable()){$('dialogue-text').innerHTML=offlineNotice;return;}
@@ -325,6 +330,8 @@ async function route(){
   document.body.dataset.libraryCategory=category;if($('preview-navigator'))$('preview-navigator').hidden=true;
   if(category==='environments'){const requested=parts[1]?decodeURIComponent(parts[1]==='pack'?parts[2]:parts.slice(1).join('/')):null;const packs=environmentPacks(data,state),pack=requested?packs.find(p=>p.id===requested)||data.packs.find(p=>p.id===requested)||data.entities.find(e=>e.id===requested):defaultEnvironmentPack(packs);if(pack){if(pack.isEntity||data.entities.some(e=>e.id===pack.id))await environmentAsset(pack.id);else await showPack(pack.id);}else{stop();packData=null;renderEnvironment(null);}return;}
   if(category==='agents'){agentsPage();return;}if(category==='manual'){await manualPage();return;}if(category==='maintenance'){await maintenance();return;}
+  if(artRoute()){stop();selected=null;variant=null;packData=null;await art.render({search:state.query,selectedId:parts[2]?decodeURIComponent(parts[2]):''});return;}
+  art.hide();
   if(category==='owned'){stop();packData=null;await owned.render({search:state.query});return;}
   if(category==='files'||category==='file'){await filesPage(category==='file'?decodeURIComponent(parts.slice(1).join('/')):null);return;}
   if(category==='animations'){if(!state.motionQuery&&state.query)state.motionQuery=state.query;await animationPage();characterNavigator();return;}
@@ -337,6 +344,7 @@ async function route(){
 }
 document.addEventListener('click',event=>{
   const el=event.target.closest('button,a');if(!el)return;
+  if(el.dataset.artOpen){location.hash='characters/art/'+encodeURIComponent(el.dataset.artOpen);return;}
   if(el.dataset.entity){tab='3d';location.hash=category+'/'+encodeURIComponent(el.dataset.entity);if(selected?.id===el.dataset.entity)choose(el.dataset.entity);}
   if(el.dataset.pack)location.hash=category+'/pack/'+encodeURIComponent(el.dataset.pack);
   if(el.dataset.item)packItem(el.dataset.item);
@@ -350,13 +358,14 @@ document.addEventListener('click',event=>{
 });
 $('search').value=state.query;let searchTimer;
 document.addEventListener('click',event=>{if(event.target.closest('[data-owned-downloads]')){state.query='';$('search').value='';saveState();if(category==='owned')owned.search('');}});
-$('search').oninput=e=>{state.query=e.target.value;if(category==='animations')state.motionQuery=state.query;saveState();clearTimeout(searchTimer);searchTimer=setTimeout(()=>{limit=70;if(category==='environments')environmentView?.refresh();else if(category==='owned')owned.search(state.query);else if(packData)packItems();else if($('asset-cards'))cards();else if(category==='animations')motionBrowser($('inline-motions'));else if(category==='files')void filesPage();},180);};
+$('search').oninput=e=>{state.query=e.target.value;if(category==='animations')state.motionQuery=state.query;saveState();clearTimeout(searchTimer);searchTimer=setTimeout(()=>{limit=70;if(category==='environments')environmentView?.refresh();else if(category==='owned')owned.search(state.query);else if(artRoute())art.search(state.query);else if(packData)packItems();else if($('asset-cards'))cards();else if(category==='animations')motionBrowser($('inline-motions'));else if(category==='files')void filesPage();},180);};
 $('refresh').onclick=async()=>{
   const button=$('refresh');button.disabled=true;button.textContent='Refreshing catalog…';
   let refreshed=false;
   try{
     if(hosted)Object.assign(deployment,await loadHostedDeployment(deployment));
     if(category==='owned'){await owned.render({search:state.query,refresh:true});return;}
+    if(artRoute()){await art.render({search:state.query,selectedId:location.hash.split('/')[2]?decodeURIComponent(location.hash.split('/')[2]):'',refresh:true});return;}
     const snapshot=await catalogCache.refresh();refreshed=true;stop();data=snapshot.data;motions=snapshot.motions;detailCache.clear();packCache.clear();raw=null;selected=null;variant=null;catalogStatus(snapshot);await route();toast('최신 색인을 저장했습니다.');
   }catch(error){toast((refreshed?'색인은 저장했습니다. 화면을 다시 열어주세요. ':'갱신 실패 · 이전 색인을 유지합니다. ')+error.message);}
   finally{button.disabled=false;button.textContent='Refresh catalog ↻';}
