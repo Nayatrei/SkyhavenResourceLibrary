@@ -1,10 +1,14 @@
-// Metadata lives on the site. Media remains exclusively on the source host.
+// Character art is hosted on the site; other asset media uses the source host.
 export async function loadHostedDeployment(spec,{base=globalThis.location.href,fetcher=globalThis.fetch}={}){
   if(spec?.mode!=='hosted-catalog')return spec;
   const response=await fetcher(new URL('./data/current.json',base),{cache:'no-store'});
   if(!response.ok)throw new Error('게시된 목록을 읽을 수 없습니다 ('+response.status+').');
   const current=await response.json();
   if(current.mode!=='hosted-catalog'||!current.routes||new URL(current.origin).origin!==spec.origin)throw new Error('게시 목록의 원본 서버가 일치하지 않습니다.');
+  if(spec.characterArt){
+    current.routes['/comfy/skyhaven/api/library/art-archive']=spec.characterArt.catalog;
+    current.revision+=':art:'+spec.characterArt.revision;
+  }
   return current;
 }
 export function createSourceStatus({origin,fetcher=globalThis.fetch,onChange=()=>{},onCheck=()=>{},timeoutMs=3000}={}){
