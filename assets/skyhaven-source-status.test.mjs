@@ -21,6 +21,13 @@ test('ONLINE requires the exact health marker, not browser connectivity or a HTM
   const unknown=createSourceStatus({origin:'https://source.example',fetcher:async()=>{throw new TypeError('CORS/network');}});
   assert.equal(await unknown.check(),'unknown');
 });
+test('static character-art route and version survive a later source metadata publication',async()=>{
+  const spec={mode:'hosted-catalog',origin:'https://source.example',characterArt:{catalog:'artwork/catalog.json',revision:'art-v2'}};
+  const deployment=await loadHostedDeployment(spec,{base:'https://site.example/',fetcher:async()=>Response.json({mode:spec.mode,origin:spec.origin,revision:'later-source',routes:{'/comfy/skyhaven/api/library/art-archive':'data/old-art.json'}})});
+  const transport=createLibraryTransport({deployment,base:'https://site.example/'});
+  assert.equal(transport.endpoint('/comfy/skyhaven/api/library/art-archive'),'https://site.example/artwork/catalog.json');
+  assert.equal(deployment.revision,'later-source:art:art-v2');
+});
 test('duplicate probes share one request and source failures do not request metadata',async()=>{
   const checks=[];let calls=0,finish;const status=createSourceStatus({origin:'https://source.example',onCheck:checking=>checks.push(checking),fetcher:url=>{calls++;assert.match(url,/api\/health$/);return new Promise(resolve=>{finish=resolve;});}});
   const first=status.check(),second=status.check();finish(Response.json({service:'skyhaven'}));

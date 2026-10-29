@@ -1,13 +1,13 @@
 import {sections,games,cleanName,matches,matchesPack,packInSection,filterPackItems,formatBytes,sortPackItems,candidateMotions,rankMotions,recommendedMotions,readState,filterEntities,smokeMotions} from './skyhaven-library-state.mjs?v=20261023-library-v15';
 import {createCatalogCache} from './skyhaven-library-cache.mjs?v=20261028-art-v1';
-import {createCharacterArtArchive,characterTabs,linkedArt} from './skyhaven-character-art.mjs?v=20261028-art-v1';
+import {createCharacterArtArchive,characterTabs,linkedArt} from './skyhaven-character-art.mjs?v=20261028-art-static-v2';
 import {createOwnedAssetList} from './skyhaven-owned-assets.mjs?v=20261026-owned-gallery-v1';
 import {commandNavigation,categoryEntry,commandImage,commandIcon} from './skyhaven-command.mjs?v=20261026-access-v2';
 import {createEnvironmentView,environmentPacks,defaultEnvironmentPack,environmentSnapshot} from './skyhaven-environments.mjs?v=20261026-access-v2';
 import {loadingMarkup,startLoading} from './skyhaven-loading.mjs';
 import {createLibraryTransport} from './skyhaven-data-source.mjs?v=20261023-hosted-v1';
 import {installLocalConnections,prepareLocalLibrary,withLocalTimeout} from './skyhaven-local-files.mjs?v=20261023-connect-v5';
-import {loadHostedDeployment,installSourceStatus} from './skyhaven-source-status.mjs?v=20261027-recheck-v1';
+import {loadHostedDeployment,installSourceStatus} from './skyhaven-source-status.mjs?v=20261028-art-static-v2';
 const deploymentSpec=JSON.parse(document.getElementById('skyhaven-deployment')?.textContent||'null');
 const deployment=deploymentSpec?.mode==='hosted-catalog'?await loadHostedDeployment(deploymentSpec):await prepareLocalLibrary(deploymentSpec);
 const hosted=deployment?.mode==='hosted-catalog';
@@ -32,7 +32,7 @@ async function json(url,options){return deployment?withLocalTimeout(()=>transpor
 const catalogCache=createCatalogCache({api:API,fetchJSON:json,...(hosted?{schema:'hosted:'+deployment.revision}:deployment?.libraryId?{schema:'local:'+deployment.libraryId}:{})});
 const artRoute=()=>category==='characters'&&location.hash.split('/')[1]==='art';
 const art=createCharacterArtArchive({host:$('main'),fetchJSON:(path,options)=>catalogCache.read(path,options),isActive:artRoute,hosted,sourceOnline:sourceAvailable});
-function catalogStatus(snapshot){$('scan-time').textContent=hosted?`마지막 목록 게시 · ${new Date(deployment.publishedAt).toLocaleString()} · 이미지 별도 보관 없음`:`${snapshot.local?'저장된 색인':'최신 색인'} · ${new Date(snapshot.savedAt).toLocaleString()} · ${catalogCache.persistent?'이 브라우저에 저장':'이번 방문에 보관'} · 새로고침으로 갱신`;}
+function catalogStatus(snapshot){$('scan-time').textContent=hosted?`마지막 목록 게시 · ${new Date(deployment.publishedAt).toLocaleString()} · 원화 이미지 사이트 보관`:`${snapshot.local?'저장된 색인':'최신 색인'} · ${new Date(snapshot.savedAt).toLocaleString()} · ${catalogCache.persistent?'이 브라우저에 저장':'이번 방문에 보관'} · 새로고침으로 갱신`;}
 function toast(text){$('toast').textContent=text;$('toast').hidden=false;clearTimeout(toast.timer);toast.timer=setTimeout(()=>$('toast').hidden=true,3500);}
 async function copy(value){try{await navigator.clipboard.writeText(value);toast('경로와 참조를 복사했습니다.');}catch{toast('브라우저의 복사 권한을 확인해 주세요.');}}
 function saveState(){const u=new URL(location.href);for(const [key,value] of Object.entries({game:state.game,q:state.query,group:state.group,motion:state.motionQuery,pack:state.motionPack,motionCategory:state.motionLabel,variant:state.variant}))value&&value!=='all'?u.searchParams.set(key,value):u.searchParams.delete(key);history.replaceState(null,'',u);}

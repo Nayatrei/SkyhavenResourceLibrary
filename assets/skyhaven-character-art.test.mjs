@@ -37,6 +37,19 @@ test('late archive response cannot replace another category',async()=>{
   const task=view.render();active=false;view.hide();host.textContent='3D character';resolve(catalog);await task;
   assert.equal(host.textContent,'3D character');d.window.close();
 });
+test('site-hosted art, comparisons and original downloads work while the source is offline',async()=>{
+  const d=dom(),host=d.window.document.querySelector('main');
+  const staticFile={...original,url:'/artwork/media/abc.png',storage:'site'};
+  const staticItem={...item,original:staticFile,preview:staticFile};
+  const staticCatalog={...catalog,mediaStorage:'site',items:[staticItem],comparisons:[{...catalog.comparisons[0],before:staticItem,after:staticItem}]};
+  const view=createCharacterArtArchive({host,fetchJSON:async()=>staticCatalog,isActive:()=>true,hosted:true,sourceOnline:()=>false,getURL:()=>d.window.location.href});
+  await view.render({selectedId:'Elara'});
+  assert.equal(host.querySelectorAll('[data-live-src],[data-live-href],[data-source-message]').length,0);
+  assert.equal(host.querySelectorAll('img[src="/artwork/media/abc.png"]').length,4);
+  assert.equal(host.querySelector('a[download]').getAttribute('href'),'/artwork/media/abc.png');
+  assert.match(host.textContent,/원본 서비스 연결 없이/);
+  view.hide();d.window.close();
+});
 test('art metadata persists across visits until explicit refresh and failed refresh keeps the last copy',async()=>{
   const saved=new Map(),storage={get:async key=>saved.get(key),put:async(key,v)=>saved.set(key,v),replace:async v=>{saved.clear();saved.set('snapshot',v);}};
   let revision=1,fail=false,calls=0;
