@@ -30,7 +30,7 @@ export function browserCatalogStorage(indexedDB=globalThis.indexedDB){
 }
 export function createCatalogCache({api,fetchJSON,storage=browserCatalogStorage(),schema=1}){
   let snapshot,persistent=storage.available!==false;
-  const memory=new Map();
+  const memory=new Map(),versions=new Map();
   async function stored(action){try{return await action();}catch{persistent=false;return undefined;}}
   const valid=s=>s?.schema===schema&&s.data?.entities&&Array.isArray(s.motions);
   return {
@@ -49,13 +49,14 @@ export function createCatalogCache({api,fetchJSON,storage=browserCatalogStorage(
       await stored(()=>storage.replace(next));snapshot=next;memory.clear();
       return {...next,local:false};
     },
-    async read(url,{signal}={}){
+    async read(url,{signal,refresh=false}={}){
       signal?.throwIfAborted();const generation=snapshot?.generation,key='detail:'+url;
-      if(memory.has(key))return memory.get(key);
-      const saved=await stored(()=>storage.get(key));signal?.throwIfAborted();
+      const version=(versions.get(key)||0)+(refresh?1:0);if(refresh)versions.set(key,version);
+      if(!refresh&&memory.has(key))return memory.get(key);
+      const saved=refresh?null:await stored(()=>storage.get(key));signal?.throwIfAborted();
       if(saved?.generation===generation&&generation){memory.set(key,saved.value);return saved.value;}
       const value=await fetchJSON(url,{signal});signal?.throwIfAborted();
-      if(snapshot?.generation===generation){memory.set(key,value);await stored(()=>storage.put(key,{generation,value}));}
+      if(snapshot?.generation===generation&&(versions.get(key)||0)===version){memory.set(key,value);await stored(()=>storage.put(key,{generation,value}));}
       signal?.throwIfAborted();
       return value;
     },
