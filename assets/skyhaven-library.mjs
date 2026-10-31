@@ -1,4 +1,5 @@
-import {sections,games,cleanName,matches,matchesPack,packInSection,filterPackItems,formatBytes,sortPackItems,candidateMotions,rankMotions,recommendedMotions,readState,filterEntities,smokeMotions} from './skyhaven-library-state.mjs?v=20261023-library-v15';
+import {loadFactoryFinals} from './skyhaven-factory-finals.mjs?v=20261031-finals-v1';
+import {humanoidMotion,sections,games,cleanName,matches,matchesPack,packInSection,filterPackItems,formatBytes,sortPackItems,candidateMotions,rankMotions,recommendedMotions,readState,filterEntities,smokeMotions} from './skyhaven-library-state.mjs?v=20261031-finals-v1';
 import {createCatalogCache} from './skyhaven-library-cache.mjs?v=20261028-art-v1';
 import {createCharacterArtArchive,characterTabs,linkedArt} from './skyhaven-character-art.mjs?v=20261028-art-static-v2';
 import {createOwnedAssetList} from './skyhaven-owned-assets.mjs?v=20261026-owned-gallery-v1';
@@ -18,7 +19,15 @@ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const state=readState(location.href);
 let data,motions=[],raw,category='',selected,variant,tab='3d',viewer,life,revision=0,packData,limit=70,motionLimit=60,selectedMotion,pendingMotion;
 let environmentView;
-const sourceStatus=installSourceStatus({deployment,onConnect:()=>{if(selected&&$('library-detail')&&['characters','companions'].includes(category))void detail();else if(category==='file'&&$('raw-media'))void route();},onDisconnect:()=>{if(viewer)stop();if(selected&&$('library-detail'))void detail();else{const host=$('raw-media');if(host)host.innerHTML=offlineNotice;}}});
+let factoryFinals={entities:[],issues:[],error:null};
+async function connectFactory(data){
+  factoryFinals=await loadFactoryFinals();
+  for(const entity of factoryFinals.entities)detailCache.set(entity.id,entity);
+  return {...data,entities:[...factoryFinals.entities,...data.entities]};
+}
+function finalStatus(){return factoryFinals.error||`캐릭터팀 최종 FBX · ${factoryFinals.entities.length}명${factoryFinals.issues.length?' · 연결 확인 필요 '+factoryFinals.issues.length+'건':''}`;}
+
+const sourceStatus=installSourceStatus({deployment,onConnect:()=>{if(selected&&$('library-detail')&&['characters','companions'].includes(category))void detail();else if(category==='file'&&$('raw-media'))void route();},onDisconnect:()=>{if(selected?.factoryFinal)return;if(viewer)stop();if(selected&&$('library-detail'))void detail();else{const host=$('raw-media');if(host)host.innerHTML=offlineNotice;}}});
 const offlineNotice='<div class="source-offline-note"><h3>원본 서버 연결 필요</h3><p>목록과 경로는 볼 수 있습니다. 이미지·3D·모션은 원본 서버가 ONLINE일 때 표시됩니다.</p><button data-recheck-source>연결 재확인</button></div>';
 const sourceAvailable=()=>!hosted||sourceStatus.online;
 const mediaSrc=url=>`${hosted?'data-live-src':'src'}="${esc(url)}"`;
@@ -71,7 +80,7 @@ function cards(){
 }
 function shell(){
   const entry=categoryEntry(data,category,state.game);
-  $('main').innerHTML=`<div class="library-heading"><h1>${category==='companions'?'Creature Library':'Character Library'}</h1>${category==='characters'?characterTabs('3d'):''}</div><div class="library-workbench command-workbench"><section class="library-detail" id="library-detail"><div class="command-stage-empty"><div><h2>Select an asset</h2><p>Choose a source model from the dock.</p></div>${commandImage(entry,{hosted,className:'command-empty-image '+category,alt:'Collection source preview'})}</div></section><section class="library-browse command-browse" aria-label="Asset roster"><div id="browse-filters"></div><div id="asset-cards"></div></section></div>`;
+  $('main').innerHTML=`<div class="library-heading"><h1>${category==='companions'?'Creature Library':'Character Library'}</h1>${category==='characters'?characterTabs('3d'):''}${category==='characters'?`<p role="status">${esc(finalStatus())}</p>`:''}</div><div class="library-workbench command-workbench"><section class="library-detail" id="library-detail"><div class="command-stage-empty"><div><h2>Select an asset</h2><p>Choose a source model from the dock.</p></div>${commandImage(entry,{hosted,className:'command-empty-image '+category,alt:'Collection source preview'})}</div></section><section class="library-browse command-browse" aria-label="Asset roster"><div id="browse-filters"></div><div id="asset-cards"></div></section></div>`;
 }
 async function asset(id,{signal}={}){if(!detailCache.has(id))detailCache.set(id,await catalogCache.read(API+'/assets/'+encodeURIComponent(id),{signal}));return detailCache.get(id);}
 async function environmentAsset(id){
@@ -96,7 +105,7 @@ async function choose(id,variantId){
   finally{connecting?.finish();}
 }
 function detailHeader(){
-  return `<header class="asset-heading"><div><p class="eyebrow">${esc(selected.group)} / ${esc(selected.game)}</p><h2>${esc(cleanName(selected.name))}</h2>${selected.status?`<p class="compatibility-note">${selected.status==='review_candidate'?'검토 후보 · 사용자 외형 채택 대기':esc(selected.status)}</p>`:''}</div>${selected.variants.length>1?`<label>형태<select id="variant-choice">${selected.variants.map(v=>`<option value="${esc(v.id)}" ${variant?.id===v.id?'selected':''}>${esc(v.name)}</option>`).join('')}</select></label>`:''}</header><div class="detail-tabs" role="tablist">${[['3d','3D'],['motion','애니메이션'],['art','원화·초상화'],['dialogue','대사'],['sources','버전·원본']].map(([id,name])=>`<button role="tab" data-tab="${id}" aria-selected="${tab===id}">${name}</button>`).join('')}</div>`;
+  return `<header class="asset-heading"><div><p class="eyebrow">${esc(selected.group)} / ${esc(selected.game)}${selected.factoryFinal?' · 캐릭터팀 최종 FBX':''}</p><h2>${esc(cleanName(selected.name))}</h2>${selected.status?`<p class="compatibility-note">${selected.status==='review_candidate'?'검토 후보 · 사용자 외형 채택 대기':esc(selected.status)}</p>`:''}</div>${selected.variants.length>1?`<label>형태<select id="variant-choice">${selected.variants.map(v=>`<option value="${esc(v.id)}" ${variant?.id===v.id?'selected':''}>${esc(v.name)}</option>`).join('')}</select></label>`:''}</header><div class="detail-tabs" role="tablist">${[['3d','3D'],['motion','애니메이션'],['art','원화·초상화'],['dialogue','대사'],['sources','버전·원본']].map(([id,name])=>`<button role="tab" data-tab="${id}" aria-selected="${tab===id}">${name}</button>`).join('')}</div>`;
 }
 function sceneDetail(){
   const image=f=>f?`<figure class="pack-scene"><img class="scene-preview" ${mediaSrc(f.url)} alt="${esc(selected.name)} 배경 미리보기"><figcaption>${esc(f.path)}</figcaption></figure>`:'';
@@ -109,17 +118,18 @@ async function detail(){
   const content=$('detail-content');
   if(tab==='3d'||tab==='motion'){
     if(!variant){content.innerHTML=selected.category==='environments'?sceneDetail():'<p>대표 모델 연결을 확인해야 합니다. 버전·원본에서 자료를 볼 수 있습니다.</p>';return;}
-    content.innerHTML=`<div class="asset-preview-grid"><div class="asset-model-column"><div class="model-preview-host" id="library-viewer">${loadingMarkup}</div><div class="preview-primary-actions"><button data-copy="${esc(variant.model.projectRelativePath||variant.model.path)}">경로 복사</button><button id="copy-asset-reference">참조 복사 ↗</button><a ${sourceHref(variant.model.url)} download>FBX·원본 ↓</a><button id="cancel-preview">로딩·재생 중단</button></div><p class="compatibility-note">${esc(variant.compatibility?.note||'모션별 호환 여부는 재생해서 확인하세요.')}</p><details class="source-locator"><summary>모델 위치·GUID</summary>${pathRow('프로젝트 상대 경로',variant.model.projectRelativePath||variant.model.path)}${pathRow('Unity GUID',variant.model.guid)}${pathRow('이 컴퓨터의 확인된 위치',variant.model.localPath)}</details></div><aside id="inline-motions" class="asset-motion-column"></aside></div>`;
+    content.innerHTML=`<div class="asset-preview-grid"><div class="asset-model-column"><div class="model-preview-host" id="library-viewer">${loadingMarkup}</div><div class="preview-primary-actions"><button data-copy="${esc(variant.model.projectRelativePath||variant.model.path)}">경로 복사</button><button id="copy-asset-reference">참조 복사 ↗</button><a ${variant.factoryFinal?`href="${esc(variant.model.url)}"`:sourceHref(variant.model.url)} download>FBX·원본 ↓</a><button id="cancel-preview">로딩·재생 중단</button></div><p class="compatibility-note">${esc(variant.compatibility?.note||'모션별 호환 여부는 재생해서 확인하세요.')}</p><details class="source-locator"><summary>모델 위치·GUID</summary>${pathRow('프로젝트 상대 경로',variant.model.projectRelativePath||variant.model.path)}${pathRow('Unity GUID',variant.model.guid)}${pathRow('이 컴퓨터의 확인된 위치',variant.model.localPath)}</details></div><aside id="inline-motions" class="asset-motion-column"></aside></div>`;
     $('copy-asset-reference').onclick=()=>copy(reference(selected,variant));
     $('cancel-preview').onclick=()=>{stop();toast('미리보기를 중단했습니다. 에셋을 다시 선택하면 재개됩니다.');};
     motionBrowser($('inline-motions'));
-    if(!sourceAvailable()){$('library-viewer').innerHTML=offlineNotice;return;}
+    if(!variant.factoryFinal&&!sourceAvailable()){$('library-viewer').innerHTML=offlineNotice;return;}
     try{
-      const {createViewer}=await import('./skyhaven-viewer.mjs?v=20261022-library-v6');if(signal.aborted)return;
-      const folder={id:'entity',name:selected.name,files:[variant.model,...variant.textures,...(variant.rig==='Humanoid'?motions:[])]};
-      const handle=await createViewer({host:$('library-viewer'),file:variant.model,folder,folders:[folder],signal,assignMotions:variant.rig==='Humanoid'});
+      const {createViewer}=await import('./skyhaven-viewer.mjs?v=20261031-finals-v1');if(signal.aborted)return;
+      const folder={id:'entity',name:selected.name,files:[variant.model,...variant.textures,...(humanoidMotion(variant)?motions:[])]};
+      const handle=await createViewer({host:$('library-viewer'),file:variant.model,folder,folders:[folder],signal,assignMotions:variant.factoryFinal||humanoidMotion(variant)});
       if(signal.aborted){handle();return;}viewer=handle;
-      variant.embeddedClips=viewer.getEmbeddedClips();if(variant.embeddedClips.length)motionBrowser($('inline-motions'));
+      if(variant.factoryFinal)variant.webRig=viewer.getMotionRig();
+      variant.embeddedClips=viewer.getEmbeddedClips();if(variant.factoryFinal||variant.embeddedClips.length)motionBrowser($('inline-motions'));
       const advanced=$('library-viewer').querySelector('.viewer-tools'),sources=$('library-viewer').querySelector('.animation-pickers');
       if(advanced&&sources){const disclosure=document.createElement('details');disclosure.className='viewer-advanced';disclosure.innerHTML='<summary>화면·클립 상세 설정</summary>';disclosure.append(advanced,sources);$('library-viewer').append(disclosure);}
       const queued=pendingMotion;pendingMotion=null;
@@ -146,14 +156,14 @@ async function detail(){
 function reference(entity,v){return `${entity.name}\nAsset ID: ${entity.id}\nModel: ${v.model.projectRelativePath||v.model.path}\nGUID: ${v.model.guid||'—'}\nPreview: ${transport.pageURL()}${entity.variants.length>1?'?variant='+encodeURIComponent(v.id):''}#${entity.category}/${encodeURIComponent(entity.id)}\n${hosted?'Source (ONLINE only)':deployment?'Local file (connected browser only)':'Download'}: ${new URL(v.model.url,location.href)}\nCatalog: ${transport.endpoint(API+'/assets/'+encodeURIComponent(entity.id))}`;}
 function motionBrowser(host){
   if(!host)return;
-  if(variant?.rig==='Static'){
-    host.innerHTML='<div class="motion-heading"><h3>정적 모델</h3><p>아직 리그가 없어 모션을 적용할 수 없습니다.</p></div><p class="compatibility-note">원화·초상화와 버전·원본 탭에서 제작 자료와 보정 후보를 함께 확인하세요.</p>';
+  if(variant?.rig==='Static'||variant?.factoryFinal&&variant.webRig&&!variant.webRig.humanoid){
+    host.innerHTML='<div class="motion-heading"><h3>정적 모델</h3><p>호환되는 스킨·필수 뼈가 확인되지 않아 공용 모션을 적용할 수 없습니다.</p></div><p class="compatibility-note">원화·초상화와 버전·원본 탭에서 제작 자료와 보정 후보를 함께 확인하세요.</p>';
     return;
   }
   const pool=rankMotions(candidateMotions(motions,variant,{query:state.motionQuery,pack:state.motionPack,label:state.motionLabel}),variant);
   const recommendations=recommendedMotions(pool,variant);
   const packs=[...new Set(candidateMotions(motions,variant).map(m=>m.pack).filter(Boolean))].sort();
-  host.innerHTML=`<div class="motion-heading"><div><h3>이 캐릭터에 모션 적용</h3><p>${variant?.rig==='Humanoid'?'Humanoid 호환 후보 · '+pool.length.toLocaleString()+'개 파일':'자체 클립 '+(variant?.embeddedClips?.length||0)+'개 · 추가 호환 후보 '+pool.length.toLocaleString()+'개 파일'}</p></div><span class="evidence-pill">후보 ≠ 웹 재생 ≠ Unity 검증</span></div><div class="inline-motion-filters"><input type="search" id="motion-search" value="${esc(state.motionQuery)}" placeholder="모션 검색 · Idle, Walk, Run…" aria-label="캐릭터 모션 검색"><select id="motion-pack-filter" aria-label="모션 팩"><option value="">모든 모션 팩</option>${packs.map(p=>`<option ${p===state.motionPack?'selected':''}>${esc(p)}</option>`).join('')}</select><select id="motion-label-filter" aria-label="동작 분류"><option value="">모든 동작</option>${(data.taxonomy?.categories||[]).map(c=>`<option value="${c.id}" ${c.id===state.motionLabel?'selected':''}>${esc(c.name)}</option>`).join('')}</select></div><div class="quick-motions">${['Idle','Walk','Run'].map(q=>`<button data-motion-query="${q}">${q}</button>`).join('')}<button data-motion-query="">전체</button><button id="embedded-motion">자체 클립</button></div><div class="embedded-clips">${(variant?.embeddedClips||[]).map(c=>`<button data-embedded="${c.index}">▷ ${esc(c.name)} <small>자체 클립 · ${c.duration.toFixed(1)}초</small></button>`).join('')}</div><div class="motion-results">${pool.slice(0,motionLimit).map(m=>`<button class="motion-row ${selectedMotion===m.id?'active':''}" data-motion="${esc(m.id)}"><span class="motion-play">▷</span><span><strong>${esc(m.name.replace(/\.[^.]+$/,''))}</strong><small>${esc(m.pack)} · ${esc(m.extension.toUpperCase())}</small></span><small class="motion-evidence" data-motion-evidence="${esc(m.id)}">${variant?.webVerification?.motions.some(check=>check.motion===m.id)?'웹 재생 기록':'호환 후보'}</small></button>`).join('')||(variant?.embeddedClips?.length?'<p>위의 자체 클립을 바로 재생할 수 있습니다.</p>':'<p>이 조건의 호환 후보가 없습니다. 자체 클립 또는 다른 필터를 확인하세요.</p>')}</div>${pool.length>motionLimit?'<button id="more-motions">모션 더 보기 ↓</button>':''}`;
+  host.innerHTML=`<div class="motion-heading"><div><h3>이 캐릭터에 모션 적용</h3><p>${humanoidMotion(variant)?'Humanoid 호환 후보 · '+pool.length.toLocaleString()+'개 파일':'자체 클립 '+(variant?.embeddedClips?.length||0)+'개 · 추가 호환 후보 '+pool.length.toLocaleString()+'개 파일'}</p></div><span class="evidence-pill">후보 ≠ 웹 재생 ≠ Unity 검증</span></div><div class="inline-motion-filters"><input type="search" id="motion-search" value="${esc(state.motionQuery)}" placeholder="모션 검색 · Idle, Walk, Run…" aria-label="캐릭터 모션 검색"><select id="motion-pack-filter" aria-label="모션 팩"><option value="">모든 모션 팩</option>${packs.map(p=>`<option ${p===state.motionPack?'selected':''}>${esc(p)}</option>`).join('')}</select><select id="motion-label-filter" aria-label="동작 분류"><option value="">모든 동작</option>${(data.taxonomy?.categories||[]).map(c=>`<option value="${c.id}" ${c.id===state.motionLabel?'selected':''}>${esc(c.name)}</option>`).join('')}</select></div><div class="quick-motions">${['Idle','Walk','Run'].map(q=>`<button data-motion-query="${q}">${q}</button>`).join('')}<button data-motion-query="">전체</button><button id="embedded-motion">자체 클립</button></div><div class="embedded-clips">${(variant?.embeddedClips||[]).map(c=>`<button data-embedded="${c.index}">▷ ${esc(c.name)} <small>자체 클립 · ${c.duration.toFixed(1)}초</small></button>`).join('')}</div><div class="motion-results">${pool.slice(0,motionLimit).map(m=>`<button class="motion-row ${selectedMotion===m.id?'active':''}" data-motion="${esc(m.id)}"><span class="motion-play">▷</span><span><strong>${esc(m.name.replace(/\.[^.]+$/,''))}</strong><small>${esc(m.pack)} · ${esc(m.extension.toUpperCase())}</small></span><small class="motion-evidence" data-motion-evidence="${esc(m.id)}">${variant?.webVerification?.motions.some(check=>check.motion===m.id)?'웹 재생 기록':'호환 후보'}</small></button>`).join('')||(variant?.embeddedClips?.length?'<p>위의 자체 클립을 바로 재생할 수 있습니다.</p>':'<p>이 조건의 호환 후보가 없습니다. 자체 클립 또는 다른 필터를 확인하세요.</p>')}</div>${pool.length>motionLimit?'<button id="more-motions">모션 더 보기 ↓</button>':''}`;
   let timer;
   if(recommendations.length){
     const block=document.createElement('section');block.className='motion-recommendations';
@@ -252,7 +262,7 @@ async function filesPage(path){
   if(file){$('raw-preview').innerHTML=`<h2>${esc(file.name)}</h2>${pathRow('원본 경로',file.path)}<a ${sourceHref(file.url)} download>원본 다운로드 ↓</a><div id="raw-media"></div>`;
     if(!sourceAvailable()){$('raw-media').innerHTML=offlineNotice;return;}
     if(file.kind==='image')$('raw-media').innerHTML=`<img class="scene-preview" ${mediaSrc(file.url)} alt="${esc(file.name)}">`;
-    else if(['fbx','glb','gltf','obj','anim'].includes(file.extension)){life=new AbortController();const signal=life.signal;const {createViewer}=await import('./skyhaven-viewer.mjs?v=20261022-library-v6');const handle=await createViewer({host:$('raw-media'),file,folder:raw.folders[0],folders:raw.folders,signal});if(signal.aborted)handle();else viewer=handle;}
+    else if(['fbx','glb','gltf','obj','anim'].includes(file.extension)){life=new AbortController();const signal=life.signal;const {createViewer}=await import('./skyhaven-viewer.mjs?v=20261031-finals-v1');const handle=await createViewer({host:$('raw-media'),file,folder:raw.folders[0],folders:raw.folders,signal});if(signal.aborted)handle();else viewer=handle;}
     else if(['json','txt','md','csv'].includes(file.extension)){const text=await fetch(file.url).then(r=>r.text());const pre=document.createElement('pre');pre.textContent=text;$('raw-media').append(pre);}
   }
 }
@@ -264,7 +274,7 @@ async function maintenance(){stop();if(!transport.writable){$('main').innerHTML=
 }
 async function qaMotions(){
   stop();life=new AbortController();const signal=life.signal;
-  const {createViewer}=await import('./skyhaven-viewer.mjs?v=20261022-library-v6');
+  const {createViewer}=await import('./skyhaven-viewer.mjs?v=20261031-finals-v1');
   const tests=smokeMotions(motions,$('qa-motion-pack')?.value||'Human Basic Motions');
   const results=[];const host=$('maintenance-preview');
   const scope=$('qa-scope')?.value||'';
@@ -299,7 +309,7 @@ async function qaMotions(){
 }
 async function qaPacks(){
   stop();life=new AbortController();const signal=life.signal;
-  const {createViewer}=await import('./skyhaven-viewer.mjs?v=20261022-library-v6');
+  const {createViewer}=await import('./skyhaven-viewer.mjs?v=20261031-finals-v1');
   const e=await asset('character:Elara'),v=e.variants[0],folder={id:e.id,name:e.name,files:[v.model,...v.textures,...motions]},host=$('maintenance-preview');
   const candidates=motions.filter(m=>m.rig==='Humanoid'&&m.extension==='fbx'&&m.role!=='character'&&m.path.startsWith('Motion Library/')&&(m.path.includes('/Animations/')||m.clips?.length));
   const packs=[...new Set(candidates.map(m=>m.pack))].sort();const checks=[],failures=[];
@@ -366,7 +376,7 @@ $('refresh').onclick=async()=>{
     if(hosted)Object.assign(deployment,await loadHostedDeployment(deployment));
     if(category==='owned'){await owned.render({search:state.query,refresh:true});return;}
     if(artRoute()){await art.render({search:state.query,selectedId:location.hash.split('/')[2]?decodeURIComponent(location.hash.split('/')[2]):'',refresh:true});return;}
-    const snapshot=await catalogCache.refresh();refreshed=true;stop();data=snapshot.data;motions=snapshot.motions;detailCache.clear();packCache.clear();raw=null;selected=null;variant=null;catalogStatus(snapshot);await route();toast('최신 색인을 저장했습니다.');
+    const snapshot=await catalogCache.refresh();refreshed=true;stop();detailCache.clear();data=await connectFactory(snapshot.data);motions=snapshot.motions;packCache.clear();raw=null;selected=null;variant=null;catalogStatus(snapshot);await route();toast('최신 색인을 저장했습니다.');
   }catch(error){toast((refreshed?'색인은 저장했습니다. 화면을 다시 열어주세요. ':'갱신 실패 · 이전 색인을 유지합니다. ')+error.message);}
   finally{button.disabled=false;button.textContent='Refresh catalog ↻';}
 };
@@ -381,6 +391,6 @@ document.addEventListener('keydown',e=>{if(e.key==='/'&&!/INPUT|TEXTAREA|SELECT/
 let initialLoading;
 $('main').innerHTML='<div id="catalog-progress">'+loadingMarkup+'</div>';
 initialLoading=startLoading($('catalog-progress'));initialLoading.update('에셋 카탈로그 연결 중…','대표 모델·모션·팩 색인을 확인하고 있습니다.');
-try{if(!hosted)installLocalConnections(deployment);const snapshot=await (deployment?withLocalTimeout(()=>catalogCache.load()):catalogCache.load());data=snapshot.data;motions=snapshot.motions;initialLoading.finish();catalogStatus(snapshot);await route();}
+try{if(!hosted)installLocalConnections(deployment);const snapshot=await (deployment?withLocalTimeout(()=>catalogCache.load()):catalogCache.load());data=await connectFactory(snapshot.data);motions=snapshot.motions;initialLoading.finish();catalogStatus(snapshot);await route();}
 catch(error){$('main').innerHTML=`<div class="empty"><h1>라이브러리를 연결할 수 없습니다.</h1><p>${esc(error.message)}</p>${deployment?'<p>폴더 연결에서 색인을 다시 선택하거나 읽기 권한을 확인해 주세요.</p><button id="retry-library" class="button primary">목록 다시 읽기</button>':''}<a href="${esc(transport.endpoint('/comfy/skyhaven/api/resources'))}">파일 색인 열기</a></div>`;if($('retry-library'))$('retry-library').onclick=()=>location.reload();}
 finally{initialLoading.finish();}

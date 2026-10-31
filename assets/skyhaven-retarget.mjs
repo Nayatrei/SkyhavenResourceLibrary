@@ -24,6 +24,13 @@ function joints(root) {
   }
   return result;
 }
+export function inspectMotionRig(root){
+  const found=joints(root),required=['hips','spine','head','leftarm','leftforearm','rightarm','rightforearm','leftthigh','leftshin','leftfoot','rightthigh','rightshin','rightfoot'];
+  let skinnedMeshes=0;
+  root.traverse(node=>{if(node.isSkinnedMesh&&node.skeleton?.bones?.length&&node.geometry?.getAttribute('skinWeight')?.array.some(w=>w>0))skinnedMeshes++;});
+  const missing=required.filter(role=>!found.has(role));
+  return {humanoid:skinnedMeshes>0&&!missing.length,skinnedMeshes,missing};
+}
 function snapshot(root) {
   const state=[];root.traverse(node=>state.push([node,node.position.clone(),node.quaternion.clone(),node.scale.clone()]));return state;
 }
