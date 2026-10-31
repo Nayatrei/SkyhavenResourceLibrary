@@ -1,7 +1,7 @@
 name: Interface checks
 on:
   pull_request:
-    paths: ['assets/**', 'tools/publish_character_art.py', 'tools/test_publish_character_art.py', 'index.html', 'package*.json', '.github/workflows/interface-checks.yml']
+    paths: ['assets/**', 'branding/**', 'tools/build_branding.py', 'tools/publish_character_art.py', 'tools/test_publish_character_art.py', 'index.html', 'package*.json', '.github/workflows/interface-checks.yml']
 permissions:
   contents: read
 jobs:

@@ -1,0 +1,25 @@
+{
+  "site": "https://skyhaven.genesisframeworks.com/",
+  "engine": "built-in image_gen",
+  "source": "source/mascot-original.png",
+  "derivation": "Pillow size-only app/favicon derivatives; preserved original alpha",
+  "identity": "A living golden castle gatehouse on an ivory cloud, based on the existing Skyhaven tower mark",
+  "prompt": "Use case: logo-brand. Asset type: official mascot master for Skyhaven Resource Library and its favicon/app icons. Create a single charming living castle gatehouse mascot floating on one small ivory cloud, isolated with a genuinely transparent background. The existing Skyhaven identity is an antique-gold castle tower on a dark navy/slate RTS-style asset library. Preserve that recognizable castle silhouette: compact golden sandstone gatehouse, a clear crenellated crown, two simple dark-navy window eyes and a friendly arched doorway expression. This is an architectural sky guardian, not a robot or a human. Polished stylized game art with soft dimensional light, restrained antique brass and warm ivory, small subtle sky-blue accent. Square composition; centered full mascot fills about 78 percent of canvas, complete cloud and crown visible with clean padding. Strong simple readable silhouette and generous facial features suitable for a 16px icon; no tiny decorative detail. One mascot only, no scenery, no card frame, no shadow rectangle, no text, letters, wordmarks or watermark.\n",
+  "files": {
+    "apple-touch-icon.png": "ed30aa9c710576aa1149901fd34939930d034083a6b42b920d63860a776928bf",
+    "favicon-16x16.png": "ae4aa85ac6e57ebda3c6f908040aca46135cd76cb1a985a6b6134c3865a7b8cb",
+    "favicon-32x32.png": "6f73e6551a3836973fb6063db0ca01f276fca95534130ab76db8a9663b7d888e",
+    "favicon.ico": "f2cec9b0c2c807f1185bb4b310ff78cc6da502e6fa0dee23079e7d7ecca80753",
+    "icon-192.png": "4bda6f73d35bf85cc008bb920b931b4e31618fd5c2a842e4200210e217354c11",
+    "icon-512.png": "1c1f38f32a7eb168e98afe18d1a4c5c078f8f93e86ce3d3296ed219f65e8bf91",
+    "icon-64.png": "1089ca7628426b63f1d4afa88610c9f9676aa6585a3f5df718f3b2e619dcb2a6",
+    "mascot.webp": "a926f107c77cb2e701cbf32b0a6bb24529e042c7b116851dc3a6ee9e9c066fc8",
+    "maskable-icon-192.png": "c07c92bc891bd343b68155b9a5362e773f325892323fe540cf65319ef9eedbda",
+    "maskable-icon-512.png": "3ec5c9af8b77e8a929159da95aa450e4a84d9d86fb3db6a60a797c8d62d34a36",
+    "README.ko.md": "17b938b1c6964341e45fce7e85f8743296b827ebe0cac0008733666964a83fc4",
+    "site.webmanifest": "6b48cbee08fec11d2c4e7d43c4357cb395677b573fc6f687dfc07faaa351077f",
+    "source/legacy-castle-mark.svg": "3d321c51c1b4fe1b81ba0b44cd18b080558f923cf82486e69876e573ba8c499c",
+    "source/mascot-original.png": "221857f1e2853626a175b626c110cbd2bf89cc2c287c094d64bdc5894a9433a5",
+    "source/prompt.txt": "b714437bfe5dd04bcd34844268593b77633c5849a756eaefa26e716aee8784e2"
+  }
+}
