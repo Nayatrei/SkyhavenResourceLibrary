@@ -1,3 +1,4 @@
+export const humanoidMotion=v=>v?.rig==='Humanoid'||v?.webRig?.humanoid===true;
 export const sections=[['characters','캐릭터','01'],['animations','애니메이션','02'],['environments','배경·프랍','03'],['companions','비인간형','04']];
 export const games=[['all','전체'],['skyhaven','Skyhaven'],['companion','Companion'],['legends','Legends'],['shared','공용']];
 export const cleanName=name=>String(name).replace(/^(SK_|SM_|Steampunk_|Bandit_)/,'').replace(/_SD$/,'').replaceAll('_',' ');
@@ -16,12 +17,12 @@ export function sortPackItems(items,order='name'){
   return [...items].sort((a,b)=>score(b)-score(a)||a.name.localeCompare(b.name));
 }
 export function candidateMotions(motions,variant,{query='',pack='',label='',unknown=false}={}){
-  const humanoid=variant?.rig==='Humanoid';
+  const humanoid=humanoidMotion(variant);
   return motions.filter(m=>m.role!=='character'&&!(m.provider==='bank'&&!m.clips?.length)&&(!pack||m.pack===pack)&&(!label||m.motion?.labels?.some(x=>x===label||x.startsWith(label+'/')))&&matches([m.name,m.path,m.motion?.searchTerms,m.clips],query)
     &&(humanoid?(m.rig==='Humanoid'||unknown&&m.rig==='unknown'):variant?m.path.startsWith(variant.model.path.split('/').slice(0,-1).join('/')+'/'):true));
 }
 export function rankMotions(motions,variant){
-  if(variant?.rig!=='Humanoid')return [...motions];
+  if(!humanoidMotion(variant))return [...motions];
   const profile=variant.motionProfile||{},verified=new Set(variant.webVerification?.motions?.map(c=>c.motion)||[]);
   const score=m=>{
     const preferred=(profile.preferredPacks||[]).indexOf(m.pack);
@@ -30,7 +31,7 @@ export function rankMotions(motions,variant){
   return [...motions].sort((a,b)=>score(b)-score(a)||a.name.localeCompare(b.name)||String(a.id).localeCompare(String(b.id)));
 }
 export function recommendedMotions(motions,variant){
-  if(variant?.rig!=='Humanoid')return [];
+  if(!humanoidMotion(variant))return [];
   const ranked=rankMotions(motions,variant);
   return ['Idle','Walk','Run'].flatMap(intent=>{
     const exact=new RegExp('@'+intent+'01(?:_Forward)?\\.fbx$','i');

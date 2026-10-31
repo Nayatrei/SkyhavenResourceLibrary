@@ -4,7 +4,7 @@ import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import { TGALoader } from 'three/addons/loaders/TGALoader.js';
-import { retargetClips, boneRole } from './skyhaven-retarget.mjs?v=20261022-library-v6';
+import { retargetClips, boneRole, inspectMotionRig } from './skyhaven-retarget.mjs?v=20261031-finals-v1';
 import { loadingMarkup, startLoading, paintLoading } from './skyhaven-loading.mjs';
 import { previewMaterial, textureMaterial, lambertMaterial } from './skyhaven-materials.mjs';
 import { sourceBuffer } from './skyhaven-buffer-cache.mjs?v=20261022-library-v6';
@@ -326,6 +326,7 @@ export async function createViewer({ host, file, folder, folders, signal, charac
     for(const url of blobURLs)URL.revokeObjectURL(url);
   };
   cleanup.setMotion=setMotion;
+  cleanup.getMotionRig=()=>inspectMotionRig(model);
   cleanup.getEmbeddedClips=()=>embeddedClips.filter(c=>c.duration>0&&c.tracks.length).map((c,index)=>({name:c.name,duration:c.duration,index}));
   cleanup.playEmbedded=async index=>{await setMotion(null);if(!life.signal.aborted)playClip(index);};
   cleanup.captureThumbnail=()=>{

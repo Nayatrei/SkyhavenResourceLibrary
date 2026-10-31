@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test assets/skyhaven-source-status.test.mjs assets/skyhaven-command.test.mjs assets/skyhaven-environments.test.mjs assets/skyhaven-owned-assets.test.mjs assets/skyhaven-character-art.test.mjs assets/skyhaven-branding.test.mjs"
+    "test": "node --test assets/skyhaven-source-status.test.mjs assets/skyhaven-command.test.mjs assets/skyhaven-environments.test.mjs assets/skyhaven-owned-assets.test.mjs assets/skyhaven-character-art.test.mjs assets/skyhaven-branding.test.mjs assets/skyhaven-factory-finals.test.mjs assets/skyhaven-motion-rig.test.mjs"
   },
   "devDependencies": {
     "jsdom": "26.1.0"
