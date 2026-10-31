@@ -36,14 +36,14 @@ def build():
                     icons=[dict(src=f'/branding/{prefix}icon-{size}.png', sizes=f'{size}x{size}',
                                 type='image/png', purpose='maskable' if prefix else 'any')
                            for prefix in ('', 'maskable-') for size in (192, 512)])
-    (ROOT / 'site.webmanifest').write_text(json.dumps(manifest, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
+    (ROOT / 'site.webmanifest').write_text(json.dumps(manifest, ensure_ascii=False, indent=2)+'\n', encoding='utf-8', newline='\n')
     records = {p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
                for p in ROOT.rglob('*') if p.is_file() and p.name != 'asset-sources.json'}
     provenance = dict(site='https://skyhaven.genesisframeworks.com/', engine='built-in image_gen',
                       source='source/mascot-original.png', derivation='Pillow size-only app/favicon derivatives; preserved original alpha',
                       identity='A living golden castle gatehouse on an ivory cloud, based on the existing Skyhaven tower mark',
                       prompt=(ROOT / 'source/prompt.txt').read_text(encoding='utf-8'), files=records)
-    (ROOT / 'asset-sources.json').write_text(json.dumps(provenance, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
+    (ROOT / 'asset-sources.json').write_text(json.dumps(provenance, ensure_ascii=False, indent=2)+'\n', encoding='utf-8', newline='\n')
     print(json.dumps({'masterSha256': records['source/mascot-original.png'], 'files': len(records)}))
 
 

@@ -1,0 +1,7 @@
+
+# Branding provenance hashes use identical text bytes on Windows and Linux.
+branding/*.webmanifest text eol=lf
+branding/*.json text eol=lf
+branding/*.md text eol=lf
+branding/source/*.txt text eol=lf
+branding/source/*.svg text eol=lf
