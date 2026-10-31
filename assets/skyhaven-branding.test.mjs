@@ -25,7 +25,7 @@ test('manifest uses this site scope, real any and maskable icons, and preserved 
   assert.equal(manifest.name,'Skyhaven Resource Library');assert.equal(manifest.scope,'/');assert.equal(manifest.start_url,'/#home');
   assert.equal(manifest.icons.length,4);
   for(const icon of manifest.icons){
-    const [w,h]=icon.sizes.split('x').map(Number),png=await read(icon.src.slice(1));
+    const [w,h]=icon.sizes.split('x').map(Number),png=await read(icon.src.slice(1).split('?')[0]);
     assert.equal(png.readUInt32BE(16),w);assert.equal(png.readUInt32BE(20),h);
     assert.equal(icon.type,'image/png');assert.ok(['any','maskable'].includes(icon.purpose));
   }
