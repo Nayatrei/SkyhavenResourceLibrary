@@ -26,3 +26,8 @@ git diff --check
 도구는 `artwork/catalog.json`, 해시로 이름을 정한 `artwork/media/` 복사본, `index.html`의 원화 게시 버전만 갱신한다. 원본 파일은 수정·삭제하지 않는다. 참조된 파일을 모두 검증하고 저장 중인 파일·원본 해시 변경·대상 충돌은 게시를 중단한다. 변경 없는 재실행은 같은 결과다. Git push, 서비스 실행, 이미지 생성, 자동 승인·삭제는 수행하지 않는다.
 
 검사 후 일반 PR·main 병합·Pages 배포를 마쳐야 사이트에 나타난다. 브라우저 Refresh는 마지막 게시본을 읽으며 Dropbox의 새 파일을 업로드하지 않는다. 저장 후 게시 요청을 해야 한다. 원화 정적 경로와 버전은 사이트 배포 설정에 있어 기존 원본 서비스의 목록 게시가 실행되어도 원화 이미지가 원본 서비스 의존으로 돌아가지 않는다. 3D 상세의 원화 연결도 같은 정적 목록을 사용한다.
+
+
+## 최종 원화의 특정 팩만 갱신
+
+원화팀 final-only catalog와 production-selection의 identity·원본 경로·SHA가 일치하는 기존 팩만 게시합니다. 예: `py -3 tools/publish_character_art.py --source "H:/Dropbox/10_Projects_Active/CelestialCycle UI DesignGuide/12_캐릭터 원화·3D 제작" --pack Village`. 다른 팩과 비교 기록은 유지하며 이전 게시 항목은 catalog의 publicationHistory에 보존합니다. 원화 정본과 기존 생산 입력은 수정하지 않습니다.

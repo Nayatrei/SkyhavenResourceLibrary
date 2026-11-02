@@ -5,7 +5,7 @@ import tempfile
 import unittest
 
 from PIL import Image
-from publish_character_art import publish
+from publish_character_art import publish, publish_final_pack
 
 
 class PublicationTests(unittest.TestCase):
@@ -42,6 +42,31 @@ class PublicationTests(unittest.TestCase):
         self.assertEqual((self.site / item['original']['url'].lstrip('/')).read_bytes(), before)
         self.assertEqual(publish(self.source, self.site, 0), first)
         self.assertEqual(self.image.read_bytes(), before)
+
+    def test_final_pack_updates_selection_preserves_other_packs_and_previous_decisions(self):
+        publish(self.source,self.site,0)
+        before=self.output()
+        other=dict(before['items'][0],id='Other',pack='OtherPack')
+        before['items'].append(other)
+        (self.site/'artwork/catalog.json').write_text(json.dumps(before),encoding='utf-8')
+        sha=hashlib.sha256(self.image.read_bytes()).hexdigest()
+        final=dict(id='Elara',name='Elara',pack='Village',humanFinal=True,sha256=sha,
+                   original=self.file['path'],preview=self.file['path'],version='unified-PBR-r1',
+                   approvalKind='accepted',status='사용자 최종 확정',width=20,height=30)
+        self.catalog=dict(date='2026-10-29',items=[final])
+        self.save()
+        (self.source/'production-selection.json').write_text(json.dumps(dict(references=[dict(
+            characterId='Elara',pack='Village',humanFinal=True,path=final['original'],sha256=sha)])),encoding='utf-8')
+        publish_final_pack(self.source,self.site,'Village')
+        result=self.output()
+        self.assertEqual(result['items'][0]['version'],'unified-PBR-r1')
+        self.assertEqual(result['items'][1],other)
+        self.assertEqual(publish_final_pack(self.source,self.site,'Village')['items'],1)
+        final['sha256']='changed'
+        self.save()
+        previous=(self.site/'artwork/catalog.json').read_bytes()
+        with self.assertRaises(ValueError):publish_final_pack(self.source,self.site,'Village')
+        self.assertEqual((self.site/'artwork/catalog.json').read_bytes(),previous)
 
     def test_new_files_join_group_and_identity_without_becoming_approved(self):
         Image.new('RGB', (40, 50), 'blue').save(self.image.with_name('front_v002.png'))
