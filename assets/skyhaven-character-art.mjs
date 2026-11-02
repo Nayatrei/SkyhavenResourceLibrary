@@ -8,7 +8,7 @@ export function filterArt(catalog,{query='',pack=''}={}){
   return (catalog.items||[]).filter(item=>(!pack||item.pack===pack)&&words.every(word=>[item.id,item.name,item.package,item.role,item.status,item.version].join(' ').toLocaleLowerCase().includes(word)));
 }
 export function artCard(item,{hosted=false}={}){
-  return `<article class="character-art-card"><button type="button" data-art-open="${esc(item.id)}" aria-label="${esc(item.name)} 원화 확대">${media(item.preview,item.name+' · '+item.package,hosted)}<span class="character-art-copy"><small>${esc(item.package)}</small><strong>${esc(item.name)}</strong><span>${esc(item.role)}</span><span class="character-art-status" data-approval="${esc(item.approvalKind||'curated')}">${esc(item.status||'기존 비교 자료')}</span></span></button></article>`;
+  return `<article class="character-art-card" data-pack="${esc(item.pack)}"><button type="button" data-art-open="${esc(item.id)}" aria-label="${esc(item.name)} 원화 확대">${media(item.preview,item.name+' · '+item.package,hosted)}<span class="character-art-copy"><small>${esc(item.package)}</small><strong>${esc(item.name)}</strong><span>${esc(item.role)}</span><span class="character-art-status" data-approval="${esc(item.approvalKind||'curated')}">${esc(item.status||'기존 비교 자료')}</span></span></button></article>`;
 }
 export function artComparison(caseData,{hosted=false}={}){
   const side=(key,title)=>`<figure>${media(caseData[key].preview,caseData.name+' '+title,hosted)}<figcaption>${title} · ${esc(caseData[key].version)}</figcaption></figure>`;

@@ -134,9 +134,73 @@ def publish(source, site, settle_seconds=10):
     return dict(items=len(ids), images=len(files), bytes=sum(p.stat().st_size for p, _ in files.values()), revision=revision)
 
 
+def publish_final_pack(source, site, pack):
+    """Update one existing pack from the art team's final-only catalog and selection."""
+    source, site = Path(source).resolve(), Path(site).resolve()
+    catalog_path, selection_path = source/'catalog.json', source/'production-selection.json'
+    catalog = json.loads(catalog_path.read_text(encoding='utf-8-sig'))
+    selection = json.loads(selection_path.read_text(encoding='utf-8-sig'))
+    output = site/'artwork/catalog.json'
+    result = json.loads(output.read_text(encoding='utf-8'))
+    selected = {i['characterId']: i for i in selection['references'] if i['pack']==pack}
+    items = [i for i in catalog['items'] if i['pack']==pack]
+    existing = {i['id']: i for i in result['items'] if i['pack']==pack}
+    if not items or set(existing)!=set(selected) or set(existing)!={i['id'] for i in items}:
+        raise ValueError('Final pack identities must match existing publication and selection')
+    files, replacements = {}, {}
+    for item in items:
+        chosen = selected[item['id']]
+        if not item.get('humanFinal') or not chosen.get('humanFinal') or item['original']!=chosen['path'] or item['sha256']!=chosen['sha256']:
+            raise ValueError('Final artwork and production selection disagree')
+        record = {key: item[key] for key in FIELDS if key in item}
+        record.update(assetId=existing[item['id']].get('assetId'), game=existing[item['id']].get('game','skyhaven'))
+        for key in ['original','preview']:
+            path = source_image(source,item[key])
+            sha = digest(path)
+            if key=='original' and sha!=item['sha256']:
+                raise ValueError('Final original hash changed')
+            with Image.open(path) as image:
+                image.verify()
+            relative = 'artwork/media/'+sha+path.suffix.lower()
+            files[relative] = (path,sha)
+            record[key] = dict(path=item[key],url='/'+relative,storage='site',sourceHash=sha,size=path.stat().st_size)
+        replacements[item['id']] = record
+    history = result.setdefault('publicationHistory',[])
+    for old in existing.values():
+        if old!=replacements[old['id']]:
+            if old not in history:
+                history.append(old)
+    result['items'] = [replacements[i['id']] if i['pack']==pack else i for i in result['items']]
+    result['date'] = max(result.get('date',''),catalog['date'])
+    result.setdefault('packSources',{})[pack] = dict(date=catalog['date'],catalogSha256=digest(catalog_path),selectionSha256=digest(selection_path))
+    for relative,(path,sha) in files.items():
+        target = site/relative
+        if target.exists() and digest(target)!=sha:
+            raise ValueError('Static artwork collision')
+    for relative,(path,sha) in files.items():
+        target = site/relative
+        if not target.exists():
+            target.parent.mkdir(parents=True,exist_ok=True)
+            shutil.copy2(path,target)
+        if digest(target)!=sha:
+            raise ValueError('Artwork copy verification failed')
+    body = json.dumps(result,ensure_ascii=False,sort_keys=True,separators=(',',':'))+'\n'
+    revision = hashlib.sha256(body.encode()).hexdigest()
+    output.write_text(body,encoding='utf-8')
+    index = site/'index.html'
+    html = index.read_text(encoding='utf-8')
+    pattern = r'(<script type="application/json" id="skyhaven-deployment">)(.*?)(</script>)'
+    match = re.search(pattern,html,re.S)
+    spec = json.loads(match[2])
+    spec['characterArt'] = dict(catalog='artwork/catalog.json',revision=revision)
+    index.write_text(html[:match.start(2)]+json.dumps(spec,ensure_ascii=False)+html[match.end(2):],encoding='utf-8')
+    return dict(pack=pack,items=len(items),images=len(files),revision=revision)
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--source', required=True, type=Path)
     parser.add_argument('--site', type=Path, default=Path(__file__).resolve().parents[1])
+    parser.add_argument('--pack', help='Publish only this existing pack from the final-only art catalog')
     args = parser.parse_args()
-    print(json.dumps(publish(args.source, args.site), ensure_ascii=False))
+    print(json.dumps(publish_final_pack(args.source,args.site,args.pack) if args.pack else publish(args.source,args.site), ensure_ascii=False))
