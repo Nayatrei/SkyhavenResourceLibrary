@@ -12,7 +12,10 @@ export function finalEntities(payload){
       const file=f=>({...f,url:safeURL(f.url)});
       const model=file(v.model);
       if(model.materialBindings)model.materialBindings=Object.fromEntries(Object.entries(model.materialBindings).map(([name,b])=>[name,Object.fromEntries(Object.entries(b).map(([key,f])=>[key,f?.url?file(f):f]))]));
-      return {...v,factoryFinal:true,model,textures:(v.textures||[]).map(file)};
+      const images=(v.images||[]).filter(f=>f.modelHash===model.sourceHash&&['front','back','detail'].includes(f.view)).map(file);
+      const front=images.find(f=>f.view==='front');
+      return {...v,factoryFinal:true,model,textures:(v.textures||[]).map(file),images,
+        thumbnail:front?{ready:true,url:front.url}:null};
     });
     return {...entity,id:'factory:'+entity.id,origin:'3DFactory final',factoryFinal:true,variants,related:[],aliases:entity.aliases||[]};
   });

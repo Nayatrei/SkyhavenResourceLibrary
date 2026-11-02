@@ -13,3 +13,15 @@ test('reject intermediate formats and surface service failures without fallback 
  const p=payload();p.entities[0].variants[0].model.extension='glb';assert.throws(()=>finalEntities(p));
  const result=await loadFactoryFinals({fetcher:async()=>({ok:false,status:503})});assert.deepEqual(result.entities,[]);assert.match(result.error,/503/);
 });
+test('screenshots must match this model hash; never use concept art as the thumbnail',()=>{
+ const p=payload(),v=p.entities[0].variants[0];
+ v.thumbnail={ready:true,url:'https://elsewhere.test/art.png'};
+ v.images=[{view:'front',modelHash:'old model',url:'/comfy/api/skyhaven/files/old/front.png'},
+  {view:'back',modelHash:'abc',url:'/comfy/api/skyhaven/files/current/back.png'},
+  {view:'front',modelHash:'abc',url:'/comfy/api/skyhaven/files/current/front.png'}];
+ const result=finalEntities(p)[0].variants[0];
+ assert.equal(result.images.length,2);assert.match(result.thumbnail.url,/current\/front.png$/);
+ assert.equal(result.rig,'unknown');
+ v.images=[{view:'front',modelHash:'abc',url:'https://elsewhere.test/fake.png'}];
+ assert.throws(()=>finalEntities(p));
+});
