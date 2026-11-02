@@ -6,8 +6,10 @@ export async function loadHostedDeployment(spec,{base=globalThis.location.href,f
   const current=await response.json();
   if(current.mode!=='hosted-catalog'||!current.routes||new URL(current.origin).origin!==spec.origin)throw new Error('게시 목록의 원본 서버가 일치하지 않습니다.');
   if(spec.characterArt){
-    current.routes['/comfy/skyhaven/api/library/art-archive']=spec.characterArt.catalog;
-    current.revision+=':art:'+spec.characterArt.revision;
+    const artURL=new URL(spec.characterArt.catalog,base);
+    artURL.searchParams.set('v',spec.characterArt.revision);
+    current.routes['/comfy/skyhaven/api/library/art-archive']=artURL.href;
+    current.revision+=':art-v2:'+spec.characterArt.revision;
   }
   return current;
 }
