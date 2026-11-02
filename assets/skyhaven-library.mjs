@@ -1,10 +1,10 @@
-import {loadFactoryFinals} from './skyhaven-factory-finals.mjs?v=20261031-finals-v1';
-import {humanoidMotion,sections,games,cleanName,matches,matchesPack,packInSection,filterPackItems,formatBytes,sortPackItems,candidateMotions,rankMotions,recommendedMotions,readState,filterEntities,smokeMotions} from './skyhaven-library-state.mjs?v=20261031-finals-v1';
+import {factoryCatalog,loadFactoryFinals} from './skyhaven-factory-finals.mjs?v=20261102-captures-v1';
+import {humanoidMotion,sections,games,cleanName,matches,matchesPack,packInSection,filterPackItems,formatBytes,sortPackItems,candidateMotions,rankMotions,recommendedMotions,readState,filterEntities,smokeMotions} from './skyhaven-library-state.mjs?v=20261102-captures-v1';
 import {createCatalogCache} from './skyhaven-library-cache.mjs?v=20261028-art-v1';
 import {createCharacterArtArchive,characterTabs,linkedArt} from './skyhaven-character-art.mjs?v=20261028-art-static-v2';
 import {createOwnedAssetList} from './skyhaven-owned-assets.mjs?v=20261026-owned-gallery-v1';
-import {commandNavigation,categoryEntry,commandImage,commandIcon} from './skyhaven-command.mjs?v=20261026-access-v2';
-import {createEnvironmentView,environmentPacks,defaultEnvironmentPack,environmentSnapshot} from './skyhaven-environments.mjs?v=20261026-access-v2';
+import {commandNavigation,categoryEntry,commandImage,commandIcon} from './skyhaven-command.mjs?v=20261102-captures-v1';
+import {createEnvironmentView,environmentPacks,defaultEnvironmentPack,environmentSnapshot} from './skyhaven-environments.mjs?v=20261102-captures-v1';
 import {loadingMarkup,startLoading} from './skyhaven-loading.mjs';
 import {createLibraryTransport} from './skyhaven-data-source.mjs?v=20261023-hosted-v1';
 import {installLocalConnections,prepareLocalLibrary,withLocalTimeout} from './skyhaven-local-files.mjs?v=20261023-connect-v5';
@@ -23,7 +23,8 @@ let factoryFinals={entities:[],issues:[],error:null};
 async function connectFactory(data){
   factoryFinals=await loadFactoryFinals();
   for(const entity of factoryFinals.entities)detailCache.set(entity.id,entity);
-  return {...data,entities:[...factoryFinals.entities,...data.entities]};
+  const updated=new Set(factoryFinals.entities.map(e=>e.group+'\0'+e.name));
+  return {...data,entities:[...factoryFinals.entities,...data.entities.filter(e=>!updated.has(e.group+'\0'+e.name))]};
 }
 function finalStatus(){return factoryFinals.error||`캐릭터팀 최종 FBX · ${factoryFinals.entities.length}명${factoryFinals.issues.length?' · 연결 확인 필요 '+factoryFinals.issues.length+'건':''}`;}
 
@@ -48,7 +49,7 @@ function saveState(){const u=new URL(location.href);for(const [key,value] of Obj
 function stop(){revision++;life?.abort();viewer?.();viewer=null;pendingMotion=null;}
 const pathRow=(title,value)=>value?`<div class="asset-path"><span>${esc(title)}</span><code>${esc(value)}</code><button data-copy="${esc(value)}" title="${esc(title)} 복사">복사</button></div>`:'';
 const fileRows=files=>files.map(f=>`<div class="asset-file"><span><a class="raw-file-title" href="#file/${encodeURIComponent(f.path)}"><strong>${esc(f.name)}</strong></a><small>${esc(f.resourcePath||f.path)}</small></span><button data-copy="${esc(f.resourcePath||f.path)}">경로</button><a ${sourceHref(f.url)} download aria-label="${esc(f.name)} 다운로드">↓</a></div>`).join('');
-const thumb=v=>v?.thumbnail?.ready?`<img ${mediaSrc(v.thumbnail.url)} alt="${esc(v.name)} 정면 모델" loading="lazy">`:'<span class="model-placeholder" aria-label="저장된 원본 미리보기 없음">◇</span>';
+const thumb=v=>v?.thumbnail?.ready?`<img ${v.factoryFinal?`src="${esc(v.thumbnail.url)}"`:mediaSrc(v.thumbnail.url)} alt="${esc(v.name)} 정면 모델" loading="lazy">`:'<span class="model-placeholder" aria-label="저장된 원본 미리보기 없음">◇</span>';
 function navigation(){
   $('navigation').innerHTML=commandNavigation(data,{active:category,game:state.game,group:state.group});
   if(artRoute())$('navigation').querySelectorAll('.rts-family-heading,.rts-family-nav').forEach(el=>el.remove());
@@ -105,7 +106,7 @@ async function choose(id,variantId){
   finally{connecting?.finish();}
 }
 function detailHeader(){
-  return `<header class="asset-heading"><div><p class="eyebrow">${esc(selected.group)} / ${esc(selected.game)}${selected.factoryFinal?' · 캐릭터팀 최종 FBX':''}</p><h2>${esc(cleanName(selected.name))}</h2>${selected.status?`<p class="compatibility-note">${selected.status==='review_candidate'?'검토 후보 · 사용자 외형 채택 대기':esc(selected.status)}</p>`:''}</div>${selected.variants.length>1?`<label>형태<select id="variant-choice">${selected.variants.map(v=>`<option value="${esc(v.id)}" ${variant?.id===v.id?'selected':''}>${esc(v.name)}</option>`).join('')}</select></label>`:''}</header><div class="detail-tabs" role="tablist">${[['3d','3D'],['motion','애니메이션'],['art','원화·초상화'],['dialogue','대사'],['sources','버전·원본']].map(([id,name])=>`<button role="tab" data-tab="${id}" aria-selected="${tab===id}">${name}</button>`).join('')}</div>`;
+  return `<header class="asset-heading"><div><p class="eyebrow">${esc(selected.group)} / ${esc(selected.game)}${selected.factoryFinal?' · 캐릭터팀 최종 FBX':''}</p><h2>${esc(cleanName(selected.name))}</h2>${selected.status?`<p class="compatibility-note">${selected.status==='review_candidate'?'검토 후보 · 사용자 외형 채택 대기':esc(selected.status)}</p>`:''}</div>${selected.variants.length>1?`<label>형태<select id="variant-choice">${selected.variants.map(v=>`<option value="${esc(v.id)}" ${variant?.id===v.id?'selected':''}>${esc(v.name)}</option>`).join('')}</select></label>`:''}</header><div class="detail-tabs" role="tablist">${[['3d','3D'],...(selected.factoryFinal?[['captures','모델 앞·뒤']]:[]),['motion','애니메이션'],['art','원화·초상화'],['dialogue','대사'],['sources','버전·원본']].map(([id,name])=>`<button role="tab" data-tab="${id}" aria-selected="${tab===id}">${name}</button>`).join('')}</div>`;
 }
 function sceneDetail(){
   const image=f=>f?`<figure class="pack-scene"><img class="scene-preview" ${mediaSrc(f.url)} alt="${esc(selected.name)} 배경 미리보기"><figcaption>${esc(f.path)}</figcaption></figure>`:'';
@@ -124,7 +125,7 @@ async function detail(){
     motionBrowser($('inline-motions'));
     if(!variant.factoryFinal&&!sourceAvailable()){$('library-viewer').innerHTML=offlineNotice;return;}
     try{
-      const {createViewer}=await import('./skyhaven-viewer.mjs?v=20261031-finals-v1');if(signal.aborted)return;
+      const {createViewer}=await import('./skyhaven-viewer.mjs?v=20261102-captures-v1');if(signal.aborted)return;
       const folder={id:'entity',name:selected.name,files:[variant.model,...variant.textures,...(humanoidMotion(variant)?motions:[])]};
       const handle=await createViewer({host:$('library-viewer'),file:variant.model,folder,folders:[folder],signal,assignMotions:variant.factoryFinal||humanoidMotion(variant)});
       if(signal.aborted){handle();return;}viewer=handle;
@@ -142,6 +143,9 @@ async function detail(){
         if(first)await applyMotion(first.motion);
       }
     }catch(error){if(!signal.aborted){content.querySelector('.compatibility-note').textContent=error.message;}}
+  }else if(tab==='captures'){
+    const images=variant?.images||[];
+    content.innerHTML=images.length?`<p>실제 납품 FBX 캡처 · ${esc(variant.name)} · 모델과 텍스처 SHA 연결. 모션·Unity·사용자 채택 검증과 별도입니다.</p><div class="art-grid">${images.map(f=>`<figure><a href="${esc(f.url)}" target="_blank" rel="noopener"><img src="${esc(f.url)}" alt="${esc(selected.name)} 실제 모델 ${f.view==='front'?'정면':f.view==='back'?'후면':'상세'}" loading="lazy"></a><figcaption>${f.view==='front'?'정면':f.view==='back'?'후면':'상세'} · ${esc(f.modelHash.slice(0,12))}</figcaption></figure>`).join('')}</div>`:'<p>현재 모델 SHA에 연결된 스크린샷이 없습니다. 원화로 대신 표시하지 않습니다.</p>';
   }else if(tab==='art'){
     const images=selected.related.filter(f=>f.kind==='image');
     let archiveHTML='';
@@ -151,9 +155,10 @@ async function detail(){
     const files=selected.related.filter(f=>/Dialogue\/.*\.json$/i.test(f.path));content.innerHTML=fileRows(selected.related.filter(f=>/Dialogue\//i.test(f.path)))+'<div id="dialogue-text"></div>';
     if(!sourceAvailable()){$('dialogue-text').innerHTML=offlineNotice;return;}
     for(const file of files){try{const result=await json(file.url,{signal});if(version!==revision)return;const block=document.createElement('section');block.className='dialogue-lines';const labels={greeting:'인사',idle:'일상',offer_help:'도움',warning:'주의',thanks:'감사',farewell:'작별'};block.innerHTML=`<p class="source-note">${result.reviewStatus==='draft'?'대사 초안 · ':''}${esc(result.voice||'')}${result.audioGenerated===false?' · 음성 미생성':''}</p>`+(Array.isArray(result.lines)?result.lines.map(line=>`<article><small>${esc(labels[line.event]||line.event)}</small><p>${esc(line.ko||line.en||line.text||'')}</p><button data-copy="${esc(line.ko||line.en||line.text||'')}">대사 복사</button></article>`).join(''):'<p>대사 형식을 확인하려면 원본 파일을 열어주세요.</p>');$('dialogue-text').append(block);}catch{}}
+  }else if(selected.factoryFinal){content.innerHTML=`<p>최종 납품 · ${esc(selected.productionVersion||'')} ${esc(selected.quality||'')}</p>${selected.variants.map(v=>`<section>${pathRow('모델 SHA',v.model.sourceHash)}<a href="${esc(v.model.url)}">${esc(v.model.name)} 다운로드</a><p>${esc(v.compatibility?.note||'현재 파일의 검증 범위 미확인')}</p></section>`).join('')}`;
   }else content.innerHTML=`<p class="source-note">GameSet 연결과 기존 경로를 보존합니다. 구형·V4·제작 기록도 이 캐릭터에 함께 연결됩니다.</p>${fileRows(selected.related)}`;
 }
-function reference(entity,v){return `${entity.name}\nAsset ID: ${entity.id}\nModel: ${v.model.projectRelativePath||v.model.path}\nGUID: ${v.model.guid||'—'}\nPreview: ${transport.pageURL()}${entity.variants.length>1?'?variant='+encodeURIComponent(v.id):''}#${entity.category}/${encodeURIComponent(entity.id)}\n${hosted?'Source (ONLINE only)':deployment?'Local file (connected browser only)':'Download'}: ${new URL(v.model.url,location.href)}\nCatalog: ${transport.endpoint(API+'/assets/'+encodeURIComponent(entity.id))}`;}
+function reference(entity,v){return `${entity.name}\nAsset ID: ${entity.id}\nModel: ${v.model.projectRelativePath||v.model.path}\nGUID: ${v.model.guid||'—'}\nPreview: ${transport.pageURL()}${entity.variants.length>1?'?variant='+encodeURIComponent(v.id):''}#${entity.category}/${encodeURIComponent(entity.id)}\n${hosted?'Source (ONLINE only)':deployment?'Local file (connected browser only)':'Download'}: ${new URL(v.model.url,location.href)}\nCatalog: ${entity.factoryFinal?factoryCatalog:transport.endpoint(API+'/assets/'+encodeURIComponent(entity.id))}`;}
 function motionBrowser(host){
   if(!host)return;
   if(variant?.rig==='Static'||variant?.factoryFinal&&variant.webRig&&!variant.webRig.humanoid){
@@ -263,7 +268,7 @@ async function filesPage(path){
   if(file){$('raw-preview').innerHTML=`<h2>${esc(file.name)}</h2>${pathRow('원본 경로',file.path)}<a ${sourceHref(file.url)} download>원본 다운로드 ↓</a><div id="raw-media"></div>`;
     if(!sourceAvailable()){$('raw-media').innerHTML=offlineNotice;return;}
     if(file.kind==='image')$('raw-media').innerHTML=`<img class="scene-preview" ${mediaSrc(file.url)} alt="${esc(file.name)}">`;
-    else if(['fbx','glb','gltf','obj','anim'].includes(file.extension)){life=new AbortController();const signal=life.signal;const {createViewer}=await import('./skyhaven-viewer.mjs?v=20261031-finals-v1');const handle=await createViewer({host:$('raw-media'),file,folder:raw.folders[0],folders:raw.folders,signal});if(signal.aborted)handle();else viewer=handle;}
+    else if(['fbx','glb','gltf','obj','anim'].includes(file.extension)){life=new AbortController();const signal=life.signal;const {createViewer}=await import('./skyhaven-viewer.mjs?v=20261102-captures-v1');const handle=await createViewer({host:$('raw-media'),file,folder:raw.folders[0],folders:raw.folders,signal});if(signal.aborted)handle();else viewer=handle;}
     else if(['json','txt','md','csv'].includes(file.extension)){const text=await fetch(file.url).then(r=>r.text());const pre=document.createElement('pre');pre.textContent=text;$('raw-media').append(pre);}
   }
 }
@@ -275,7 +280,7 @@ async function maintenance(){stop();if(!transport.writable){$('main').innerHTML=
 }
 async function qaMotions(){
   stop();life=new AbortController();const signal=life.signal;
-  const {createViewer}=await import('./skyhaven-viewer.mjs?v=20261031-finals-v1');
+  const {createViewer}=await import('./skyhaven-viewer.mjs?v=20261102-captures-v1');
   const tests=smokeMotions(motions,$('qa-motion-pack')?.value||'Human Basic Motions');
   const results=[];const host=$('maintenance-preview');
   const scope=$('qa-scope')?.value||'';
@@ -310,7 +315,7 @@ async function qaMotions(){
 }
 async function qaPacks(){
   stop();life=new AbortController();const signal=life.signal;
-  const {createViewer}=await import('./skyhaven-viewer.mjs?v=20261031-finals-v1');
+  const {createViewer}=await import('./skyhaven-viewer.mjs?v=20261102-captures-v1');
   const e=await asset('character:Elara'),v=e.variants[0],folder={id:e.id,name:e.name,files:[v.model,...v.textures,...motions]},host=$('maintenance-preview');
   const candidates=motions.filter(m=>m.rig==='Humanoid'&&m.extension==='fbx'&&m.role!=='character'&&m.path.startsWith('Motion Library/')&&(m.path.includes('/Animations/')||m.clips?.length));
   const packs=[...new Set(candidates.map(m=>m.pack))].sort();const checks=[],failures=[];

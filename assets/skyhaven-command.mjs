@@ -30,7 +30,7 @@ export function categoryEntry(data,id,game='all'){
 export const categoryImage=entry=>entry?.cover?.url||entry?.variants?.find(v=>v.thumbnail?.ready)?.thumbnail.url;
 export function commandImage(entry,{hosted=false,className='',alt='',eager=false}={}){
   const url=categoryImage(entry);
-  return url?`<img class="${escapeHTML(className)}" ${hosted?'data-live-src':'src'}="${escapeHTML(url)}" alt="${escapeHTML(alt)}" ${eager?'fetchpriority="high"':'loading="lazy"'}>`:'<span class="command-no-image">No source preview</span>';
+  return url?`<img class="${escapeHTML(className)}" ${hosted&&!entry?.factoryFinal?'data-live-src':'src'}="${escapeHTML(url)}" alt="${escapeHTML(alt)}" ${eager?'fetchpriority="high"':'loading="lazy"'}>`:'<span class="command-no-image">No source preview</span>';
 }
 export function categoryCount(data,id,game='all'){
   if(id==='animations')return data.motionCount;
