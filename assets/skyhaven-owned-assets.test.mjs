@@ -18,6 +18,14 @@ const data={available:true,snapshotDate:'2026-10-25',counts:{visible:52,hidden:1
   styles:[{id:'stylized-3d',label:'스타일라이즈드'}],styleEvidenceLabels:{inferred:'추정'},contentsEvidenceLabels:{inferred:'제품명 기준'},
   assets:[...Array.from({length:52},(_,i)=>item(String(i),'Village '+i)),item('hidden','Hidden',true)]};
 
+test('confirmed undownloaded purchases stay distinct from unknown and verified project files',()=>{
+  const purchase={...item('1','Bundle purchase'),downloadStatus:'not-downloaded'};
+  assert.match(ownedCard(purchase),/보유 · 미다운로드/);
+  assert.match(ownedDetails(purchase,data),/보유 · 미다운로드/);
+  assert.match(ownedCard(item('2','Older product')),/다운로드·설치 미확인/);
+  assert.match(ownedCard({...purchase,rpgLab:{fileCount:10,paths:['Assets/Test'],method:'asset-origin'}}),/프로젝트 파일 확인/);
+});
+
 test('search includes contents and styles; category and hidden are independent',()=>{
   assert.equal(filterOwned(data,{query:'식기 스타일라이즈드'}).length,52);
   assert.equal(filterOwned(data,{query:'Village 15'}).length,1);

@@ -43,7 +43,7 @@ export function ownedStyleCounts(data,filters={}){
   const rows=filterOwned(data,{...filters,style:''});
   return [{id:'',label:'전체',count:rows.length},...data.styles.map(style=>({...style,count:rows.filter(a=>a.styles.includes(style.id)).length}))];
 }
-const fileState=a=>a.localLibrary?'로컬 라이브러리 연결됨':a.rpgLab?'프로젝트 파일 확인':'다운로드·설치 미확인';
+const fileState=a=>a.localLibrary?'로컬 라이브러리 연결됨':a.rpgLab?'프로젝트 파일 확인':a.downloadStatus==='not-downloaded'?'보유 · 미다운로드':'다운로드·설치 미확인';
 const cover=(a,lazy=true)=>`<img src="${esc(a.thumbnailUrl)}" alt="${esc(a.name)} 제품 이미지" ${lazy?'loading="lazy"':'loading="eager"'} decoding="async" referrerpolicy="no-referrer">`;
 const imagePlaceholder=a=>`<span class="owned-image-missing" ${a.thumbnailUrl?'hidden':''}><span aria-hidden="true">◇</span><span>제품 이미지 없음</span><small>${esc(a.name)}</small></span>`;
 
