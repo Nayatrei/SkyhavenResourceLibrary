@@ -2,6 +2,6 @@
 
 .character-art-card[data-pack="Village"] .character-art-image{aspect-ratio:2/3;background:#c0c0c0}
 
-.genesis-chat-art[data-kind="characters"] .character-art-image{aspect-ratio:2/3}.genesis-chat-art[data-kind="backgrounds"] .character-art-image{aspect-ratio:16/9}.genesis-chat-pack-filter{display:flex;gap:8px;align-items:center}.genesis-chat-pack-filter select{min-width:0;max-width:100%;padding:8px;color:inherit;background:#1F1F1F;border:1px solid #555541;border-radius:8px}.genesis-chat-pagination{display:flex;justify-content:center;align-items:center;gap:16px;margin-top:24px}.genesis-chat-art-dialog code{overflow-wrap:anywhere}
+.genesis-chat-art[data-kind="characters"] .character-art-image{aspect-ratio:2/3}.genesis-chat-art[data-kind="backgrounds"] .character-art-image{aspect-ratio:16/9}.genesis-chat-pack-filters button{border-radius:9999px}.genesis-chat-pagination{display:flex;justify-content:center;align-items:center;gap:16px;margin-top:24px}.genesis-chat-art-dialog code{overflow-wrap:anywhere}
 
 .genesis-chat-art[data-kind="backgrounds"] .character-art-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr))}.genesis-chat-art .character-art-copy strong{text-wrap:balance}
