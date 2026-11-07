@@ -1,14 +1,15 @@
 import {factoryCatalog,loadFactoryFinals} from './skyhaven-factory-finals.mjs?v=20261102-captures-v1';
 import {humanoidMotion,sections,games,cleanName,matches,matchesPack,packInSection,filterPackItems,formatBytes,sortPackItems,candidateMotions,rankMotions,recommendedMotions,readState,filterEntities,smokeMotions} from './skyhaven-library-state.mjs?v=20261102-captures-v1';
 import {createCatalogCache} from './skyhaven-library-cache.mjs?v=20261028-art-v1';
-import {createCharacterArtArchive,characterTabs,linkedArt} from './skyhaven-character-art.mjs?v=20261102-village-unified-v1';
+import {createCharacterArtArchive,characterTabs,linkedArt} from './skyhaven-character-art.mjs?v=20261106-chat-art-v1';
+import {createGenesisChatArt} from './skyhaven-genesis-chat-art.mjs?v=20261106-chat-art-v1';
 import {createOwnedAssetList} from './skyhaven-owned-assets.mjs?v=20261103-purchases-v1';
 import {commandNavigation,categoryEntry,commandImage,commandIcon} from './skyhaven-command.mjs?v=20261102-captures-v1';
 import {createEnvironmentView,environmentPacks,defaultEnvironmentPack,environmentSnapshot} from './skyhaven-environments.mjs?v=20261102-captures-v1';
 import {loadingMarkup,startLoading} from './skyhaven-loading.mjs';
 import {createLibraryTransport} from './skyhaven-data-source.mjs?v=20261023-hosted-v1';
 import {installLocalConnections,prepareLocalLibrary,withLocalTimeout} from './skyhaven-local-files.mjs?v=20261023-connect-v5';
-import {loadHostedDeployment,installSourceStatus} from './skyhaven-source-status.mjs?v=20261102-art-cache-v2';
+import {loadHostedDeployment,installSourceStatus} from './skyhaven-source-status.mjs?v=20261106-chat-art-v1';
 const deploymentSpec=JSON.parse(document.getElementById('skyhaven-deployment')?.textContent||'null');
 const deployment=deploymentSpec?.mode==='hosted-catalog'?await loadHostedDeployment(deploymentSpec):await prepareLocalLibrary(deploymentSpec);
 const hosted=deployment?.mode==='hosted-catalog';
@@ -41,7 +42,9 @@ try{rememberedCharacter=localStorage.getItem('skyhaven.libraryCharacter');rememb
 async function json(url,options){return deployment?withLocalTimeout(()=>transport.json(url,options),{signal:options?.signal}):transport.json(url,options);}
 const catalogCache=createCatalogCache({api:API,fetchJSON:json,...(hosted?{schema:'hosted:'+deployment.revision}:deployment?.libraryId?{schema:'local:'+deployment.libraryId}:{})});
 const artRoute=()=>category==='characters'&&location.hash.split('/')[1]==='art';
+const chatArtRoute=()=>category==='characters'&&location.hash.split('/')[1]==='genesis-chat';
 const art=createCharacterArtArchive({host:$('main'),fetchJSON:(path,options)=>catalogCache.read(path,options),isActive:artRoute,hosted,sourceOnline:sourceAvailable});
+const chatArt=createGenesisChatArt({host:$('main'),fetchJSON:(path,options)=>catalogCache.read(path,options),isActive:chatArtRoute});
 function catalogStatus(snapshot){$('scan-time').textContent=hosted?`마지막 목록 게시 · ${new Date(deployment.publishedAt).toLocaleString()} · 원화 이미지 사이트 보관`:`${snapshot.local?'저장된 색인':'최신 색인'} · ${new Date(snapshot.savedAt).toLocaleString()} · ${catalogCache.persistent?'이 브라우저에 저장':'이번 방문에 보관'} · 새로고침으로 갱신`;}
 function toast(text){$('toast').textContent=text;$('toast').hidden=false;clearTimeout(toast.timer);toast.timer=setTimeout(()=>$('toast').hidden=true,3500);}
 async function copy(value){try{await navigator.clipboard.writeText(value);toast('경로와 참조를 복사했습니다.');}catch{toast('브라우저의 복사 권한을 확인해 주세요.');}}
@@ -52,11 +55,12 @@ const fileRows=files=>files.map(f=>`<div class="asset-file"><span><a class="raw-
 const thumb=v=>v?.thumbnail?.ready?`<img ${v.factoryFinal?`src="${esc(v.thumbnail.url)}"`:mediaSrc(v.thumbnail.url)} alt="${esc(v.name)} 정면 모델" loading="lazy">`:'<span class="model-placeholder" aria-label="저장된 원본 미리보기 없음">◇</span>';
 function navigation(){
   $('navigation').innerHTML=commandNavigation(data,{active:category,game:state.game,group:state.group});
-  if(artRoute())$('navigation').querySelectorAll('.rts-family-heading,.rts-family-nav').forEach(el=>el.remove());
+  if(artRoute()||chatArtRoute())$('navigation').querySelectorAll('.rts-family-heading,.rts-family-nav').forEach(el=>el.remove());
   $('game-filters').innerHTML=games.map(([id,title])=>`<button data-game="${id}" aria-pressed="${state.game===id}">${id==='all'?'All':id==='shared'?'Shared':title}</button>`).join('');
   $('breadcrumb').textContent=games.find(g=>g[0]===state.game)[1]+' / '+(sections.find(s=>s[0]===category)?.[1]||'자료·관리');
-  $('game-filters').hidden=category==='owned'||artRoute();
-  $('search').placeholder=category==='owned'?'Search owned assets, styles, contents...':'Search assets, packs, environments...';
+  $('game-filters').hidden=category==='owned'||artRoute()||chatArtRoute();
+  $('search').placeholder=chatArtRoute()?'Search GenesisChat artwork, characters, packs...':category==='owned'?'Search owned assets, styles, contents...':'Search assets, packs, environments...';
+  if(chatArtRoute())$('breadcrumb').textContent='GenesisChat / 원화';
   if(category==='owned')$('breadcrumb').textContent='보유 에셋 / Unity · Fab';
   if(category==='home')$('breadcrumb').textContent='라이브러리 본부';
 }
@@ -344,8 +348,10 @@ async function route(){
   if(parts[0]==='polygon'&&parts[1]){const oldPack=data.packs.find(p=>p.id===decodeURIComponent(parts[1]));if(oldPack){category=oldPack.category;navigation();await showPack(oldPack.id);return;}}
   const changed=next!==category;category=next;if(changed&&state.group&&!data.entities.some(e=>e.category===category&&e.group===state.group)&&!data.packs.some(p=>packInSection(p,category)&&p.group===state.group)){state.group='';saveState();}navigation();
   document.body.dataset.libraryCategory=category;if($('preview-navigator'))$('preview-navigator').hidden=true;
+  if(!chatArtRoute())chatArt.hide();
   if(category==='environments'){const requested=parts[1]?decodeURIComponent(parts[1]==='pack'?parts[2]:parts.slice(1).join('/')):null;const packs=environmentPacks(data,state),pack=requested?packs.find(p=>p.id===requested)||data.packs.find(p=>p.id===requested)||data.entities.find(e=>e.id===requested):defaultEnvironmentPack(packs);if(pack){if(pack.isEntity||data.entities.some(e=>e.id===pack.id))await environmentAsset(pack.id);else await showPack(pack.id);}else{stop();packData=null;renderEnvironment(null);}return;}
   if(category==='agents'){agentsPage();return;}if(category==='manual'){await manualPage();return;}if(category==='maintenance'){await maintenance();return;}
+  if(chatArtRoute()){stop();art.hide();selected=null;variant=null;packData=null;await chatArt.render({search:state.query,view:parts[2],selectedId:parts[3]?decodeURIComponent(parts[3]):''});return;}
   if(artRoute()){stop();selected=null;variant=null;packData=null;await art.render({search:state.query,selectedId:parts[2]?decodeURIComponent(parts[2]):''});return;}
   art.hide();
   if(category==='owned'){stop();packData=null;await owned.render({search:state.query});return;}
@@ -374,13 +380,14 @@ document.addEventListener('click',event=>{
 });
 $('search').value=state.query;let searchTimer;
 document.addEventListener('click',event=>{if(event.target.closest('[data-owned-downloads]')){state.query='';$('search').value='';saveState();if(category==='owned')owned.search('');}});
-$('search').oninput=e=>{state.query=e.target.value;if(category==='animations')state.motionQuery=state.query;saveState();clearTimeout(searchTimer);searchTimer=setTimeout(()=>{limit=70;if(category==='environments')environmentView?.refresh();else if(category==='owned')owned.search(state.query);else if(artRoute())art.search(state.query);else if(packData)packItems();else if($('asset-cards'))cards();else if(category==='animations')motionBrowser($('inline-motions'));else if(category==='files')void filesPage();},180);};
+$('search').oninput=e=>{state.query=e.target.value;if(category==='animations')state.motionQuery=state.query;saveState();clearTimeout(searchTimer);searchTimer=setTimeout(()=>{limit=70;if(category==='environments')environmentView?.refresh();else if(category==='owned')owned.search(state.query);else if(chatArtRoute())chatArt.search(state.query);else if(artRoute())art.search(state.query);else if(packData)packItems();else if($('asset-cards'))cards();else if(category==='animations')motionBrowser($('inline-motions'));else if(category==='files')void filesPage();},180);};
 $('refresh').onclick=async()=>{
   const button=$('refresh');button.disabled=true;button.textContent='Refreshing catalog…';
   let refreshed=false;
   try{
     if(hosted)Object.assign(deployment,await loadHostedDeployment(deployment));
     if(category==='owned'){await owned.render({search:state.query,refresh:true});return;}
+    if(chatArtRoute()){const parts=location.hash.split('/');await chatArt.render({search:state.query,view:parts[2],selectedId:parts[3]?decodeURIComponent(parts[3]):'',refresh:true});return;}
     if(artRoute()){await art.render({search:state.query,selectedId:location.hash.split('/')[2]?decodeURIComponent(location.hash.split('/')[2]):'',refresh:true});return;}
     const snapshot=await catalogCache.refresh();refreshed=true;stop();detailCache.clear();data=await connectFactory(snapshot.data);motions=snapshot.motions;packCache.clear();raw=null;selected=null;variant=null;catalogStatus(snapshot);await route();toast('최신 색인을 저장했습니다.');
   }catch(error){toast((refreshed?'색인은 저장했습니다. 화면을 다시 열어주세요. ':'갱신 실패 · 이전 색인을 유지합니다. ')+error.message);}

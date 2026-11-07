@@ -2,7 +2,7 @@ export const ART_API='/comfy/skyhaven/api/library/art-archive';
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const media=(file,alt,hosted,original=false)=>`<span class="character-art-image"><span class="character-art-placeholder" aria-hidden="true">◇</span><img ${hosted&&file.storage!=='site'?'data-live-src':'src'}="${esc(file.url)}" alt="${esc(alt)}" loading="${original?'eager':'lazy'}" decoding="async"></span>`;
 const href=(file,hosted)=>`${hosted&&file.storage!=='site'?'data-live-href':'href'}="${esc(file.url)}"`;
-export const characterTabs=(active='3d')=>`<nav class="character-view-tabs" aria-label="캐릭터 보기"><a href="#characters" ${active==='3d'?'aria-current="page"':''}>3D 캐릭터</a><a href="#characters/art" ${active==='art'?'aria-current="page"':''}>원화</a></nav>`;
+export const characterTabs=(active='3d')=>`<nav class="character-view-tabs" aria-label="캐릭터 보기"><a href="#characters" ${active==='3d'?'aria-current="page"':''}>3D 캐릭터</a><a href="#characters/art" ${active==='art'?'aria-current="page"':''}>원화</a><a href="#characters/genesis-chat/characters" ${active==='genesis-chat'?'aria-current="page"':''}>GenesisChat 원화</a></nav>`;
 export function filterArt(catalog,{query='',pack=''}={}){
   const words=query.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
   return (catalog.items||[]).filter(item=>(!pack||item.pack===pack)&&words.every(word=>[item.id,item.name,item.package,item.role,item.status,item.version].join(' ').toLocaleLowerCase().includes(word)));

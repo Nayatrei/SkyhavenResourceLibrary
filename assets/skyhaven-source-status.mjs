@@ -10,6 +10,14 @@ export async function loadHostedDeployment(spec,{base=globalThis.location.href,f
     artURL.searchParams.set('v',spec.characterArt.revision);
     current.routes['/comfy/skyhaven/api/library/art-archive']=artURL.href;
     current.revision+=':art-v2:'+spec.characterArt.revision;
+    current.characterArt=spec.characterArt;
+  }
+  if(spec.genesisChatArt){
+    const artURL=new URL(spec.genesisChatArt.catalog,base);
+    artURL.searchParams.set('v',spec.genesisChatArt.revision);
+    current.routes['/comfy/skyhaven/api/library/genesis-chat-art']=artURL.href;
+    current.revision+=':chat-art-v1:'+spec.genesisChatArt.revision;
+    current.genesisChatArt=spec.genesisChatArt;
   }
   return current;
 }
