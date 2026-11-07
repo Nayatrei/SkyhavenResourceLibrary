@@ -29,10 +29,11 @@ test('gallery paginates, filters packs and opens the exact composite profile wit
   host.querySelector('[data-chat-page="next"]').click();assert.equal(host.querySelectorAll('[data-chat-art-id]').length,3);
   assert.equal(d.window.document.activeElement.dataset.chatPage,'previous');
   view.search('shared');assert.equal(host.querySelectorAll('[data-chat-art-id]').length,2);
-  const select=host.querySelector('select');select.value='b';select.dispatchEvent(new d.window.Event('change'));
+  host.querySelector('[data-chat-pack="b"]').click();
   assert.equal(host.querySelectorAll('[data-chat-art-id]').length,1);
   assert.equal(new URL(d.window.location.href).searchParams.get('chatPack'),'b');
-  assert.equal(d.window.document.activeElement,host.querySelector('select'));
+  assert.equal(d.window.document.activeElement,host.querySelector('[data-chat-pack="b"]'));
+  assert.equal(host.querySelector('[data-chat-pack="b"]').getAttribute('aria-pressed'),'true');
   host.querySelector('[data-chat-art-id]').click();assert.equal(decodeURIComponent(d.window.location.hash.split('/').at(-1)),JSON.stringify(['b','shared']));
   await view.render({search:'shared',selectedId:JSON.stringify(['b','shared'])});
   assert.equal(host.querySelector('dialog img').getAttribute('src'),'https://genesischat.online/content/images/avatars/b/shared.webp');
@@ -40,6 +41,30 @@ test('gallery paginates, filters packs and opens the exact composite profile wit
   assert.equal(d.window.document.activeElement,host.querySelector('[data-chat-close]'));
   host.querySelector('[data-chat-close]').click();assert.equal(d.window.location.hash,'#characters/genesis-chat/characters');
   assert.equal(d.window.document.activeElement,host.querySelector('[data-chat-art-id]'));
+  view.hide();d.window.close();
+});
+
+test('folder pills retain selection across views and refresh, and all packs clears the URL filter',async()=>{
+  const {d,host,view}=setup();await view.render();
+  const pills=()=>Array.from(host.querySelectorAll('[data-chat-pack]'));
+  assert.equal(host.querySelector('select'),null);
+  assert.deepEqual(pills().map(button=>button.dataset.chatPack),['','a','b']);
+  host.querySelector('[data-chat-pack="a"]').click();
+  assert.match(host.querySelector('[role="status"]').textContent,/50개 원화 · 1 \/ 2/);
+  d.window.location.hash='#characters/genesis-chat/backgrounds';
+  await view.render({view:'backgrounds'});
+  assert.equal(host.querySelector('[data-chat-pack="a"]').getAttribute('aria-pressed'),'true');
+  assert.equal(host.querySelectorAll('[data-chat-art-id]').length,1);
+  await view.render({view:'backgrounds',refresh:true});
+  assert.equal(host.querySelector('[data-chat-pack="a"]').getAttribute('aria-pressed'),'true');
+  host.querySelector('[data-chat-pack=""]').click();
+  assert.equal(new URL(d.window.location.href).searchParams.has('chatPack'),false);
+  assert.equal(d.window.location.hash,'#characters/genesis-chat/backgrounds');
+  assert.equal(d.window.document.activeElement,host.querySelector('[data-chat-pack=""]'));
+  assert.equal(pills().filter(button=>button.getAttribute('aria-pressed')==='true').length,1);
+  d.window.location.hash='#characters/genesis-chat/characters';
+  await view.render();
+  assert.match(host.querySelector('[role="status"]').textContent,/51개 원화/);
   view.hide();d.window.close();
 });
 
