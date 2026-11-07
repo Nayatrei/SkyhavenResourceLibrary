@@ -28,6 +28,15 @@ test('static character-art route and version survive a later source metadata pub
   assert.equal(transport.endpoint('/comfy/skyhaven/api/library/art-archive'),'https://site.example/artwork/catalog.json?v=art-v2');
   assert.notEqual(deployment.revision,'later-source:art:art-v2','legacy cached artwork must not survive the versioned publication');
 });
+test('GenesisChat art metadata and both artwork revisions survive source refreshes',async()=>{
+  const spec={mode:'hosted-catalog',origin:'https://source.example',characterArt:{catalog:'artwork/catalog.json',revision:'original-art'},genesisChatArt:{catalog:'artwork/genesis-chat.json',revision:'chat-art'}};
+  const options={base:'https://site.example/',fetcher:async()=>Response.json({mode:spec.mode,origin:spec.origin,revision:'source',routes:{}})};
+  const first=await loadHostedDeployment(spec,options),refreshed=await loadHostedDeployment(first,options);
+  assert.equal(refreshed.routes['/comfy/skyhaven/api/library/genesis-chat-art'],'https://site.example/artwork/genesis-chat.json?v=chat-art');
+  assert.equal(refreshed.routes['/comfy/skyhaven/api/library/art-archive'],'https://site.example/artwork/catalog.json?v=original-art');
+  assert.equal(refreshed.revision,first.revision);
+});
+
 test('duplicate probes share one request and source failures do not request metadata',async()=>{
   const checks=[];let calls=0,finish;const status=createSourceStatus({origin:'https://source.example',onCheck:checking=>checks.push(checking),fetcher:url=>{calls++;assert.match(url,/api\/health$/);return new Promise(resolve=>{finish=resolve;});}});
   const first=status.check(),second=status.check();finish(Response.json({service:'skyhaven'}));
