@@ -3,7 +3,7 @@ import {humanoidMotion,sections,games,cleanName,matches,matchesPack,packInSectio
 import {createCatalogCache} from './skyhaven-library-cache.mjs?v=20261028-art-v1';
 import {createCharacterArtArchive,characterTabs,linkedArt} from './skyhaven-character-art.mjs?v=20261106-chat-art-v1';
 import {createGenesisChatArt} from './skyhaven-genesis-chat-art.mjs?v=20261106-chat-pills-v1';
-import {createOwnedAssetList} from './skyhaven-owned-assets.mjs?v=20261103-purchases-v1';
+import {createOwnedAssetList} from './skyhaven-owned-assets.mjs?v=20261108-makers-v1';
 import {commandNavigation,categoryEntry,commandImage,commandIcon} from './skyhaven-command.mjs?v=20261102-captures-v1';
 import {createEnvironmentView,environmentPacks,defaultEnvironmentPack,environmentSnapshot} from './skyhaven-environments.mjs?v=20261102-captures-v1';
 import {loadingMarkup,startLoading} from './skyhaven-loading.mjs';
