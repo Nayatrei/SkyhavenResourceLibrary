@@ -7,11 +7,11 @@
 .owned-type-tab small{display:block;margin-top:5px;color:#b4bda9;font-size:11px}
 .owned-type-tab:hover{border-color:#d4b779}
 .owned-type-tab[aria-pressed=true]{background:#554733;border-color:#c6aa72;color:#ffe4b2;box-shadow:inset 0 -2px #c6aa72}
-.owned-browser-toolbar{display:flex;align-items:center;gap:16px;position:relative;margin:12px 0 17px}
+.owned-browser-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:16px;position:relative;margin:12px 0 17px}
 .owned-count{flex:1;margin:0;font-size:13px;font-variant-numeric:tabular-nums}
 .owned-count span{display:block;font-size:11px;color:#a4b5ac;margin-top:4px}
 .owned-browser-toolbar label,.owned-filters label{font-size:11px;color:#b9c5b5}
-.owned-availability-label{display:flex;align-items:center;gap:8px;white-space:nowrap}
+.owned-availability-label{display:flex;min-width:0;align-items:center;gap:8px;white-space:nowrap}
 .owned-assets select{background:#12252b;border:1px solid #707b68;border-radius:5px;color:#e3e4d4;font:inherit;padding:9px;max-width:100%}
 .owned-extra-filters>summary{padding:10px 13px;border:1px solid #7a8067;border-radius:5px;color:#e4d6b8;font-size:12px;cursor:pointer;list-style:none;background:#24332f}
 .owned-extra-filters>summary::after{content:' +';color:#b8a47a}

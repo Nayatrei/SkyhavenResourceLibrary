@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
-import {filterOwned,ownedFilters,ownedCard,ownedDetails,ownedStyleCounts,ownedTypes,ownedTypeCounts,createOwnedAssetList,OWNED_API} from './skyhaven-owned-assets.mjs';
+import {filterOwned,ownedFilters,ownedCard,ownedDetails,ownedMakerCounts,ownedStyleCounts,ownedTypes,ownedTypeCounts,createOwnedAssetList,OWNED_API} from './skyhaven-owned-assets.mjs';
 
 function makeDOM(...args){
   const {JSDOM}=createRequire(import.meta.url)(process.env.JSDOM_PATH||'jsdom');
@@ -32,8 +32,41 @@ test('search includes contents and styles; category and hidden are independent',
   assert.equal(filterOwned(data,{style:'realistic'}).length,0);
   assert.equal(filterOwned(data,{hidden:true}).length,53);
   assert.equal(filterOwned(data,{category:'도구'}).length,0);
-  assert.deepEqual(ownedFilters('https://catalog.test/?ownedStyle=stylized-3d&ownedHidden=1#owned'),{availability:'',type:'',project:'',style:'stylized-3d',category:'',hidden:true});
+  assert.deepEqual(ownedFilters('https://catalog.test/?ownedStyle=stylized-3d&ownedHidden=1#owned'),{availability:'',type:'',project:'',maker:'',style:'stylized-3d',category:'',hidden:true});
 });
+test('maker filtering intersects fields and styles, with counts independent of the selected maker',()=>{
+  const mixed={...data,assets:[
+    {...item('laya','Tropical Island'),publisher:'Laya Design',productCategory:'Environments',styles:['realistic']},
+    {...item('sics','Toon Island'),publisher:'SICS Games',productCategory:'Environments'},
+    {...item('tool','Editor'),publisher:'Laya Design',category:'도구'},
+  ]};
+  assert.deepEqual(filterOwned(mixed,{maker:'Laya Design',type:'environment'}).map(a=>a.id),['laya']);
+  assert.equal(filterOwned(mixed,{maker:'Laya Design',style:'stylized-3d',type:'environment'}).length,0);
+  assert.deepEqual(ownedMakerCounts(mixed,{maker:'Laya Design',type:'environment'}),[{name:'Laya Design',count:1},{name:'SICS Games',count:1}]);
+  assert.deepEqual(ownedMakerCounts(mixed,{maker:'Laya Design',query:'Toon'}),[{name:'Laya Design',count:0},{name:'SICS Games',count:1}]);
+  assert.equal(ownedFilters('https://catalog.test/?ownedMaker=Laya%20Design').maker,'Laya Design');
+});
+
+test('DOM: maker dropdown persists across views and refresh, restores focus and resets with other filters',async()=>{
+  const dom=makeDOM('<main></main>',{url:'https://catalog.test/?ownedType=environment#owned'});
+  const w=dom.window,host=w.document.querySelector('main');
+  const mixed={...data,assets:[{...item('1','Village A'),publisher:'Laya Design'},item('2','Village B')]};
+  const ui=createOwnedAssetList({host,isActive:()=>true,getURL:()=>w.location.href,replaceURL:u=>w.history.replaceState(null,'',u),fetchJSON:async()=>mixed});
+  await ui.render();
+  assert.equal(host.querySelector('#owned-maker').labels[0].textContent.startsWith('제작사'),true);
+  const select=host.querySelector('#owned-maker');select.value='Laya Design';select.dispatchEvent(new w.Event('change'));
+  assert.equal(host.querySelectorAll('.owned-card').length,1);
+  assert.equal(w.document.activeElement,host.querySelector('#owned-maker'));
+  assert.equal(ownedFilters(w.location.href).maker,'Laya Design');
+  await ui.render({refresh:true});assert.equal(host.querySelector('#owned-maker').value,'Laya Design');
+  host.querySelector('[data-owned-type="tool"]').click();
+  assert.equal(host.querySelector('#owned-maker').value,'Laya Design');
+  assert.equal(host.querySelectorAll('.owned-card').length,0);
+  host.querySelector('#owned-reset').click();
+  assert.equal(w.location.search,'');assert.equal(host.querySelectorAll('.owned-card').length,2);
+  dom.window.close();
+});
+
 test('inspector exposes content and escapes metadata',()=>{
   const row=ownedDetails(item('1','<img src=x>'),data);
   assert.ok(row.includes('식기'));
@@ -140,7 +173,7 @@ test('DOM: four type tabs reset subordinate filters, retain search and restore o
   await ui.render({search:'Test'});
   assert.equal(host.querySelectorAll('[data-owned-type]').length,4);
   host.querySelector('[data-owned-type="tool"]').click();
-  assert.deepEqual(ownedFilters(w.location.href),{availability:'',type:'tool',project:'',style:'',category:'',hidden:false});
+  assert.deepEqual(ownedFilters(w.location.href),{availability:'',type:'tool',project:'',maker:'',style:'',category:'',hidden:false});
   assert.equal(new URL(w.location.href).searchParams.get('q'),'Test');
   assert.equal(host.querySelectorAll('.owned-card').length,1);
   assert.ok(host.querySelector('.owned-grid').textContent.includes('Test Editor'));
