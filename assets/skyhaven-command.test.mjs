@@ -43,3 +43,12 @@ test('owned downloads is a visible sibling after local pack families, including 
   assert.match(html,/소유 에셋 · Download/);
   assert.match(html,/href="#owned" data-owned-downloads/);
 });
+
+test('imported creator groups include section-matching prefab packs',()=>{
+  const catalog={...data,packs:[...data.packs,{id:'UTU-Forest',group:'Laya Design',game:'shared',sections:['environments']},{id:'UTU-Yin',group:'Epic Games',game:'shared',sections:['characters']}]};
+  const environment=commandNavigation(catalog,{active:'environments',group:'Laya Design'});
+  assert.match(environment,/data-group="Laya Design" class="active"/);
+  assert.doesNotMatch(environment,/data-group="Epic Games"/);
+  assert.match(commandNavigation(catalog,{active:'characters'}),/data-group="Epic Games"/);
+  assert.doesNotMatch(commandNavigation(catalog,{active:'environments',game:'skyhaven'}),/data-group="Laya Design"/);
+});
