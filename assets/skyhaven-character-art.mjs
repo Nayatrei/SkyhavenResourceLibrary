@@ -1,11 +1,12 @@
+import {inLibraryScope} from './skyhaven-library-state.mjs?v=20261119-navigation-v1';
+
 export const ART_API='/comfy/skyhaven/api/library/art-archive';
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const media=(file,alt,hosted,original=false)=>`<span class="character-art-image"><span class="character-art-placeholder" aria-hidden="true">◇</span><img ${hosted&&file.storage!=='site'?'data-live-src':'src'}="${esc(file.url)}" alt="${esc(alt)}" loading="${original?'eager':'lazy'}" decoding="async"></span>`;
 const href=(file,hosted)=>`${hosted&&file.storage!=='site'?'data-live-href':'href'}="${esc(file.url)}"`;
-export const characterTabs=(active='3d')=>`<nav class="character-view-tabs" aria-label="캐릭터 보기"><a href="#characters" ${active==='3d'?'aria-current="page"':''}>3D 캐릭터</a><a href="#characters/art" ${active==='art'?'aria-current="page"':''}>원화</a><a href="#characters/genesis-chat/characters" ${active==='genesis-chat'?'aria-current="page"':''}>GenesisChat 원화</a></nav>`;
-export function filterArt(catalog,{query='',pack=''}={}){
+export function filterArt(catalog,{query='',pack='',scope='all'}={}){
   const words=query.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
-  return (catalog.items||[]).filter(item=>(!pack||item.pack===pack)&&words.every(word=>[item.id,item.name,item.package,item.role,item.status,item.version].join(' ').toLocaleLowerCase().includes(word)));
+  return (catalog.items||[]).filter(item=>inLibraryScope(item,scope)&&(!pack||item.pack===pack)&&words.every(word=>[item.id,item.name,item.package,item.role,item.status,item.version].join(' ').toLocaleLowerCase().includes(word)));
 }
 export function artCard(item,{hosted=false}={}){
   return `<article class="character-art-card" data-pack="${esc(item.pack)}"><button type="button" data-art-open="${esc(item.id)}" aria-label="${esc(item.name)} 원화 확대">${media(item.preview,item.name+' · '+item.package,hosted)}<span class="character-art-copy"><small>${esc(item.package)}</small><strong>${esc(item.name)}</strong><span>${esc(item.role)}</span><span class="character-art-status" data-approval="${esc(item.approvalKind||'curated')}">${esc(item.status||'기존 비교 자료')}</span></span></button></article>`;
@@ -20,7 +21,8 @@ export function linkedArt(catalog,identity,{hosted=false}={}){
   return `<section class="character-art-linked"><div class="character-art-section-title"><h3>Character Art Archive</h3><a href="#characters/art">원화 전체 보기 ↗</a></div><div class="character-art-grid">${items.map(item=>artCard(item,{hosted})).join('')}</div></section>`;
 }
 export function createCharacterArtArchive({host,fetchJSON,isActive,hosted=false,sourceOnline=()=>true,getURL=()=>location.href,replaceURL=url=>history.replaceState(null,'',url)}){
-  let catalog,pending,version=0,loadVersion=0,query='',pack='',dialog;
+  let catalog,pending,version=0,loadVersion=0,query='',pack='',scope='all',dialog;
+  const heading='<div class="library-heading"><h1>캐릭터 원화</h1></div>';
   const sourceNote=()=>catalog?.mediaStorage==='site'?'<p class="character-art-source-note">원화 이미지는 사이트에 보관되어 원본 서비스 연결 없이 볼 수 있습니다.</p>':`<p class="character-art-source-note" data-source-message>${sourceOnline()?'':'원본 서버가 연결되면 이미지가 표시됩니다. 목록과 선정 상태는 계속 볼 수 있습니다.'}</p>`;
   async function load({refresh=false,signal}={}){
     if(refresh){catalog=null;pending=null;loadVersion++;}
@@ -42,32 +44,39 @@ export function createCharacterArtArchive({host,fetchJSON,isActive,hosted=false,
     dialog.addEventListener('close',()=>{if(isActive()&&new URL(getURL()).hash.split('/').length>2)replaceURL(new URL(getURL()).pathname+new URL(getURL()).search+'#characters/art');});
     host.append(dialog);dialog.showModal();
   }
-  async function render({search='',selectedId='',refresh=false}={}){
+  async function render({search='',selectedId='',refresh=false,scope:nextScope=scope}={}){
     const current=++version,nextPack=new URL(getURL()).searchParams.get('artPack')||'';
     // Opening another art image keeps the roster DOM and its scroll position.
-    if(catalog&&!refresh&&host.querySelector('.character-art-archive')&&search===query&&nextPack===pack){
-      const selected=catalog.items.find(item=>item.id===selectedId);if(selected)open(selected);return;
+    if(catalog&&!refresh&&host.querySelector('.character-art-archive')&&search===query&&nextPack===pack&&nextScope===scope){
+      const selected=catalog.items.find(item=>item.id===selectedId);if(selected)open(selected);else if(dialog?.open)dialog.close();return;
     }
-    query=search;pack=nextPack;
-    host.innerHTML=`<div class="library-heading"><h1>Character Library</h1>${characterTabs('art')}</div><p role="status">원화 목록을 연결하고 있습니다…</p>`;
+    query=search;pack=nextPack;scope=nextScope;
+    host.innerHTML=`${heading}<p role="status">원화 목록을 연결하고 있습니다…</p>`;
     try{
       await load({refresh});if(current!==version||!isActive())return;
       if(!catalog.available){host.insertAdjacentHTML('beforeend','<p>아직 연결된 Character Art Archive가 없습니다.</p>');return;}
-      if(!(pack in catalog.packs))pack='';
+      if(pack&&!filterArt(catalog,{pack,scope}).length)pack='';
       draw();
       const selected=(catalog.items||[]).find(item=>item.id===selectedId);
       if(selected)open(selected);
-    }catch(error){if(current===version&&isActive())host.innerHTML=`<div class="library-heading"><h1>Character Library</h1>${characterTabs('art')}</div><div class="empty"><p>원화 목록을 연결하지 못했습니다.</p><p>${esc(error.message)}</p><button type="button" data-art-retry>다시 연결</button></div>`;}
+    }catch(error){if(current===version&&isActive())host.innerHTML=`${heading}<div class="empty"><p>원화 목록을 연결하지 못했습니다.</p><p>${esc(error.message)}</p><button type="button" data-art-retry>다시 연결</button></div>`;}
   }
   function draw(){
     dialog?.remove();dialog=null;
-    const rows=filterArt(catalog,{query,pack});
-    host.innerHTML=`<div class="library-heading"><h1>Character Library</h1>${characterTabs('art')}</div><section class="character-art-archive"><header class="character-art-intro"><p class="eyebrow">CHARACTER ART ARCHIVE</p><h2>캐릭터의 시작을 한곳에서.</h2><p>선정 원화와 기존 비교 결과 · ${catalog.counts?.characters??0}개 인물 디자인 · ${catalog.counts?.equipment??0}개 장비</p><small>원본 보관함 갱신 ${esc(catalog.date)} · 기존 사용자 평가와 선별 상태를 보존합니다.</small></header><nav class="character-art-filters" aria-label="원화 그룹"><button type="button" data-art-pack="" aria-pressed="${!pack}">전체 ${catalog.items.length}</button>${Object.entries(catalog.packs).map(([id,group])=>`<button type="button" data-art-pack="${esc(id)}" aria-pressed="${pack===id}">${esc(group.name)} <small>${catalog.items.filter(item=>item.pack===id).length}</small></button>`).join('')}</nav><p class="character-art-results" role="status">${rows.length}개 원화 · 이미지를 누르면 크게 보기와 전후 비교를 엽니다.</p>${sourceNote()}<div class="character-art-grid">${rows.map(item=>artCard(item,{hosted})).join('')||'<p class="empty">이 조건에 맞는 원화가 없습니다.</p>'}</div></section>`;
+    const scoped=filterArt(catalog,{scope}),rows=filterArt(catalog,{query,pack,scope});
+    const packs=Object.entries(catalog.packs).filter(([id])=>scoped.some(item=>item.pack===id));
+    const filter=packs.length?`<label class="catalog-field">컬렉션<select id="art-pack-choice"><option value="">전체 컬렉션</option>${packs.map(([id,group])=>`<option value="${esc(id)}" ${id===pack?'selected':''}>${esc(group.name)}</option>`).join('')}</select></label>`:'';
+    host.innerHTML=`${heading}<section class="character-art-archive"><div class="catalog-results">${filter}<p class="character-art-results" role="status">${rows.length}개 원화</p></div>${sourceNote()}<div class="character-art-grid">${rows.map(item=>artCard(item,{hosted})).join('')||'<p class="empty">이 조건에 맞는 원화가 없습니다.</p>'}</div></section>`;
   }
   host.addEventListener('click',event=>{
-    const button=event.target.closest('[data-art-pack],[data-art-retry]');if(!button||!isActive())return;
-    if(button.hasAttribute('data-art-retry')){void render({search:query,refresh:true});return;}
-    pack=button.dataset.artPack;const url=new URL(getURL());pack?url.searchParams.set('artPack',pack):url.searchParams.delete('artPack');replaceURL(url);draw();
+    if(isActive()&&event.target.closest('[data-art-retry]'))void render({search:query,refresh:true});
+  });
+  host.addEventListener('change',event=>{
+    if(!isActive()||event.target.id!=='art-pack-choice')return;
+    pack=event.target.value;
+    const url=new URL(getURL());
+    if(pack)url.searchParams.set('artPack',pack);else url.searchParams.delete('artPack');
+    replaceURL(url);draw();host.querySelector('#art-pack-choice')?.focus({preventScroll:true});
   });
   return {load,render,hide,search(value){query=value;if(catalog&&isActive())draw();}};
 }

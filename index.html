@@ -14,27 +14,29 @@
   <link rel="stylesheet" href="./assets/skyhaven.css?v=20261022-polygon-library">
   <link rel="stylesheet" href="./assets/skyhaven-library.css?v=20261023-hosted-v1">
   <link rel="stylesheet" href="./assets/skyhaven-owned-assets.css?v=20261108-makers-v1">
-  <link rel="stylesheet" href="./assets/skyhaven-command.css?v=20261031-branding-v1">
+  <link rel="stylesheet" href="./assets/skyhaven-command.css?v=20261119-navigation-v1">
   <script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.js","three/addons/":"./vendor/three/examples/jsm/"}}</script>
-  <script type="module" src="./assets/skyhaven-library.mjs?v=20261108-prefabs-v1"></script>
+  <script type="module" src="./assets/skyhaven-library.mjs?v=20261119-navigation-v1"></script>
 <script type="application/json" id="skyhaven-deployment">{"mode": "hosted-catalog", "origin": "https://comfy.genesisframeworks.com", "characterArt": {"catalog": "artwork/catalog.json", "revision": "8d3c4c69cd80f29bdf88340d48bab3aed9da806fc7cce092a49faea7df06156f"}, "genesisChatArt": {"catalog": "artwork/genesis-chat.json", "revision": "1b3516c664350bf83064192bd7f9c65c0aa7bc8b9d8debc2307a2e4f219f87f7"}}</script>
 <link rel="stylesheet" href="./assets/skyhaven-character-art.css?v=20261106-chat-pills-v1">
+  <link rel="stylesheet" href="./assets/skyhaven-navigation.css?v=20261119-navigation-v1">
 </head>
-<body class="rts-shell">
+<body class="rts-shell catalog-shell">
   <a class="skip" href="#main">리소스로 건너뛰기</a>
-  <header class="topbar">
-    <a class="brand" href="#home" aria-label="Skyhaven library"><img class="rts-brand-icon" src="./branding/icon-64.png?v=20261031-family1" width="31" height="39" alt="" decoding="async"><span>SKYHAVEN</span></a>
-    <label class="global-search"><svg class="rts-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 2a8 8 0 1 0 4.9 14.3l6 6 1.4-1.4-6-6A8 8 0 0 0 10 2Zm0 2a6 6 0 1 1 0 12 6 6 0 0 1 0-12Z"/></svg><input id="search" type="search" placeholder="Search assets, packs, environments..." aria-label="Search library"></label>
-    <div id="game-filters" class="game-filters" role="group" aria-label="Game filter"></div>
-    <div id="source-slot"></div>
-    <a class="rts-top-tool" href="#maintenance" aria-label="Library settings"><svg class="rts-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 1 6 0 .7 3 2 .8 2.7-1.5 2.8 2.8L21 9l.8 2 3 .7v4l-3 .7-.8 2 1.5 2.7-2.8 2.8-2.7-1.5-2 .8-.7 3h-6l-.7-3-2-.8-2.7 1.5-2.8-2.8L3 18l-.8-2-3-.7v-4l3-.7.8-2L1.5 6l2.8-2.8L7 4.7l2-.8L9 1Zm3 7a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"/></svg></a>
-    <details class="rts-library-menu"><summary aria-label="Library menu"><svg class="rts-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8ZM5 21v-4c0-3 3-5 7-5s7 2 7 5v4H5Z"/></svg></summary><div><a href="#owned">Owned assets · Unity / Fab</a><a href="#files">All files / production history</a><a href="#agents">Agent / MCP reference</a><a href="#manual">Storage manual</a><a href="#maintenance">Library settings</a><button id="refresh">Refresh catalog ↻</button><small id="scan-time"></small></div></details>
-    <strong id="breadcrumb" class="sr-only">Skyhaven</strong>
+  <header class="catalog-header">
+    <div class="catalog-header-row">
+      <a class="brand" href="#home" aria-label="Skyhaven library"><img class="rts-brand-icon" src="./branding/icon-64.png?v=20261031-family1" width="31" height="39" alt="" decoding="async"><span>SKYHAVEN</span></a>
+      <label class="global-search"><svg class="rts-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 2a8 8 0 1 0 4.9 14.3l6 6 1.4-1.4-6-6A8 8 0 0 0 10 2Zm0 2a6 6 0 1 1 0 12 6 6 0 0 1 0-12Z"/></svg><input id="search" type="search" placeholder="에셋, 컬렉션 검색" aria-label="라이브러리 검색"></label>
+      <div id="source-slot"></div>
+      <details class="rts-library-menu"><summary aria-label="라이브러리 관리"><svg class="rts-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8ZM5 21v-4c0-3 3-5 7-5s7 2 7 5v4H5Z"/></svg></summary><div><a href="#owned">보유 에셋 · Unity / Fab</a><a href="#files">전체 파일·제작 기록</a><a href="#agents">Agent / MCP 참조</a><a href="#manual">저장 매뉴얼</a><a href="#maintenance">연결·라이브러리 관리</a><button id="refresh">목록 새로고침 ↻</button><small id="scan-time"></small></div></details>
+    </div>
+    <div class="catalog-controls">
+      <nav id="navigation" aria-label="라이브러리 메뉴"></nav>
+      <div id="scope-filters" class="scope-filters" role="group" aria-label="자료 범위"></div>
+      <label id="collection-filter" class="collection-filter" hidden><span>컬렉션</span><select id="collection-choice"></select></label>
+    </div>
   </header>
-  <aside class="sidebar">
-    <nav id="navigation" aria-label="리소스 카테고리"></nav>
-  </aside>
-  <div class="workspace">
+  <div class="catalog-workspace">
     <main id="main" tabindex="-1"><div class="loading" role="status">폴더에서 리소스를 불러오는 중…</div></main>
   </div>
   <aside id="preview-navigator" class="rts-navigator" aria-label="Source preview navigator" hidden></aside>

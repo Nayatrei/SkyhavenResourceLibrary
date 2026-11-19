@@ -19,12 +19,19 @@
 목록 UI 검사: Node 20+에서 `node --test assets/skyhaven-owned-assets.test.mjs`.
 DOM 검사는 설치된 jsdom 경로를 `JSDOM_PATH`로 지정하면 함께 실행됩니다.
 
-RTS 화면은 승인된 1672×941 타깃처럼 상단 한 줄 메뉴, 왼쪽 아이콘·팩 목록, 중앙 씬, 오른쪽 상세, 하단 가로 썸네일과 지도 내비게이터로 구성됩니다. 라이브러리 지도와 카테고리 아이콘은 Imagegen 공개 UI 소재이며 실제 게임 맵이나 원본 에셋이 아닙니다. 에셋 미디어는 계속 원본 서버에서만 읽습니다. 설계와 프롬프트: [화면 설계](design/rts-interface.ko.md), [UI 프롬프트](assets/skyhaven-ui/prompts.json). 전체 UI 검사: Node 22에서 `npm ci` 후 `npm test`.
+상단 **캐릭터** 메뉴에서 3D 캐릭터, 애니메이션, 크리처, 원화와 GenesisChat 캐릭터 원화를 엽니다. **배경** 메뉴에는 배경·프랍과 GenesisChat 표지·배경이 있습니다. 넓은 화면에서는 선택한 자료를 목록 옆에서 미리 보고, 좁은 화면에서는 목록과 미리보기를 오갑니다. 전체 UI 검사는 Node 22에서 `npm ci` 후 `npm test`로 실행합니다.
+
+- **All**은 전체 등록 자료이며 GenesisChat 참조도 이 범위에서 열립니다.
+- **Skyhaven**은 Celestial Cycle 및 기존 Skyhaven·Companion·Legends 자료를 묶습니다.
+- **Purchased**는 외부 팩과 외부 모션을 찾는 범위입니다. Unity·Fab 보유 및 설치 기록은 관리 메뉴의 **보유 에셋**에서 확인합니다.
+- **Remake**에는 Arcturus 에셋과 연관 원화·배경이 포함됩니다.
+
+범위는 `?scope=skyhaven`, `?scope=purchased`, `?scope=remake`로 공유합니다. 기존 `?game=skyhaven|companion|legends` 링크는 Skyhaven, `?game=shared`는 Purchased에서 열립니다. 원본 링크와 카탈로그의 기존 출처 필드는 유지합니다.
 
 Unity My Assets와 확인된 Fab 제품을 출처별로 합쳐 표시합니다. 같은 이름을 자동 병합하지 않으며 Fab 제품은 UUID 기반 공식 제품 페이지로 연결합니다. Fab 목록은 확인된 계정 소유 스냅샷이며 로컬 파일 확인 상태는 별도로 표시합니다.
 
 보유 에셋 카드는 공식 Unity/Fab CDN의 제품 썸네일을 직접 참조합니다. 이미지 파일을 복사하지 않으며 화면 근처 항목만 지연 로드합니다. 스타일 pill의 개수는 현재 검색·분류·숨김 조건을 반영하고 스타일 선택 자체와는 독립적입니다.
 
-보유 에셋 상단의 배경 / 캐릭터 / VFX / Tool 분야 탭은 기존 제품명·공식 분류·포함 내용으로 필터링합니다. 배경은 프롭, 캐릭터는 모션을 포함하며 복합 팩은 여러 분야에 나타날 수 있습니다. 음향·UI와 판단 근거가 없는 항목은 전체 보기에서 유지됩니다. 분야 변경은 스타일·스토어 분류를 초기화하고 검색어는 보존합니다. ownedType URL 매개변수로 선택을 복원합니다.
+보유 에셋의 분야 선택에서 배경, 캐릭터, VFX, 도구를 필터링합니다. 배경은 프롭, 캐릭터는 모션을 포함하며 복합 팩은 여러 분야에 나타날 수 있습니다. 음향·UI와 판단 근거가 없는 항목은 전체 보기에서 유지됩니다. 분야 변경은 스타일·스토어 분류를 초기화하고 검색어는 보존합니다. ownedType URL 매개변수로 선택을 복원합니다.
 
 RPG_Lab pill은 확인 날짜가 있는 프로젝트 파일 인벤토리로 필터링합니다. 제품 ID, 고유 폴더명, 패키지 manifest, 문서 대조 근거를 항목별로 표시하며 전체 패키지 반입이나 실행 호환성을 의미하지 않습니다. 미확인은 미설치와 다릅니다. 분야·스타일·검색과 조합되며 ownedProject=rpg-lab 링크로 복원합니다. 공개 데이터에는 프로젝트 상대 경로만 포함합니다. 인벤토리는 Nourish의 scripts/scan_owned_asset_installations.py로 다시 스캔한 뒤 기존 목록 게시 경로로 갱신합니다.

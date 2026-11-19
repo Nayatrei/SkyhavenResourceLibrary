@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
-import {characterTabs,filterArt,artCard,linkedArt,artComparison,createCharacterArtArchive,ART_API} from './skyhaven-character-art.mjs';
+import {filterArt,artCard,linkedArt,artComparison,createCharacterArtArchive,ART_API} from './skyhaven-character-art.mjs';
 import {createCatalogCache} from './skyhaven-library-cache.mjs';
 const original={path:'artwork/a.png',url:'https://source.example/a.png',sourceHash:'abc'};
 const item={id:'Elara',name:'Elara',pack:'Village',package:'Fantasy Village',role:'마을 안내인',version:'corrected',status:'사용자 평가 85',approvalKind:'accepted',reason:'기존 평가 유지',width:832,height:1248,original,preview:original,assetId:'character:Elara'};
@@ -10,7 +10,6 @@ function dom(){const {JSDOM}=createRequire(import.meta.url)(process.env.JSDOM_PA
 test('group and Korean role search include art-only characters',()=>{
   assert.deepEqual(filterArt(catalog,{query:'정찰병',pack:'BanditVillage'}).map(x=>x.id),['scout']);
   assert.equal(filterArt(catalog,{pack:'Village',query:'Elara 85'}).length,1);
-  assert.match(characterTabs('art'),/원화/);assert.match(characterTabs('art'),/href="#characters"/);
 });
 test('original decisions are shown without promoting curation to approval or copying source media',()=>{
   const card=artCard(item,{hosted:true});assert.match(card,/사용자 평가 85/);assert.match(card,/data-live-src=/);assert.doesNotMatch(card,/\ssrc=/);
@@ -26,7 +25,7 @@ test('gallery can browse offline metadata, filter, open direct artwork and prese
   assert.equal(host.querySelectorAll('.character-art-card').length,2);assert.equal(host.querySelector('dialog').open,true);
   assert.match(host.querySelector('dialog').textContent,/원본 서버/);assert.match(host.querySelector('dialog').innerHTML,/#characters\/character%3AElara/);
   assert.match(host.querySelector('dialog').textContent,/사용한 프롬프트/);
-  host.querySelector('[data-art-close]').click();host.querySelector('[data-art-pack="BanditVillage"]').click();
+  host.querySelector('[data-art-close]').click();const select=host.querySelector('#art-pack-choice');select.value='BanditVillage';select.dispatchEvent(new d.window.Event('change',{bubbles:true}));
   assert.equal(host.querySelectorAll('.character-art-card').length,1);assert.match(d.window.location.search,/artPack=BanditVillage/);
   view.search('없는 원화');assert.equal(host.querySelectorAll('.character-art-card').length,0);
   await view.load();assert.equal(calls,1);view.hide();d.window.close();
