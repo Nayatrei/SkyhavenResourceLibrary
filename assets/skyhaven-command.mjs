@@ -1,6 +1,14 @@
 // UI symbols and catalog artwork have separate roles. Asset pictures stay at source.
 export const escapeHTML=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-export const commandCategories=[['characters','Characters','helmet'],['animations','Animations','run'],['environments','Environments','mountain'],['companions','Creatures','paw']];
+const libraryMenu=[
+  ['characters','캐릭터','helmet',[
+    ['characters','3D 캐릭터'],['animations','애니메이션'],['companions','크리처'],
+    ['characters/art','원화'],['characters/genesis-chat/characters','GenesisChat 원화'],
+  ]],
+  ['environments','배경','mountain',[
+    ['environments','배경·프랍'],['environments/genesis-chat/backgrounds','GenesisChat 표지·배경'],
+  ]],
+];
 const paths={
  castle:'M4 2h4v3h2V2h4v3h2V2h4v7l-2 2 1 10H5l1-10-2-2V2Zm5 12v7h6v-7H9ZM8 8h2v3H8V8Zm6 0h2v3h-2V8Z',
  cube:'m12 2 10 5.5v10L12 23 2 17.5v-10L12 2Zm0 2.5L5 8l7 3.6L19 8l-7-3.5Zm-8 5.3v6.5l7 3.9v-6.5L4 9.8Zm9 3.9v6.5l7-3.9V9.8l-7 3.9Z',
@@ -23,25 +31,14 @@ export function commandIcon(name,className=''){
   if(name==='dekogon')return '<span class="rts-dekogon-mark" aria-hidden="true">D</span>';
   return `<svg class="rts-icon ${className}" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="${name==='castle'?'evenodd':'nonzero'}" d="${paths[name]||paths.cube}"/></svg>`;
 }
-export function categoryEntry(data,id,game='all'){
-  const kind=id==='animations'?'characters':id,inGame=e=>game==='all'||e.game===game;
-  return data.entities.find(e=>e.category===kind&&inGame(e)&&(e.cover?.url||e.variants?.some(v=>v.thumbnail?.ready)))||data.packs.find(p=>(p.sections||[p.category]).includes(kind)&&inGame(p)&&p.cover?.url);
-}
 export const categoryImage=entry=>entry?.cover?.url||entry?.variants?.find(v=>v.thumbnail?.ready)?.thumbnail.url;
 export function commandImage(entry,{hosted=false,className='',alt='',eager=false}={}){
   const url=categoryImage(entry);
   return url?`<img class="${escapeHTML(className)}" ${hosted&&!entry?.factoryFinal?'data-live-src':'src'}="${escapeHTML(url)}" alt="${escapeHTML(alt)}" ${eager?'fetchpriority="high"':'loading="lazy"'}>`:'<span class="command-no-image">No source preview</span>';
 }
-export function categoryCount(data,id,game='all'){
-  if(id==='animations')return data.motionCount;
-  return data.entities.filter(e=>e.category===id&&(game==='all'||e.game===game)).length+data.packs.filter(p=>(p.sections||[p.category]).includes(id)&&(game==='all'||p.game===game)).length;
-}
-export function commandNavigation(data,{active='',game='all',group=''}={}){
-  const current=active==='home'?'environments':active;
-  const families=[...data.entities.filter(e=>e.category===current&&(game==='all'||e.game===game)),...data.packs.filter(p=>(p.sections||[p.category]).includes(current)&&(game==='all'||p.game===game))].map(e=>e.group).filter(Boolean);
-  const groups=[...new Set([...(current==='characters'||current==='companions'?[]:['POLYGON','DETAILED','Dekogon']),...families])];
-  return `<div class="rts-category-nav">${commandCategories.map(([id,title,icon])=>`<a class="nav-item ${current===id?'active':''}" href="#${id}" ${current===id?'aria-current="page"':''}>${commandIcon(icon)}<span>${title}</span></a>`).join('')}</div><div class="rts-family-heading"><span>${current==='characters'||current==='companions'?'GROUPS':'PACKS'}</span><a href="#owned" class="rts-small-button" aria-label="Browse owned asset packs">+</a></div><div class="rts-family-nav"><button data-group="" class="rts-all-families ${!group?'active':''}">All collections</button>${groups.map(name=>{
-    const count=data.packs.filter(p=>p.group===name&&(game==='all'||p.game===game)&&(p.sections||[p.category]).includes(current)).length+data.entities.filter(e=>e.category===current&&e.group===name&&(game==='all'||e.game===game)).length;
-    return `<button data-group="${escapeHTML(name)}" class="${group===name?'active':''}" ${!count?'title="No local pack indexed; owned products remain in the library menu"':''}>${commandIcon(name==='Dekogon'?'dekogon':name==='DETAILED'?'pyramid':'cube')}<span>${escapeHTML(name)}</span><small>${count||'—'}</small></button>`;
-  }).join('')}</div><a class="rts-owned-downloads ${current==='owned'?'active':''}" href="#owned" data-owned-downloads>${commandIcon('folder')}<span>소유 에셋 · Download</span><small>ALL</small></a>`;
+export function commandNavigation(){
+  return libraryMenu.map(([id,title,icon,items])=>`<details class="catalog-menu" name="catalog-menu">
+    <summary aria-controls="catalog-menu-${id}">${commandIcon(icon)}<span>${title}</span>${commandIcon('chevron','catalog-chevron')}</summary>
+    <ul id="catalog-menu-${id}">${items.map(([view,label])=>`<li><a href="#${view}" data-library-view="${view}">${label}</a></li>`).join('')}</ul>
+  </details>`).join('');
 }

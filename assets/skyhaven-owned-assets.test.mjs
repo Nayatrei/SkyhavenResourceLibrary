@@ -11,6 +11,12 @@ function makeDOM(...args){
   return dom;
 }
 
+function chooseType(host,window,value){
+  const select=host.querySelector('#owned-type');
+  select.value=value;
+  select.dispatchEvent(new window.Event('change'));
+}
+
 const item=(id,name,hidden=false)=>({id,name,hidden,publisher:'Artist',category:'3D',styles:['stylized-3d'],
   styleEvidence:{level:'inferred',reason:'시리즈 기준',sources:[]},
   contents:{items:['건축','식기'],level:'inferred',reason:'제품명 기준',sources:[]},storeUrl:'https://assetstore.unity.com/search?q=test'});
@@ -59,7 +65,7 @@ test('DOM: maker dropdown persists across views and refresh, restores focus and 
   assert.equal(w.document.activeElement,host.querySelector('#owned-maker'));
   assert.equal(ownedFilters(w.location.href).maker,'Laya Design');
   await ui.render({refresh:true});assert.equal(host.querySelector('#owned-maker').value,'Laya Design');
-  host.querySelector('[data-owned-type="tool"]').click();
+  chooseType(host,w,'tool');
   assert.equal(host.querySelector('#owned-maker').value,'Laya Design');
   assert.equal(host.querySelectorAll('.owned-card').length,0);
   host.querySelector('#owned-reset').click();
@@ -165,23 +171,23 @@ test('type counts predict tab results while style counts are scoped to the selec
   assert.deepEqual(ownedStyleCounts(mixed,{type:'character'}).map(s=>s.count),[1,1]);
 });
 
-test('DOM: four type tabs reset subordinate filters, retain search and restore on revisit',async()=>{
+test('DOM: type dropdown resets subordinate filters, retains search and restores on revisit',async()=>{
   const dom=makeDOM('<main></main>',{url:'https://catalog.test/?q=Test&ownedStyle=toon&ownedCategory=3D#owned'});
   const w=dom.window,host=w.document.querySelector('main');
   const mixed={...data,assets:[item('env','Test Village'),{...item('tool','Test Editor'),category:'도구'}]};
   const ui=createOwnedAssetList({host,isActive:()=>true,getURL:()=>w.location.href,replaceURL:u=>w.history.replaceState(null,'',u),fetchJSON:async()=>mixed});
   await ui.render({search:'Test'});
-  assert.equal(host.querySelectorAll('[data-owned-type]').length,4);
-  host.querySelector('[data-owned-type="tool"]').click();
+  assert.equal(host.querySelector('#owned-type').options.length,5);
+  chooseType(host,w,'tool');
   assert.deepEqual(ownedFilters(w.location.href),{availability:'',type:'tool',project:'',maker:'',style:'',category:'',hidden:false});
   assert.equal(new URL(w.location.href).searchParams.get('q'),'Test');
   assert.equal(host.querySelectorAll('.owned-card').length,1);
   assert.ok(host.querySelector('.owned-grid').textContent.includes('Test Editor'));
-  await ui.render();assert.equal(host.querySelector('[data-owned-type="tool"]').getAttribute('aria-pressed'),'true');
-  host.querySelector('[data-owned-type="tool"]').click();assert.equal(ownedFilters(w.location.href).type,'');
-  host.querySelector('[data-owned-type="environment"]').click();
-  host.querySelector('#owned-type-all').click();assert.equal(host.querySelectorAll('.owned-card').length,2);
-  host.querySelector('[data-owned-type="tool"]').click();host.querySelector('#owned-reset').click();
+  await ui.render();assert.equal(host.querySelector('#owned-type').value,'tool');
+  chooseType(host,w,'');assert.equal(ownedFilters(w.location.href).type,'');
+  chooseType(host,w,'environment');
+  chooseType(host,w,'');assert.equal(host.querySelectorAll('.owned-card').length,2);
+  chooseType(host,w,'tool');host.querySelector('#owned-reset').click();
   assert.equal(w.location.search,'?q=Test');dom.window.close();
 });
 
@@ -259,7 +265,7 @@ test('DOM: installed pill counts, evidence, URL restoration, type change and res
   assert.ok(host.textContent.includes('Assets/Pack/a.fbx'));
   await createOwnedAssetList(options).render();
   assert.equal(host.querySelector('#owned-project').getAttribute('aria-pressed'),'true');
-  host.querySelector('[data-owned-type="environment"]').click();
+  chooseType(host,w,'environment');
   assert.equal(ownedFilters(w.location.href).project,'rpg-lab');
   host.querySelector('#owned-reset').click();assert.equal(w.location.search,'');
   assert.equal(host.querySelectorAll('.owned-card').length,2);
