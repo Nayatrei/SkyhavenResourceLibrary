@@ -11,12 +11,36 @@ from PIL import Image
 from publish_genesis_chat_packs import COLLECTION, MEDIA, MOODS, archive, read, video_info
 
 EDITION = '2026-11-25'
+CAST_SOURCE_SHA = '6819a9fb0348f9e882e06b020d8310877c71722da3dd55706761ff67582f036d'
 ART_RECORDS = {
     'zhuge-liang': '4426d9638f595a6ec14e140589acee316b0076d9688a5f9133228f560ca02b54',
     'cao-cao': 'e792a68066f4277377890f431841a66b237962f6f078816ad96f67921075e145',
 }
 STATES = {f'{activity}-{mood}' for activity in ('listening', 'speaking') for mood in MOODS}
 SITE = Path(__file__).resolve().parents[1]
+
+
+def add_cast_references(actors, path, resource_sha):
+    raw = path.read_bytes()
+    if hashlib.sha256(raw).hexdigest() != CAST_SOURCE_SHA:
+        raise ValueError('Cast expression source fingerprint differs from handoff')
+    cast = json.loads(raw)
+    if (cast['edition'] != EDITION or cast['characterResourceSHA256'] != resource_sha
+            or cast['actors'].keys() != actors.keys()):
+        raise ValueError('Cast expression sources target another edition or roster')
+    for slug, actor in actors.items():
+        supplied = cast['actors'][slug]['references']
+        bindings = sorted((state, sha) for sha, item in supplied.items() for state in item['states'])
+        expected = sorted((state, asset['sha256']) for state, asset in actor['expressionsByState'].items()
+                          if not state.endswith('-neutral'))
+        if bindings != expected:
+            raise ValueError(f'Expression source states do not match the published images: {slug}')
+        source = actor.setdefault('expressionSource', {
+            'recordSHA256': cast['sourceDocuments'][slug]['sha256'], 'references': {}})
+        for sha, item in supplied.items():
+            caption = {k: item[k] for k in ('chapter', 'url', 'sceneKo', 'noteKo') if k in item}
+            if source['references'].setdefault(sha, caption) != caption:
+                raise ValueError(f'Previously published caption differs from handoff: {slug} {sha}')
 
 
 def build(resources, handoff, packs, art_record=None):
@@ -127,6 +151,9 @@ def build(resources, handoff, packs, art_record=None):
         actor['expressionSource'] = {'recordSHA256': record_sha, 'references': references}
     catalog = {'edition': EDITION, 'resourceSHA256': hashlib.sha256(handoff.read_bytes()).hexdigest(),
                'batches': batches, 'characters': list(actors.values())}
+    if len(packs) >= 7:
+        add_cast_references(actors, packs[6].with_name('cast-expression-sources.json'), catalog['resourceSHA256'])
+        catalog['castExpressionSourceSHA256'] = CAST_SOURCE_SHA
     body = (json.dumps(catalog, ensure_ascii=False, indent=2)+'\n').encode()
     site_catalog = SITE/'artwork'/f'genesis-chat-packs-{EDITION}.json'
     if site_catalog.exists():

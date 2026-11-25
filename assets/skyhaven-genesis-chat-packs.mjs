@@ -28,10 +28,12 @@ function player(clip, title) {
 function grid(cards) { return '<div class="chat-review-grid">' + cards.join('') + '</div>'; }
 function novelCaption(reference) {
   if (!reference) return '';
+  if (reference.chapter === null && reference.url === null) return '<p>특정 회차 미지정</p>';
   const chapter = Number(reference.chapter);
   const url = 'https://zh.wikisource.org/wiki/三國演義/第'+String(chapter).padStart(3,'0')+'回';
-  if (!Number.isInteger(chapter) || reference.url !== url) return '';
-  return `<p>${esc(reference.sceneKo)} · <a href="${url}"><cite>삼국지연의</cite> 제${chapter}회</a></p>`;
+  if (!Number.isInteger(chapter) || chapter < 1 || reference.url !== url) return '';
+  const note = reference.noteKo ? `<p>${esc(reference.noteKo)}</p>` : '';
+  return `<p>${esc(reference.sceneKo)} · <a href="${url}"><cite>삼국지연의</cite> 제${chapter}회</a></p>`+note;
 }
 function expressionCards(actor) {
   return grid(Object.entries(moods).map(([key,label]) => {
