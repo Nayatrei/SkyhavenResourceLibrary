@@ -31,6 +31,11 @@ function player(clip, title, linkLabel='원본 영상') {
   if (!url) return '<p>영상 경로 미확인</p>';
   return `<video controls playsinline preload="none" poster="${safeMedia(clip.poster)}" src="${url}" aria-label="${esc(title)}"></video><a href="${url}" target="_blank" rel="noopener">${esc(linkLabel)}</a>`;
 }
+function comparisonPlayer(source, label) {
+  const url = safeMedia(source);
+  if (!url) return '';
+  return `<details class="chat-comparison"><summary>${esc(label)}</summary><video controls playsinline preload="none" width="1036" height="816" src="${url}" aria-label="${esc(label)}"></video><a href="${url}" target="_blank" rel="noopener">비교 파일 받기</a></details>`;
+}
 function grid(cards) { return '<div class="chat-review-grid">' + cards.join('') + '</div>'; }
 function novelCaption(reference) {
   if (!reference) return '';
@@ -70,7 +75,7 @@ function cards(actor, view, revisions={}) {
       const editor = clip ? `<div class="chat-rejection"><p data-saved-reason hidden></p><details><summary>탈락 사유 작성</summary><form aria-label="${esc(actor.name)} · ${mode} · ${label} 검토" novalidate><label>탈락 사유<textarea name="reason" rows="3" required></textarea></label><button type="submit">탈락으로 저장</button> <button type="button" data-undo-rejection hidden>탈락 취소</button></form></details><small role="status"></small></div>` : '';
       const title = actor.name+' · '+mode+' · '+label;
       const originalLabel = revision ? '<strong>탈락 원본</strong><p>'+esc(noZoomReview.reason)+'</p>' : '';
-      const candidate = revision ? `<section data-review-candidate aria-label="${esc(title)} 수정 후보"><strong>수정 후보 · 사용자 리뷰 대기</strong>${player(revision,title+' · 수정 후보','수정 영상 열기')}<a href="${safeMedia(revision.comparison)}" target="_blank" rel="noopener">원본·수정본 나란히 재생 · 6초</a></section>` : '';
+      const candidate = revision ? `<section data-review-candidate aria-label="${esc(title)} 수정 후보"><strong>수정 후보 · 사용자 리뷰 대기</strong>${player(revision,title+' · 수정 후보','수정 영상 열기')}${comparisonPlayer(revision.comparison, title+' · 원본과 수정본 나란히 재생 (6초)')}</section>` : '';
       return `<figure data-state="${state}"><figcaption>${label} <small lang="en">${state}</small></figcaption>${clip ? originalLabel + player(clip, revision ? title+' · 탈락 원본' : title) + loop + warning + note + `<small>${review} · ${Number(clip.batch)}차</small>${editor}${expression ? `<p><a href="${expression}" target="_blank" rel="noopener">표정 원화</a></p>` : ''}${candidate}` : '<p>미인계</p>'}</figure>`;
     }));
   }).join('');
@@ -105,7 +110,7 @@ export function renderReview(data, {view, selectedId='',query='',scope='all',pac
   const editions = editionLinks(view,actor?.slug || '',data.edition || '',pageURL);
   const count = data.characters.reduce((total, entry) => total + Object.keys(entry.clips).length, 0);
   const datedReview = data.edition === ltxEdition;
-  const reel = datedReview ? `<p><a href="${safeMedia(noZoomReview.reel)}" target="_blank" rel="noopener">줌 수정 6편 · 원본과 나란히 재생 (36초)</a></p>` : '';
+  const reel = datedReview ? comparisonPlayer(noZoomReview.reel, '줌 수정 6편 · 원본과 나란히 재생 (36초)') : '';
   const summary = view === 'video-pack' ? `<p class="character-art-results">제작팀 인계 ${count} / ${data.characters.length * 10}편</p>${reel}<details class="chat-clip-revision chat-rejection-log"><summary>내 탈락 목록 <span data-rejection-count></span> · 이 브라우저에 저장</summary><p data-no-rejections>저장한 탈락 사유가 없습니다.</p><textarea aria-label="복사용 탈락 목록" rows="5" readonly hidden></textarea><button type="button" data-copy-rejections hidden>탈락 목록 복사</button><small role="status"></small></details>` : '';
   const menu = actors.map(a => `<a href="${hash(view,a.slug)}" ${actor === a ? 'aria-current="page"' : ''}>${esc(a.name)}${view === 'video-pack' ? ' '+Object.keys(a.clips).length+'/10' : ''}</a>`).join('');
   const selected = actor ? `<section class="chat-review-actor" data-actor="${esc(actor.slug)}"><header>${still(actor.portrait,actor.name+' 원화')}<div><h2>${esc(actor.name)}</h2>${actorDescription(actor,view)}<nav aria-label="${esc(actor.name)} 자료">${['expressions','layers','video-pack'].map(v => `<a href="${hash(v,actor.slug)}" ${view===v?'aria-current="page"':''}>${labels[v]}</a>`).join(' ')}</nav></div></header>${view === 'video-pack' ? '<details class="chat-clip-revision"><summary>인물 표정과 장면 레이어</summary>'+cards(actor,'expressions')+cards(actor,'layers')+'</details>' : ''}${cards(actor,view,datedReview ? noZoomReview.pairs : {})}</section>` : '<p>이 조건에 맞는 캐릭터가 없습니다.</p>';
