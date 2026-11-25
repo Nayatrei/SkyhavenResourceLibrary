@@ -16,6 +16,7 @@
 .chat-review-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(155px,100%),1fr));gap:12px;margin-bottom:20px}
 .chat-review-grid figure{display:flex;flex-direction:column;gap:8px;align-items:start;min-width:0;margin:0;padding:12px;background:#22271f;border-radius:8px}
 .chat-review-grid figcaption{font-weight:600;overflow-wrap:anywhere}
+.chat-comparison{width:100%;max-width:56rem;margin:8px 0}.chat-comparison summary{cursor:pointer}.chat-comparison video,.chat-review-grid .chat-comparison video{display:block;width:100%;height:auto;aspect-ratio:1036/816;object-fit:contain;margin:8px 0}
 .chat-review-grid [data-review-candidate]{display:grid;gap:8px;width:100%;box-sizing:border-box;border-top:1px solid #66705d;padding-top:10px}
 .chat-review-grid small{display:block;font-size:12px;color:#c4c5b6;font-weight:400}
 .chat-review-grid img,.chat-review-grid video{width:100%;aspect-ratio:2/3;object-fit:contain;max-height:340px;background:#30352e;border-radius:4px}

@@ -286,7 +286,10 @@ test('the six zoom revisions belong to the rejected originals in the dated editi
       assert.ok(card.textContent.includes('No Zoom in and out'));
       assert.ok(section.textContent.includes('사용자 리뷰 대기'));
       assert.notEqual(section.querySelector('video').src,actor.clips[state].url);
-      assert.match(section.querySelector('a:last-child').href,/[0-9a-f]{64}\.mp4$/);
+      const sideBySide=section.querySelector('.chat-comparison video[controls]');
+      assert.match(sideBySide.src,/[0-9a-f]{64}\.mp4$/);
+      assert.equal(sideBySide.src,section.querySelector('.chat-comparison a').href);
+      assert.ok(page.querySelector('.character-art-results + .chat-comparison video[controls]'));
     }
   }
   assert.deepEqual(seen,expected);

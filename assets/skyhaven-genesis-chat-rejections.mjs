@@ -1,4 +1,4 @@
-import {stateLabel} from './skyhaven-genesis-chat-packs.mjs?v=20261125-nozoom';
+import {stateLabel} from './skyhaven-genesis-chat-packs.mjs?v=20261125-nozoom-inline';
 
 // One key per delivered video keeps independent reviews intact when a new pack arrives.
 export function bindClipRejections(host, catalog) {
