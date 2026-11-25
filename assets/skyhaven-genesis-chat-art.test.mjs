@@ -34,6 +34,12 @@ test('the delivered cast keeps its own clips, missing states and scene plates',(
     for(const figure of page.querySelectorAll('figure[data-state]')){
       const clip=actor.clips[figure.dataset.state],video=figure.querySelector('video');
       if(!clip){assert.equal(video,null);assert.match(figure.textContent,/미인계/);continue;}
+      if(clip.score === null){
+        assert.equal(clip.reviewStatus,'owner-review-pending');
+        assert.match(figure.textContent,/사용자 리뷰 대기/);
+        assert.doesNotMatch(figure.textContent,/0점/);
+        assert.equal(figure.querySelector('a:last-child').href,clip.expression.url);
+      }else assert.ok(figure.textContent.includes(`제작 검수 ${clip.score}점`));
       assert.equal(video.getAttribute('src'),clip.url);
       assert.equal(video.getAttribute('poster'),clip.poster);
       assert.ok(!hashes.has(clip.sha256));hashes.add(clip.sha256);

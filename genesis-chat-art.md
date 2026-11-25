@@ -27,6 +27,6 @@ git diff --check
 
 인물 원화 화면의 **표정**, **장면 레이어**, **영상 Pack**에서 캐릭터를 선택할 수 있습니다. 영상 Pack에는 제작팀에서 인계한 상태별 검수 후보와 제작 점수를 표시합니다. **기존 영상**은 GenesisChat 공개 리비전의 목록입니다.
 
-다음 묶음을 추가할 때는 `tools/publish_genesis_chat_packs.py --records <제작기록> --app <GenesisChat> --resources <FinalResources> <batch-01.json> ... <최신 명세>`를 실행합니다. Python, ffprobe, ffmpeg가 필요합니다. 각 10편의 상태·길이·시각 검수 기록·원본 해시를 대조하고, 원본과 실제 프레임 썸네일은 FinalResources의 `Library/Art/GenesisChat/PortraitReview`에서 SHA별로 한 번 보관합니다. 사이트에는 공개 주소와 색인만 올립니다. 이전 묶음의 해시가 바뀌면 새 리비전을 확인합니다.
+다음 묶음을 추가할 때는 `tools/publish_genesis_chat_packs.py --records <제작기록> --app <GenesisChat> --resources <FinalResources> <batch-01.json> ... <최신 명세>`를 실행합니다. Python, ffprobe, ffmpeg가 필요합니다. 각 10편의 상태·길이·원본 해시를 대조합니다. 제작자 점수가 있는 영상은 시각 검수 기록을 확인하고, 점수 없이 인계된 영상은 패키지 기록·표정 원화 SHA를 확인한 뒤 **사용자 리뷰 대기**로 표시합니다. 원본과 실제 프레임 썸네일은 FinalResources의 `Library/Art/GenesisChat/PortraitReview`에서 SHA별로 한 번 보관합니다. 사이트에는 공개 주소와 색인만 올립니다. 이전 묶음의 해시가 바뀌면 새 리비전을 확인합니다.
 
 제갈량의 원경·중경·근경은 GenesisChat 검수 샘플 `zhuge-ten-state-v1`에 연결된 세 파일입니다. 중경 포스터는 해당 WebM의 0.25초 프레임입니다. 다른 인물의 미확인 레이어와 미인계 영상 슬롯은 비워 둡니다.
