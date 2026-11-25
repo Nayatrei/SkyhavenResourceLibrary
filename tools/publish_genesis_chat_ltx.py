@@ -11,11 +11,12 @@ from PIL import Image
 from publish_genesis_chat_packs import COLLECTION, MEDIA, MOODS, archive, read, video_info
 
 EDITION = '2026-11-25'
+ZHUGE_ART_SHA = '4426d9638f595a6ec14e140589acee316b0076d9688a5f9133228f560ca02b54'
 STATES = {f'{activity}-{mood}' for activity in ('listening', 'speaking') for mood in MOODS}
 SITE = Path(__file__).resolve().parents[1]
 
 
-def build(resources, handoff, packs):
+def build(resources, handoff, packs, art_record=None):
     reference = read(handoff)
     root = resources / COLLECTION
     edition_dir = root / EDITION
@@ -95,6 +96,21 @@ def build(resources, handoff, packs):
                                   if line.startswith('**') and ':** ' in line)
                 actor['sceneNote'] = {'mood': '화남', 'art': paragraphs['원화 동기'],
                                       'performance': paragraphs['말하기 연기 참고'], 'citation': '삼국지연의 제73회'}
+    zhuge = actors['zhuge-liang']
+    if zhuge['clips']:
+        source = (art_record or edition_dir/(ZHUGE_ART_SHA+'.json')).read_bytes()
+        archive(source, '.json', edition_dir, ZHUGE_ART_SHA)
+        record = json.loads(source)
+        if record['characterId'] != zhuge['slug'] or record['regularCallAvatar']['sha256'] != zhuge['portrait']['sha256']:
+            raise ValueError('Character art record does not match the portrait')
+        references = {}
+        for item in record['assets']:
+            sha = item['imageGen']['sha256']
+            mood = item['emotion']
+            if any(zhuge['expressionsByState'][mode+'-'+mood]['sha256'] != sha for mode in ('listening','speaking')):
+                raise ValueError(f'Character art record does not match the {mood} frame')
+            references[sha] = item['novelReference']
+        zhuge['expressionSource'] = {'recordSHA256': ZHUGE_ART_SHA, 'references': references}
     catalog = {'edition': EDITION, 'resourceSHA256': hashlib.sha256(handoff.read_bytes()).hexdigest(),
                'batches': batches, 'characters': list(actors.values())}
     body = (json.dumps(catalog, ensure_ascii=False, indent=2)+'\n').encode()
@@ -117,6 +133,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--resources', type=Path, required=True)
     parser.add_argument('--characters', type=Path, required=True)
+    parser.add_argument('--art-record', type=Path, help='Original Zhuge Liang art record for first-time archival')
     parser.add_argument('packs', type=Path, nargs='+')
     args = parser.parse_args()
-    build(args.resources, args.characters, args.packs)
+    build(args.resources, args.characters, args.packs, args.art_record)
