@@ -26,13 +26,20 @@ function player(clip, title) {
   return `<video controls playsinline preload="none" poster="${safeMedia(clip.poster)}" src="${url}" aria-label="${esc(title)}"></video><a href="${url}" target="_blank" rel="noopener">원본 영상</a>`;
 }
 function grid(cards) { return '<div class="chat-review-grid">' + cards.join('') + '</div>'; }
+function novelCaption(reference) {
+  if (!reference) return '';
+  const chapter = Number(reference.chapter);
+  const url = 'https://zh.wikisource.org/wiki/三國演義/第'+String(chapter).padStart(3,'0')+'回';
+  if (!Number.isInteger(chapter) || reference.url !== url) return '';
+  return `<p>${esc(reference.sceneKo)} · <a href="${url}"><cite>삼국지연의</cite> 제${chapter}회</a></p>`;
+}
 function expressionCards(actor) {
   return grid(Object.entries(moods).map(([key,label]) => {
     if (!actor.expressionsByState) return `<figure><figcaption>${label}</figcaption>${still(actor.expressions[key], actor.name+' · '+label)}</figure>`;
     const listening = actor.expressionsByState['listening-'+key];
     const speaking = actor.expressionsByState['speaking-'+key];
     const variants = listening.sha256 === speaking.sha256 ? [['듣기·말하기', listening]] : [['듣기', listening], ['말하기', speaking]];
-    return variants.map(([mode,asset]) => `<figure data-expression-sha="${esc(asset.sha256)}"><figcaption>${label} · ${mode}</figcaption>${still(asset, actor.name+' · '+mode+' · '+label)}</figure>`).join('');
+    return variants.map(([mode,asset]) => `<figure data-expression-sha="${esc(asset.sha256)}"><figcaption>${label} · ${mode}${novelCaption(actor.expressionSource?.references[asset.sha256])}</figcaption>${still(asset, actor.name+' · '+mode+' · '+label)}</figure>`).join('');
   }));
 }
 function cards(actor, view) {

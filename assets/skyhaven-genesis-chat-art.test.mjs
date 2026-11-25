@@ -96,6 +96,25 @@ test('only the dated Guan Yu detail credits the painting and performance scenes 
   assert.doesNotMatch(old.querySelector('.chat-review-actor header').textContent,/혼담|군수품 화재/);
 });
 
+test('Zhuge Liang expression cards cite the chapter for the matching art and leave neutral uncredited',()=>{
+  const {JSDOM}=createRequire(import.meta.url)('jsdom');
+  const data=JSON.parse(readFileSync(new URL('../artwork/genesis-chat-packs-2026-11-25.json',import.meta.url)));
+  const actor=data.characters.find(a=>a.slug==='zhuge-liang');
+  const page=JSDOM.fragment(renderReview(data,{view:'expressions',selectedId:actor.slug}));
+  for(const [mood,chapter] of Object.entries({happy:90,angry:96,sad:96,surprised:95,neutral:null})){
+    const sha=actor.expressionsByState['listening-'+mood].sha256;
+    const caption=page.querySelector('[data-expression-sha="'+sha+'"] figcaption');
+    const link=caption.querySelector('a');
+    if(chapter===null) assert.equal(link,null);
+    else {
+      const reference=actor.expressionSource.references[sha];
+      assert.ok(caption.textContent.includes(reference.sceneKo));
+      assert.equal(link.textContent,'삼국지연의 제'+chapter+'회');
+      assert.equal(link.getAttribute('href'),reference.url);
+    }
+  }
+});
+
 test('pack plus profile identity, Korean search and art kinds stay independent',()=>{
   assert.equal(filterChatArt(catalog,{query:'shared'}).length,2);
   assert.equal(filterChatArt(catalog,{query:'shared',pack:'b'}).length,1);
