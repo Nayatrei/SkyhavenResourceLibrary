@@ -11,6 +11,10 @@
     {
       "batch": 3,
       "sha256": "280737375afd0bb544f23e86ef572b3f9c58cac0fd9c340e385405e144cd096d"
+    },
+    {
+      "batch": 4,
+      "sha256": "9919bb120d1c76315c623e7f5ec30639c98f7221865025d79cb85e8d95c64c57"
     }
   ],
   "characters": [
@@ -237,6 +241,66 @@
           "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/7eee3a7d5dbe049d555f99ea272522e1023d3bd0f28080816139723ee15fda7c.webp",
           "batch": 3,
           "score": 85
+        },
+        "speaking-angry": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/da927e3520f4c6b7a5006b9905b8b420a619af698dbfc76869c711bba1bc8de1.webm",
+          "sha256": "da927e3520f4c6b7a5006b9905b8b420a619af698dbfc76869c711bba1bc8de1",
+          "bytes": 214653,
+          "duration": 1.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/24c5081ade92121432f1f22277b388d45dc9d56fc250c35fd03a930909d77577.webp",
+          "batch": 4,
+          "score": null,
+          "reviewStatus": "owner-review-pending",
+          "expression": {
+            "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/5e96e139193036ff2e54b0f7003ca5754ee3eb0f34bef6840b8b3199cda3050a.png",
+            "sha256": "5e96e139193036ff2e54b0f7003ca5754ee3eb0f34bef6840b8b3199cda3050a",
+            "bytes": 622443
+          }
+        },
+        "speaking-happy": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/45081bc33e04c49aab0a8eb95ea5623ab8fbdf200e85b2fd6b58f6a80b44bb04.webm",
+          "sha256": "45081bc33e04c49aab0a8eb95ea5623ab8fbdf200e85b2fd6b58f6a80b44bb04",
+          "bytes": 219738,
+          "duration": 1.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/1e14e5f225476a48d9e40b040e50a1fc6b1e346cd3a1251589a0abe213a27717.webp",
+          "batch": 4,
+          "score": null,
+          "reviewStatus": "owner-review-pending",
+          "expression": {
+            "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/57651f3dd22e312635d922fc2eadecdb6d4e1307b9023a8624cf55d6af4d1f08.png",
+            "sha256": "57651f3dd22e312635d922fc2eadecdb6d4e1307b9023a8624cf55d6af4d1f08",
+            "bytes": 622720
+          }
+        },
+        "speaking-sad": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/26243b8ce1ed8b26bda5aecaea0efe2d88252a3c1ded22b2f2f97e9bda083dd2.webm",
+          "sha256": "26243b8ce1ed8b26bda5aecaea0efe2d88252a3c1ded22b2f2f97e9bda083dd2",
+          "bytes": 219801,
+          "duration": 1.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/50657a8166b5672a0ddd028b5098e28c806183baa2d8fd7789fe7b3b8b14490c.webp",
+          "batch": 4,
+          "score": null,
+          "reviewStatus": "owner-review-pending",
+          "expression": {
+            "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/3b1f8b886590cbfdd8fd74213771a5000035f5cb7cd71c43d412f6a8a96d16c2.png",
+            "sha256": "3b1f8b886590cbfdd8fd74213771a5000035f5cb7cd71c43d412f6a8a96d16c2",
+            "bytes": 622553
+          }
+        },
+        "speaking-surprised": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/3acbd93af71513f7b1605ac9d979c4ae57739f3cd804e4860ea7dd3eb674959d.webm",
+          "sha256": "3acbd93af71513f7b1605ac9d979c4ae57739f3cd804e4860ea7dd3eb674959d",
+          "bytes": 221964,
+          "duration": 1.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/a1802e5b2dd4000fe40827c35557a3c327a1f488bbc057d170d638ceb710c399.webp",
+          "batch": 4,
+          "score": null,
+          "reviewStatus": "owner-review-pending",
+          "expression": {
+            "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/4d3ceef72fee78f5b2b5e210901ae9dec3d1984539fa51a123fa2e7f9d544c7d.png",
+            "sha256": "4d3ceef72fee78f5b2b5e210901ae9dec3d1984539fa51a123fa2e7f9d544c7d",
+            "bytes": 622956
+          }
         }
       }
     },
@@ -445,6 +509,81 @@
           "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/5decd728ccd184f3125a018647b63425500d4b684f6669a44442c959d1c49fd5.webp",
           "batch": 3,
           "score": 90
+        },
+        "listening-sad": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/099f79ad56677f0073f2d7cb7babe54a825622c084e6286a4add9b474cee760a.webm",
+          "sha256": "099f79ad56677f0073f2d7cb7babe54a825622c084e6286a4add9b474cee760a",
+          "bytes": 5435895,
+          "duration": 6.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/4057f65dd5d1eabedec13cdecba81c5891ce200e15fd8e7ac30e72bfcf6ff700.webp",
+          "batch": 4,
+          "score": null,
+          "reviewStatus": "owner-review-pending",
+          "expression": {
+            "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/a8a8a466af9ab9f16386e3ffdf949eb25bb5388bbb1778dcdcb1f0691f8416eb.png",
+            "sha256": "a8a8a466af9ab9f16386e3ffdf949eb25bb5388bbb1778dcdcb1f0691f8416eb",
+            "bytes": 621670
+          }
+        },
+        "listening-surprised": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/27311e75902bc878128987936197c2e49f087c716606645b35625159c1992de7.webm",
+          "sha256": "27311e75902bc878128987936197c2e49f087c716606645b35625159c1992de7",
+          "bytes": 6130451,
+          "duration": 6.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/94c12a44d3011a6e7408ce3fe59e4d90e8e2c2d200ab3cd44269bcf6d7545e86.webp",
+          "batch": 4,
+          "score": null,
+          "reviewStatus": "owner-review-pending",
+          "expression": {
+            "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/7eb784205fc91ee904d5b3d34157f24a82c911c1ff52146c0fe4cab65b1e528b.png",
+            "sha256": "7eb784205fc91ee904d5b3d34157f24a82c911c1ff52146c0fe4cab65b1e528b",
+            "bytes": 623380
+          }
+        },
+        "speaking-angry": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/56ce32759276856ef3d0cf7edc09e0107995aef86d6f2c9271f7c05071d39c9b.webm",
+          "sha256": "56ce32759276856ef3d0cf7edc09e0107995aef86d6f2c9271f7c05071d39c9b",
+          "bytes": 209837,
+          "duration": 1.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/020719de41395a5c5193f8dc85013213495c34aecf01a93ce3393e6e60c54f35.webp",
+          "batch": 4,
+          "score": null,
+          "reviewStatus": "owner-review-pending",
+          "expression": {
+            "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/e51c4b2a332ad2f21fe7af0c2f56e73d55bb5bbb2914525077f5332080e4c4b5.png",
+            "sha256": "e51c4b2a332ad2f21fe7af0c2f56e73d55bb5bbb2914525077f5332080e4c4b5",
+            "bytes": 617042
+          }
+        },
+        "speaking-neutral": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/5e963fd2143332b83729edc6dc9d153603ded34ef4688ec386c7f3c9a50a0a5d.webm",
+          "sha256": "5e963fd2143332b83729edc6dc9d153603ded34ef4688ec386c7f3c9a50a0a5d",
+          "bytes": 211233,
+          "duration": 1.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/f31f0dac2946866a422cc95870c71522282ddcc69607c95c0acab28bbcc2d4cb.webp",
+          "batch": 4,
+          "score": null,
+          "reviewStatus": "owner-review-pending",
+          "expression": {
+            "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/05ca94844fc59abf6d9c701d00a8e24385ba4ffd48bbfc1791870b598d56d983.png",
+            "sha256": "05ca94844fc59abf6d9c701d00a8e24385ba4ffd48bbfc1791870b598d56d983",
+            "bytes": 616624
+          }
+        },
+        "speaking-sad": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/ae4384e93fcc6988051e4abf6985a8600e1ee9610895eda4f4a5a396a62231d7.webm",
+          "sha256": "ae4384e93fcc6988051e4abf6985a8600e1ee9610895eda4f4a5a396a62231d7",
+          "bytes": 213725,
+          "duration": 1.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/c0e33e735595b0ccb14aa3aacdae59d7161d7b8a00c79446bf36d6e0b3030728.webp",
+          "batch": 4,
+          "score": null,
+          "reviewStatus": "owner-review-pending",
+          "expression": {
+            "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/a8a8a466af9ab9f16386e3ffdf949eb25bb5388bbb1778dcdcb1f0691f8416eb.png",
+            "sha256": "a8a8a466af9ab9f16386e3ffdf949eb25bb5388bbb1778dcdcb1f0691f8416eb",
+            "bytes": 621670
+          }
         }
       }
     },
@@ -516,7 +655,23 @@
         }
       },
       "layers": {},
-      "clips": {}
+      "clips": {
+        "listening-neutral": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/cd8d53ba523e9aab913ce51d942e7ce0a1d0ebaad229ec47ba1aa6f160d8c999.webm",
+          "sha256": "cd8d53ba523e9aab913ce51d942e7ce0a1d0ebaad229ec47ba1aa6f160d8c999",
+          "bytes": 8428181,
+          "duration": 6.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/20ffb0870fad09eaadab6efd9d5d2b48db0eaf85f01c83922ff6d719f6be7a01.webp",
+          "batch": 4,
+          "score": null,
+          "reviewStatus": "owner-review-pending",
+          "expression": {
+            "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/49daae4dd825e26f9858dcdd1119f1bafb3265e36bc288e6959acda5c0b1bd6a.png",
+            "sha256": "49daae4dd825e26f9858dcdd1119f1bafb3265e36bc288e6959acda5c0b1bd6a",
+            "bytes": 734248
+          }
+        }
+      }
     },
     {
       "slug": "zhao-yun",

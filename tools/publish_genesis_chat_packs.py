@@ -61,14 +61,11 @@ def video(path, root, expected, seconds=None):
     return {**info, 'duration': duration, 'poster': archive(frame, '.webp', root)['url']}
 
 
-def build(records, app, resources, batches):
+def initial_catalog(cast, app, root):
     public = app / 'public'
-    cast = read(records / 'source-manifest.json')
     pack = cast['pack']
-    root = resources / COLLECTION
-    root.mkdir(parents=True, exist_ok=True)
     profiles = {p.get('avatar'): p for p in read(public/'content/json'/f'{pack}.json')['profiles']}
-    actors, sources = {}, {}
+    actors = {}
     for row in cast['cast']:
         slug = row['slug']
         portrait = Path(row['source'])
@@ -76,7 +73,6 @@ def build(records, app, resources, batches):
         profile = profiles[ref]
         if digest(portrait) != row['sourceSHA256']:
             raise ValueError(f'Portrait changed: {slug}')
-        sources[slug] = row
         actor = {'slug': slug, 'packId': pack, 'profileId': profile['id'], 'name': row['name'],
                  'nameEn': profile['name'], 'portrait': {'url': APP + quote(ref), 'sha256': row['sourceSHA256']},
                  'expressions': {}, 'layers': {}, 'clips': {}}
@@ -95,31 +91,6 @@ def build(records, app, resources, batches):
         path = public / asset['url'].lstrip('/')
         actors['zhuge-liang']['layers'][plane] = (video(path, root, asset['sha256']) if plane == 'mid'
                                                    else archive(path.read_bytes(), '.png', root, asset['sha256']))
-    used = set()
-    receipts = []
-    for number, batch_file in enumerate(batches, 1):
-        batch = read(batch_file)
-        if batch['batch'] != number or batch['through'] != number*10 or len(batch['clips']) != 10:
-            raise ValueError(f'Incomplete or out-of-order batch: {batch_file}')
-        receipts.append({'batch': number, 'sha256': digest(batch_file)})
-        for clip in batch['clips']:
-            slug, state = clip['actor'], clip['state']
-            source = batch['characters'][slug]
-            row = sources[slug]
-            if (source['neutralSHA256'] != row['sourceSHA256'] or Path(source['neutralCallArt']) != Path(row['source'])
-                    or Path(source['expressionStillsDirectory']) != Path(row['neutral']).parent):
-                raise ValueError(f'Conflicting source binding: {slug}')
-            activity, mood = state.split('-')
-            seconds = {'listening': 6, 'speaking': 1}[activity]
-            sha = clip['sha256']
-            path = Path(clip['sourceWebm'])
-            receipt = read(Path(clip['visualReceipt']))
-            if (mood not in MOODS or state in actors[slug]['clips'] or sha in used or clip['duration'] != seconds
-                    or path.stat().st_size != clip['bytes'] or receipt['sha256'] != sha or receipt['state'] != state
-                    or sum(receipt['scores'].values()) != clip['operatorScore']):
-                raise ValueError(f'Conflicting clip receipt: {slug} {state}')
-            actors[slug]['clips'][state] = {**video(path, root, sha, seconds), 'batch': number, 'score': clip['operatorScore']}
-            used.add(sha)
     revisions = []
     art_catalog = read(Path(__file__).resolve().parents[1]/'artwork/genesis-chat.json')
     identities = {(p['packId'], p.get('profileId')): p for p in art_catalog['items'] if p['kind'] == 'character'}
@@ -136,7 +107,70 @@ def build(records, app, resources, batches):
                           'duration': media['durationMs']/1000, 'sha256': media['sha256']})
         revisions.append({**identity, 'name': profile['name'], 'nameEn': profile['nameEn'],
                           'poster': APP + quote(item['poster']['url']), 'clips': clips})
-    return {'batches': receipts, 'characters': list(actors.values()), 'revisions': revisions}
+    return {'batches': [], 'characters': list(actors.values()), 'revisions': revisions}
+
+
+def build(records, app, resources, batches, previous=None):
+    root = resources / COLLECTION
+    root.mkdir(parents=True, exist_ok=True)
+    cast = read(records / 'source-manifest.json')
+    catalog = previous if previous is not None else initial_catalog(cast, app, root)
+    actors = {actor['slug']: actor for actor in catalog['characters']}
+    sources = {row['slug']: row for row in cast['cast']}
+    used = {clip['sha256'] for actor in actors.values() for clip in actor['clips'].values()}
+    receipts = catalog['batches']
+    if len(batches) < len(receipts):
+        raise ValueError('Missing previously published batch')
+    for number, batch_file in enumerate(batches, 1):
+        batch = read(batch_file)
+        if batch['batch'] != number or batch['through'] != number*10 or len(batch['clips']) != 10:
+            raise ValueError(f'Incomplete or out-of-order batch: {batch_file}')
+        entry = {'batch': number, 'sha256': digest(batch_file)}
+        if number <= len(receipts):
+            if receipts[number-1] != entry:
+                raise ValueError('Previously published batch changed')
+            continue
+        receipts.append(entry)
+        for clip in batch['clips']:
+            slug, state = clip['actor'], clip['state']
+            source = batch['characters'][slug]
+            row = sources[slug]
+            if (source['neutralSHA256'] != actors[slug]['portrait']['sha256']
+                    or source['neutralSHA256'] != row['sourceSHA256'] or Path(source['neutralCallArt']) != Path(row['source'])
+                    or Path(source['expressionStillsDirectory']) != Path(row['neutral']).parent):
+                raise ValueError(f'Conflicting source binding: {slug}')
+            activity, mood = state.split('-')
+            seconds = {'listening': 6, 'speaking': 1}[activity]
+            sha = clip['sha256']
+            path = Path(clip['sourceWebm'])
+            if (mood not in MOODS or state in actors[slug]['clips'] or sha in used or clip['duration'] != seconds
+                    or path.stat().st_size != clip['bytes']):
+                raise ValueError(f'Conflicting clip: {slug} {state}')
+            details = {'batch': number, 'score': clip['operatorScore']}
+            if clip['visualReceipt'] is not None:
+                receipt = read(Path(clip['visualReceipt']))
+                if (receipt['sha256'] != sha or receipt['state'] != state
+                        or sum(receipt['scores'].values()) != details['score']):
+                    raise ValueError(f'Conflicting visual receipt: {slug} {state}')
+            else:
+                if (clip['reviewStatus'] != 'owner-review-pending' or clip['ownerApproved'] is not False
+                        or details['score'] is not None):
+                    raise ValueError(f'Conflicting review status: {slug} {state}')
+                package = read(Path(clip['nativePackage']))
+                result = package['result']
+                if (package['status'] != 'complete' or Path(result['webm']) != path
+                        or result['sha256'] != sha or result['bytes'] != clip['bytes']):
+                    raise ValueError(f'Conflicting package: {slug} {state}')
+                still = Path(clip['expressionStill'])
+                if (still.suffix.lower() != '.png' or not still.resolve().is_relative_to(
+                        Path(source['expressionStillsDirectory']).resolve())):
+                    raise ValueError(f'Expression does not match character and state: {slug} {state}')
+                expression = archive(still.read_bytes(), '.png', root, clip['expressionSHA256'])
+                actors[slug]['expressions'].setdefault(mood, expression)
+                details.update(reviewStatus=clip['reviewStatus'], expression=expression)
+            actors[slug]['clips'][state] = {**video(path, root, sha, seconds), **details}
+            used.add(sha)
+    return catalog
 
 
 if __name__ == '__main__':
@@ -145,10 +179,6 @@ if __name__ == '__main__':
         parser.add_argument('--'+key, type=Path, required=True)
     parser.add_argument('batches', nargs='+', type=Path)
     args = parser.parse_args()
-    catalog = build(args.records, args.app, args.resources, args.batches)
     out = Path(__file__).resolve().parents[1]/'artwork/genesis-chat-packs.json'
-    if out.exists():
-        old = read(out)
-        if catalog['batches'][:len(old['batches'])] != old['batches']:
-            raise ValueError('Previously accepted batch receipts changed')
+    catalog = build(args.records, args.app, args.resources, args.batches, read(out) if out.exists() else None)
     out.write_text(json.dumps(catalog, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')

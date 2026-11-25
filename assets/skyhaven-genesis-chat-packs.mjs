@@ -36,7 +36,9 @@ function cards(actor, view) {
     const mode = activity === 'listening' ? '듣기' : '말하기';
     return `<h3>${mode} · ${activity === 'listening' ? '6' : '1'}초</h3>` + grid(Object.entries(moods).map(([key,label]) => {
       const state = activity+'-'+key, clip = actor.clips[state];
-      return `<figure data-state="${state}"><figcaption>${label} <small lang="en">${state}</small></figcaption>${clip ? player(clip, actor.name+' · '+mode+' · '+label) + `<small>제작 검수 ${Number(clip.score)}점 · ${Number(clip.batch)}차</small>` : '<p>미인계</p>'}</figure>`;
+      const review = Number.isFinite(clip?.score) ? `제작 검수 ${clip.score}점` : '사용자 리뷰 대기';
+      const expression = safeMedia(clip?.expression?.url);
+      return `<figure data-state="${state}"><figcaption>${label} <small lang="en">${state}</small></figcaption>${clip ? player(clip, actor.name+' · '+mode+' · '+label) + `<small>${review} · ${Number(clip.batch)}차</small>${expression ? `<a href="${expression}" target="_blank" rel="noopener">표정 원화</a>` : ''}` : '<p>미인계</p>'}</figure>`;
     }));
   }).join('');
 }
