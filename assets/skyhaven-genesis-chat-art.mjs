@@ -1,5 +1,5 @@
-import {ltxEdition, chatTabs, renderReview, reviewViews} from './skyhaven-genesis-chat-packs.mjs?v=20261125-reasons';
-import {bindClipRejections} from './skyhaven-genesis-chat-rejections.mjs?v=20261125-reasons';
+import {ltxEdition, chatTabs, renderReview, reviewViews} from './skyhaven-genesis-chat-packs.mjs?v=20261125-nozoom';
+import {bindClipRejections} from './skyhaven-genesis-chat-rejections.mjs?v=20261125-nozoom';
 export const CHAT_ART_API='/comfy/skyhaven/api/library/genesis-chat-art';
 const PAGE_SIZE=48;
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
