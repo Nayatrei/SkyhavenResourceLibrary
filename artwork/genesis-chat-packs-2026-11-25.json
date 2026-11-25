@@ -25,6 +25,10 @@
     {
       "batch": 6,
       "sha256": "d61d6a4f835657e2d3fd045afce0da8e67d5d771d99425e0ed85b4e9abede7f0"
+    },
+    {
+      "batch": 7,
+      "sha256": "3cfa1f5ab5113703ce3b8125bddc807083fc6c26dbfb33120ca38feaf46ddb4a"
     }
   ],
   "characters": [
@@ -313,6 +317,31 @@
           "artNote": null,
           "nativeReviewReason": "qa-mouth-review",
           "reviewStatus": "owner-review-pending"
+        }
+      },
+      "expressionSource": {
+        "recordSHA256": "6a5528be4bc88701697970c6849576a59e7ac4f19c7f3f0556ba093198e55eed",
+        "references": {
+          "24b69b2cc073a328be4495a050bb655861ee40e22ba44692d276756ba55e458a": {
+            "chapter": 57,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第057回",
+            "sceneKo": "방통을 얻어 제갈량과 함께 뜻을 펼 수 있게 된 기쁨"
+          },
+          "6c148876a774ea79efccede065522315a04a6a74630a410d071365ba5433c50e": {
+            "chapter": 41,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第041回",
+            "sceneKo": "조운의 배신을 지레 단정한 말을 듣고 그의 충의를 단호하게 변호하는 장면"
+          },
+          "b26b1db03709d6acc449af6eeea547dbb0dc558a6682f86215730df1a62418f3": {
+            "chapter": 41,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第041回",
+            "sceneKo": "장판에서 자신을 따라온 백성의 생사를 알 수 없어 책임을 느끼며 슬퍼하는 장면"
+          },
+          "2b4f1577c8a4bac60a656711bb4b70eaeafad836aa068c19865cec77f37bf2a2": {
+            "chapter": 21,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第021回",
+            "sceneKo": "조조가 술자리에서 자신을 영웅으로 지목하자 놀랐다가 태연함을 되찾는 장면"
+          }
         }
       }
     },
@@ -608,6 +637,32 @@
         "art": "제갈근이 전한 손권 측 혼담을 관우가 노하여 거절하는 장면.",
         "performance": "출병 전 군수품 화재 뒤 관우가 부사인과 미방을 질책하는 장면. 영상에서는 짧고 낮은 말투로 연출했다.",
         "citation": "삼국지연의 제73회"
+      },
+      "expressionSource": {
+        "recordSHA256": "dfb4f0e6f07955b2a54bdc7f2051098a8ee37ad88ee5adf52d33dce0621293e0",
+        "references": {
+          "c811ca753b16a49fd539f1e190303f8dcf88256f521701e4e5710a8c7eb6df14": {
+            "chapter": 28,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第028回",
+            "sceneKo": "관우가 유비와 다시 만나 손을 잡는 장면의 안도"
+          },
+          "73fd90181af30e974dc53b0b05c8017b0b469f3f40694fee675d98375783b9f5": {
+            "chapter": 73,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第073回",
+            "sceneKo": "제갈근이 전한 손권 측 혼담을 관우가 노하여 거절하는 장면",
+            "noteKo": "원화 동기다. 말하기 연기 참고는 같은 73회의 별도 대목인 군수품 화재 뒤 부사인·미방 질책이며, 짧고 낮은 말투는 영상 연출이다."
+          },
+          "f75eb0bc8d715bbaac8997f313ef99bfee54ebcd7579874f07b599f2f7984e3f": {
+            "chapter": 77,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第077回",
+            "sceneKo": "관평과 함께 사로잡힌 관우의 마지막 장면에서 가져온 무거운 비애"
+          },
+          "dc4ea896516ed2feefedc9afdf47a1a1f229c07afd683aba2cb235851d6a1545": {
+            "chapter": 28,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第028回",
+            "sceneKo": "고성에서 장비가 자신을 배신자로 오해한 뜻밖의 순간"
+          }
+        }
       }
     },
     {
@@ -895,6 +950,33 @@
           "artNote": null,
           "nativeReviewReason": "qa-mouth-review",
           "reviewStatus": "owner-review-pending"
+        }
+      },
+      "expressionSource": {
+        "recordSHA256": "0ba254af50764c3d36c3f03cf9cf59222abf34d28da928c51ca9abe57baebee2",
+        "references": {
+          "33d1f6193581648571724b028640901a24dcb50a39c5b6a4b5226766b2d4d7ba": {
+            "chapter": 28,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第028回",
+            "sceneKo": "고성에서 의형제와 재회하며 거친 얼굴에 번지는 안도",
+            "noteKo": "사용자가 선택한 새 장비 기쁨 표정을 유지했다. 이 회차는 원화팀의 장면 참고이며, 이번 ImageGen 편집은 배경 제거였다."
+          },
+          "7ae6fdb022b410a215153ae5292fa6d406c55019ca5eed7fadf31594c3e79dbd": {
+            "chapter": 28,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第028回",
+            "sceneKo": "고성에서 관우를 배신자로 오해하고 맞서는 분노"
+          },
+          "4e53d934c6d96eaa6d20640c96da2154f2baa53dc40d53c6904991b26078d6fe": {
+            "chapter": 81,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第081回",
+            "sceneKo": "관우의 죽음 뒤 의형제를 잃은 슬픔을 억누르는 장비",
+            "noteKo": "사용자가 선택한 새 장비 슬픔 A 표정을 유지했다. 이 회차는 원화팀의 장면 참고이며, 이번 ImageGen 편집은 배경 제거였다."
+          },
+          "8bc7fad6e324a3204e562bd839360d0bb4b48f571fe54ac3a2d8ce6618a48a93": {
+            "chapter": 57,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第057回",
+            "sceneKo": "뇌양에서 방통의 재능을 직접 보고 놀라 평가를 고치는 장비"
+          }
         }
       }
     },
@@ -1619,7 +1701,223 @@
           }
         }
       },
-      "clips": {}
+      "clips": {
+        "speaking-happy": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2026-11-25/fca06bc3bd467af571343999f08da71eab4f84c8fcad48963b6f6c6a9b0bec94.webm",
+          "sha256": "fca06bc3bd467af571343999f08da71eab4f84c8fcad48963b6f6c6a9b0bec94",
+          "bytes": 6792774,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2026-11-25/c73d0e12184d41ededcbc8ecb9714ddd2543421bf9eca823ef121a6bca5c5bcb.png",
+          "posterSHA256": "c73d0e12184d41ededcbc8ecb9714ddd2543421bf9eca823ef121a6bca5c5bcb",
+          "duration": 3.0,
+          "expression": {
+            "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2026-11-25/b4967293fd52e101b3dff828f8d35adaaaa6339b6756f11ce6051de6e4e1868f.png",
+            "sha256": "b4967293fd52e101b3dff828f8d35adaaaa6339b6756f11ce6051de6e4e1868f",
+            "bytes": 2502644
+          },
+          "batch": 7,
+          "jobId": "4a9d65ba993645b9af0429203285fe3d",
+          "score": null,
+          "artNote": null,
+          "nativeReviewReason": null,
+          "reviewStatus": "owner-review-pending"
+        },
+        "listening-happy": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2026-11-25/b9df185173cada34698d8a49ec9a1ec4d4fcad3973c3bbfa2431c003f4a42a59.webm",
+          "sha256": "b9df185173cada34698d8a49ec9a1ec4d4fcad3973c3bbfa2431c003f4a42a59",
+          "bytes": 11307930,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2026-11-25/aa10be7254fc304820582f1027b6eb1ef3206f57f62e43ae58cf98a415ebe4f2.png",
+          "posterSHA256": "aa10be7254fc304820582f1027b6eb1ef3206f57f62e43ae58cf98a415ebe4f2",
+          "duration": 6.0,
+          "expression": {
+            "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2026-11-25/b4967293fd52e101b3dff828f8d35adaaaa6339b6756f11ce6051de6e4e1868f.png",
+            "sha256": "b4967293fd52e101b3dff828f8d35adaaaa6339b6756f11ce6051de6e4e1868f",
+            "bytes": 2502644
+          },
+          "batch": 7,
+          "jobId": "c826a6b894c749f0b9bddea03531b381",
+          "score": null,
+          "artNote": null,
+          "nativeReviewReason": "qa-mouth-review",
+          "reviewStatus": "owner-review-pending"
+        },
+        "speaking-sad": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2026-11-25/312c50f154b7eff6520573669c81b10bfc73407af25258e0133a11e05da1c833.webm",
+          "sha256": "312c50f154b7eff6520573669c81b10bfc73407af25258e0133a11e05da1c833",
+          "bytes": 6395533,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2026-11-25/c5c1abac3a588882a39cbf45e46316910f90291cc4344501a5a91880b5d7cf06.png",
+          "posterSHA256": "c5c1abac3a588882a39cbf45e46316910f90291cc4344501a5a91880b5d7cf06",
+          "duration": 3.0,
+          "expression": {
+            "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2026-11-25/dd9ff1243191732b682518a6a5ef443dccfff98b752dad112302244841d30d69.png",
+            "sha256": "dd9ff1243191732b682518a6a5ef443dccfff98b752dad112302244841d30d69",
+            "bytes": 2502729
+          },
+          "batch": 7,
+          "jobId": "02efca96e84a4cb19096a71176577c66",
+          "score": null,
+          "artNote": null,
+          "nativeReviewReason": null,
+          "reviewStatus": "owner-review-pending"
+        },
+        "listening-sad": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2026-11-25/869f05645fe95522dc4c0e99dd549a62ec3162970bf8039dac868d205112d230.webm",
+          "sha256": "869f05645fe95522dc4c0e99dd549a62ec3162970bf8039dac868d205112d230",
+          "bytes": 13732122,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2026-11-25/33cdb027bf3426ed6df14e32b2bb3a5dba72fa668d993226fac894969fb27f67.png",
+          "posterSHA256": "33cdb027bf3426ed6df14e32b2bb3a5dba72fa668d993226fac894969fb27f67",
+          "duration": 6.0,
+          "expression": {
+            "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2026-11-25/dd9ff1243191732b682518a6a5ef443dccfff98b752dad112302244841d30d69.png",
+            "sha256": "dd9ff1243191732b682518a6a5ef443dccfff98b752dad112302244841d30d69",
+            "bytes": 2502729
+          },
+          "batch": 7,
+          "jobId": "b36984e52a6b41fb8211a097b1ef85fb",
+          "score": null,
+          "artNote": null,
+          "nativeReviewReason": "qa-mouth-review",
+          "reviewStatus": "owner-review-pending"
+        },
+        "speaking-angry": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2026-11-25/1e62064a3890b992d19b40de0eee5c050626cd341966bdea1c6149f50f8c0b68.webm",
+          "sha256": "1e62064a3890b992d19b40de0eee5c050626cd341966bdea1c6149f50f8c0b68",
+          "bytes": 6938650,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2026-11-25/eff570269fd22c35fcc3a97fff358578c501beebcba0568c0939671ade8bd6c3.png",
+          "posterSHA256": "eff570269fd22c35fcc3a97fff358578c501beebcba0568c0939671ade8bd6c3",
+          "duration": 3.0,
+          "expression": {
+            "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2026-11-25/b259074e5f523f4675a037ac9371cb243c700af87c1eeeb3afbc3cab7326ab0c.png",
+            "sha256": "b259074e5f523f4675a037ac9371cb243c700af87c1eeeb3afbc3cab7326ab0c",
+            "bytes": 2536506
+          },
+          "batch": 7,
+          "jobId": "10da20d0ff584b0c998b867767f50ebe",
+          "score": null,
+          "artNote": null,
+          "nativeReviewReason": null,
+          "reviewStatus": "owner-review-pending"
+        },
+        "listening-angry": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2026-11-25/59177bf7d64f726352f701ff9c2f2c18b312f76899d7c2192df9627e810cda65.webm",
+          "sha256": "59177bf7d64f726352f701ff9c2f2c18b312f76899d7c2192df9627e810cda65",
+          "bytes": 11428151,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2026-11-25/391cd0d2c8ac17b65c11d0ca82c4c7a967743b90d52dd1aa1ba7d632e7e92ebc.png",
+          "posterSHA256": "391cd0d2c8ac17b65c11d0ca82c4c7a967743b90d52dd1aa1ba7d632e7e92ebc",
+          "duration": 6.0,
+          "expression": {
+            "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2026-11-25/b259074e5f523f4675a037ac9371cb243c700af87c1eeeb3afbc3cab7326ab0c.png",
+            "sha256": "b259074e5f523f4675a037ac9371cb243c700af87c1eeeb3afbc3cab7326ab0c",
+            "bytes": 2536506
+          },
+          "batch": 7,
+          "jobId": "165a1f0afc7d4eec886a0217f6704a3b",
+          "score": null,
+          "artNote": null,
+          "nativeReviewReason": "qa-mouth-review",
+          "reviewStatus": "owner-review-pending"
+        },
+        "speaking-surprised": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2026-11-25/46117cf2a6a70c768db04ab45f2ac707b969c8e1abff46b0e47d9ed6be6b1a61.webm",
+          "sha256": "46117cf2a6a70c768db04ab45f2ac707b969c8e1abff46b0e47d9ed6be6b1a61",
+          "bytes": 7008318,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2026-11-25/8ee0c00b57945c985bb995d6da1cf379ef9a2bf3dea547884f6ed8bb0a2f7880.png",
+          "posterSHA256": "8ee0c00b57945c985bb995d6da1cf379ef9a2bf3dea547884f6ed8bb0a2f7880",
+          "duration": 3.0,
+          "expression": {
+            "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2026-11-25/4bbdd26ca1da1e768dcca6697fe944448a871b9f14b1ff6c194dab07642dbec9.png",
+            "sha256": "4bbdd26ca1da1e768dcca6697fe944448a871b9f14b1ff6c194dab07642dbec9",
+            "bytes": 2506992
+          },
+          "batch": 7,
+          "jobId": "accaa47a7a934c06a0c948c4e8c24cb1",
+          "score": null,
+          "artNote": null,
+          "nativeReviewReason": null,
+          "reviewStatus": "owner-review-pending"
+        },
+        "listening-surprised": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2026-11-25/1c44298b0c6d09bb79c6bd86d5866bcaccc23d43d28a9d625da5529db6520f06.webm",
+          "sha256": "1c44298b0c6d09bb79c6bd86d5866bcaccc23d43d28a9d625da5529db6520f06",
+          "bytes": 12066700,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2026-11-25/634c8c79108d95b615b75e64a8d82774e112c941262375e1cc1336797b89c5d7.png",
+          "posterSHA256": "634c8c79108d95b615b75e64a8d82774e112c941262375e1cc1336797b89c5d7",
+          "duration": 6.0,
+          "expression": {
+            "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2026-11-25/4bbdd26ca1da1e768dcca6697fe944448a871b9f14b1ff6c194dab07642dbec9.png",
+            "sha256": "4bbdd26ca1da1e768dcca6697fe944448a871b9f14b1ff6c194dab07642dbec9",
+            "bytes": 2506992
+          },
+          "batch": 7,
+          "jobId": "e88bbb72a324466d99a882d7d1e7953d",
+          "score": null,
+          "artNote": null,
+          "nativeReviewReason": "qa-mouth-review",
+          "reviewStatus": "owner-review-pending"
+        },
+        "speaking-neutral": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2026-11-25/6a55c3cf433d52889f29571ad159d1e1e07165ae7b343d76987b6bc6f46cde52.webm",
+          "sha256": "6a55c3cf433d52889f29571ad159d1e1e07165ae7b343d76987b6bc6f46cde52",
+          "bytes": 7064367,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2026-11-25/336bac28c2b474a66668cb545113885d63c5f9e8c299e485b94db587ce2ce648.png",
+          "posterSHA256": "336bac28c2b474a66668cb545113885d63c5f9e8c299e485b94db587ce2ce648",
+          "duration": 3.0,
+          "expression": {
+            "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2026-11-25/084a82cda3bb882e74c5c3f76ee2233362c17478877ac4617847d862eed846c1.png",
+            "sha256": "084a82cda3bb882e74c5c3f76ee2233362c17478877ac4617847d862eed846c1",
+            "bytes": 810697
+          },
+          "batch": 7,
+          "jobId": "cf75e9a1982d43a8942b0ccca67cce9e",
+          "score": null,
+          "artNote": null,
+          "nativeReviewReason": null,
+          "reviewStatus": "owner-review-pending"
+        },
+        "listening-neutral": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2026-11-25/bee8985115ccf6067018afd286419bfd7f064588f3e166f1f2ec00af5def43ae.webm",
+          "sha256": "bee8985115ccf6067018afd286419bfd7f064588f3e166f1f2ec00af5def43ae",
+          "bytes": 9252261,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2026-11-25/c128226f0b6598d9520a4f8cdd706f8494d27829c59dc1a4e719b5e4e1dfc7bf.png",
+          "posterSHA256": "c128226f0b6598d9520a4f8cdd706f8494d27829c59dc1a4e719b5e4e1dfc7bf",
+          "duration": 6.0,
+          "expression": {
+            "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2026-11-25/084a82cda3bb882e74c5c3f76ee2233362c17478877ac4617847d862eed846c1.png",
+            "sha256": "084a82cda3bb882e74c5c3f76ee2233362c17478877ac4617847d862eed846c1",
+            "bytes": 810697
+          },
+          "batch": 7,
+          "jobId": "964db612c2c9483a9d6183ec8b60226c",
+          "score": null,
+          "artNote": null,
+          "nativeReviewReason": "qa-mouth-review",
+          "reviewStatus": "owner-review-pending"
+        }
+      },
+      "expressionSource": {
+        "recordSHA256": "a0d630333302fa19ae44068fd049e28ebead0ac89810ed5ed1f4967073cd0010",
+        "references": {
+          "b4967293fd52e101b3dff828f8d35adaaaa6339b6756f11ce6051de6e4e1868f": {
+            "chapter": 44,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第044回",
+            "sceneKo": "주유가 조조에 맞설 수 있다고 설명해 결단에 확신을 얻는 손권"
+          },
+          "b259074e5f523f4675a037ac9371cb243c700af87c1eeeb3afbc3cab7326ab0c": {
+            "chapter": 44,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第044回",
+            "sceneKo": "조조에게 항복하자는 신하들의 주장을 물리치는 손권"
+          },
+          "dd9ff1243191732b682518a6a5ef443dccfff98b752dad112302244841d30d69": {
+            "chapter": 29,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第029回",
+            "sceneKo": "형 손책을 잃고 강동을 책임져야 하는 손권"
+          },
+          "4bbdd26ca1da1e768dcca6697fe944448a871b9f14b1ff6c194dab07642dbec9": {
+            "chapter": 29,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第029回",
+            "sceneKo": "형의 중상과 갑작스러운 권력 승계를 받아들이는 손권"
+          }
+        }
+      }
     },
     {
       "slug": "zhou-yu",
@@ -1716,7 +2014,32 @@
           }
         }
       },
-      "clips": {}
+      "clips": {},
+      "expressionSource": {
+        "recordSHA256": "457e226f35e57a9e1577e78d96d16d81f1cd39a279a22ba5aa689f8b363a9422",
+        "references": {
+          "9706662181c97e7c6348f96c406a21f90ac83924a1793bddb5899530a66c8351": {
+            "chapter": 45,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第045回",
+            "sceneKo": "장간의 방문을 역으로 활용할 기회를 알아본 주유"
+          },
+          "9144c0be4f2e66711c146028d61c1f2c485c5f6654f852ac497dfdec5ea38ebc": {
+            "chapter": 44,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第044回",
+            "sceneKo": "조조와 이교의 이야기에 분노해 주전 의지를 드러내는 주유"
+          },
+          "50454c8faf4775d5d4c9809315565771322d2f2ee91463499574d773c672c646": {
+            "chapter": 57,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第057回",
+            "sceneKo": "형주를 되찾으려던 마지막 계획이 무너지고 병세가 깊어지는 주유의 쓰라림"
+          },
+          "298772a5618c25f6643fae6a51d7ec925159130427e86e54d16af0d09c84aa90": {
+            "chapter": 46,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第046回",
+            "sceneKo": "제갈량이 약속한 화살을 사흘 만에 가져오자 놀라는 주유"
+          }
+        }
+      }
     },
     {
       "slug": "zhao-yun",
@@ -1813,7 +2136,32 @@
           }
         }
       },
-      "clips": {}
+      "clips": {},
+      "expressionSource": {
+        "recordSHA256": "37e8038ad4ac116346940c97662727cbfbc2dc99fdd8dc4f822045fe5932dc22",
+        "references": {
+          "d40a52349faace39fbfe0e284d5555d6a84fe3e3c87d823a29f7e7fcacc516c1": {
+            "chapter": 28,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第028回",
+            "sceneKo": "와우산에서 유비와 다시 만나 주군으로 섬기게 된 조운"
+          },
+          "aeafcdb3b35d84157ed46e021cd2b3b4eb3e4cfa7c230a564a952d83cd6149e9": {
+            "chapter": 61,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第061回",
+            "sceneKo": "손 부인의 배를 막아 아두를 돌려달라고 요구하는 조운"
+          },
+          "3fad27ae590aa7be6067c7dc5a6bcba150dc6bac664c65c34dfca348e007fa66": {
+            "chapter": 41,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第041回",
+            "sceneKo": "장판에서 미 부인을 구하지 못한 조운의 슬픔"
+          },
+          "c2641d6cdeaf2743ebed0a5205b4777a0d6464fed5eaea55f7a36ea7348c0d24": {
+            "chapter": 71,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第071回",
+            "sceneKo": "한수에서 황충이 약속한 시각에 돌아오지 않아 경계하는 조운"
+          }
+        }
+      }
     },
     {
       "slug": "lu-bu",
@@ -2101,6 +2449,52 @@
           "nativeReviewReason": "qa-mouth-review",
           "reviewStatus": "owner-review-pending"
         }
+      },
+      "expressionSource": {
+        "recordSHA256": "9f1ddee50a53e416a9a5f3cff2fc94e96e243e6107215ccab4c1eb0494e4e9f4",
+        "references": {
+          "54f0206fef356e8aefff029798729843ba7a49b111078e8a2b5e21bcbc9a45e3": {
+            "chapter": 8,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第008回",
+            "sceneKo": "왕윤의 칭찬을 듣고 자부심 섞인 웃음을 터뜨리는 여포"
+          },
+          "517fad4172a28f856b210b72ee37a4e1edc4144a7b0eafbb8dd61e8d3a4be764": {
+            "chapter": 19,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第019回",
+            "sceneKo": "하비에서 느닷없이 사로잡히는 여포의 충격"
+          },
+          "a8b645ef686148e6d9f3391af71fa6a87f31a775d10678cce5996cf0b7c782cd": {
+            "chapter": null,
+            "url": null,
+            "sceneKo": "자존심을 건드린 모욕에 폭발하는 여포 — 인물 성격 연기, 특정 회차 미지정",
+            "noteKo": "원화팀 이사가 개별 원화 프롬프트와 말하기 실행 기록으로 확인했다. 네 장 공통 서문의 8·19회를 이 그림에 귀속하지 않는다."
+          },
+          "21da93a8bda6915ca3090b090b4cadc8e6b0f699caa38cd833098590e7dc8e1c": {
+            "chapter": 19,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第019回",
+            "sceneKo": "하비에서 믿던 이들에게 버림받은 여포의 상실감"
+          },
+          "13129445d346841bcc33e66bf06d41b623f76ca6ca6f464717136f4f938f3dc0": {
+            "chapter": 16,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第016回",
+            "sceneKo": "원문(轅門)에서 활솜씨로 두 편을 중재한 여포의 자부심을, 칭찬을 들으며 짓는 미소로 번안"
+          },
+          "c1f7ea7fc3c3b2dda0cf81e1e9e6560c14e89df8c43b919ac12ed1ec2682647b": {
+            "chapter": 19,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第019回",
+            "sceneKo": "하비 수세의 여포를 바탕으로, 모욕이라고 느낀 비난을 입 다물고 듣는 분노로 번안"
+          },
+          "1a75f3787d4045e2d3fd36eab1ce856d0c3918882a351b135ac74c58bedbd8aa": {
+            "chapter": 19,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第019回",
+            "sceneKo": "하비에서 부하들이 자신을 저버렸다는 것을 깨닫는 여포의 상실감"
+          },
+          "7c122322a977308bda40dc6a68002cac5011554a2d41c43bb20cc1f1e546e37a": {
+            "chapter": 19,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第019回",
+            "sceneKo": "하비에서 믿던 부하들이 돌아섰다는 뜻밖의 소식에 귀를 기울이는 여포로 번안"
+          }
+        }
       }
     },
     {
@@ -2198,7 +2592,33 @@
           }
         }
       },
-      "clips": {}
+      "clips": {},
+      "expressionSource": {
+        "recordSHA256": "44465fe7e424d793c635bf8f0c74485b6d2c11d372c2f9aca5eb06b69695364f",
+        "references": {
+          "01e4a138a4ecf31fbb9bbf6657db48dac4794e440684e1afb42d3d4a3fb94320": {
+            "chapter": 8,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第008回",
+            "sceneKo": "왕윤의 연회에서 여포를 대하며 내보이는 온화한 미소를 바탕으로 한 기쁨"
+          },
+          "92107f39037307e70c7dda42d37153f30370b977418e6e3ea46d5657d79508dd": {
+            "chapter": 8,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第008回",
+            "sceneKo": "봉의정에서 처지에 대한 분함을 드러내며 여포에게 따져 묻는 초선"
+          },
+          "432189d78627b4eabc7cd6f272dcdda51ee02264f1d00b8b9a0098d019d247c5": {
+            "chapter": 8,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第008回",
+            "sceneKo": "왕윤 앞에서 집안의 근심을 헤아리며 눈물로 마음을 고하는 초선"
+          },
+          "cfa22a3d36f5d672697838ec2e5160634406d42a2681a0104ee40e680a022606": {
+            "chapter": 8,
+            "url": "https://zh.wikisource.org/wiki/三國演義/第008回",
+            "sceneKo": "봉의정의 밀담 중 동탁이 들이닥치는 장면에서 가져온 놀람"
+          }
+        }
+      }
     }
-  ]
+  ],
+  "castExpressionSourceSHA256": "6819a9fb0348f9e882e06b020d8310877c71722da3dd55706761ff67582f036d"
 }

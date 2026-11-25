@@ -115,6 +115,37 @@ test('Zhuge Liang expression cards cite the chapter for the matching art and lea
   }
 });
 
+test('all emotion stills have their own caption, including the one without an assigned chapter',()=>{
+  const {JSDOM}=createRequire(import.meta.url)('jsdom');
+  const data=JSON.parse(readFileSync(new URL('../artwork/genesis-chat-packs-2026-11-25.json',import.meta.url)));
+  const chapters=[], images=new Set(), noChapter=[];
+  for(const actor of data.characters){
+    const page=JSDOM.fragment(renderReview(data,{view:'expressions',selectedId:actor.slug}));
+    for(const figure of page.querySelectorAll('[data-expression-sha]')){
+      const sha=figure.dataset.expressionSha, caption=figure.querySelector('figcaption');
+      if(sha===actor.expressionsByState['listening-neutral'].sha256){
+        assert.equal(caption.querySelector('p'),null);
+        continue;
+      }
+      const source=actor.expressionSource.references[sha], link=caption.querySelector('a');
+      images.add(sha);
+      if(source.chapter===null){
+        assert.equal(link,null);
+        assert.equal(caption.querySelector('p').textContent,'특정 회차 미지정');
+        noChapter.push([actor.slug,sha]);
+      }else{
+        assert.equal(link.getAttribute('href'),source.url);
+        assert.ok(caption.textContent.includes(source.sceneKo));
+        if(source.noteKo)assert.ok(caption.textContent.includes(source.noteKo));
+        chapters.push(source.chapter);
+      }
+    }
+  }
+  const luBu=data.characters.find(a=>a.slug==='lu-bu');
+  assert.deepEqual(noChapter,[['lu-bu',luBu.expressionsByState['speaking-angry'].sha256]]);
+  assert.deepEqual([images.size,chapters.length,new Set(chapters).size],[44,43,22]);
+});
+
 test('pack plus profile identity, Korean search and art kinds stay independent',()=>{
   assert.equal(filterChatArt(catalog,{query:'shared'}).length,2);
   assert.equal(filterChatArt(catalog,{query:'shared',pack:'b'}).length,1);
