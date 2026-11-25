@@ -7,13 +7,13 @@ import {CHAT_ART_API,createGenesisChatArt,filterChatArt} from './skyhaven-genesi
 
 const item=(pack,id)=>({id:JSON.stringify([pack,id]),kind:'character',packId:pack,profileId:id,name:'인물 '+id,nameEn:id,image:{path:`public/content/images/avatars/${pack}/${id}.webp`,url:`https://genesischat.online/content/images/avatars/${pack}/${id}.webp`,sourceHash:'abc',width:1024,height:1536}});
 const catalog={date:'2026-11-06',packs:{a:{name:'가 팩',nameEn:'Pack A'},b:{name:'나 팩',nameEn:'Pack B'}},counts:{packs:2,characters:51,backgrounds:1,missingPortraits:1},items:[...Array.from({length:49},(_,i)=>item('a',String(i))),item('a','shared'),item('b','shared'),{...item('a','cover'),kind:'background'}]};
-function setup(fetchJSON=async()=>catalog){
+function setup(fetchJSON=async()=>catalog,loadReview){
   const {JSDOM}=createRequire(import.meta.url)('jsdom');
   const d=new JSDOM('<main></main>',{url:'https://site.example/#characters/genesis-chat/characters'});
   d.window.HTMLDialogElement.prototype.showModal=function(){this.open=true;};
   d.window.HTMLDialogElement.prototype.close=function(){this.open=false;this.dispatchEvent(new d.window.Event('close'));};
   const host=d.window.document.querySelector('main');
-  const view=createGenesisChatArt({host,fetchJSON,isActive:()=>true,getURL:()=>d.window.location.href,replaceURL:url=>d.window.history.replaceState(null,'',url),navigate:hash=>{d.window.location.hash=hash;}});
+  const view=createGenesisChatArt({host,fetchJSON,loadReview,isActive:()=>true,getURL:()=>d.window.location.href,replaceURL:url=>d.window.history.replaceState(null,'',url),navigate:hash=>{d.window.location.hash=hash;}});
   return {d,host,view};
 }
 
@@ -144,6 +144,55 @@ test('all emotion stills have their own caption, including the one without an as
   const luBu=data.characters.find(a=>a.slug==='lu-bu');
   assert.deepEqual(noChapter,[['lu-bu',luBu.expressionsByState['speaking-angry'].sha256]]);
   assert.deepEqual([images.size,chapters.length,new Set(chapters).size],[44,43,22]);
+});
+
+test('personal rejection reasons survive navigation, support editing, copying and undo, and stay tied to a clip',async()=>{
+  const data=JSON.parse(readFileSync(new URL('../artwork/genesis-chat-packs-2026-11-25.json',import.meta.url)));
+  const actor=data.characters.find(a=>Object.keys(a.clips).length);
+  const state=Object.keys(actor.clips)[0],clip=actor.clips[state];
+  const {d,host,view}=setup(undefined,async()=>data);
+  const draw=()=>view.render({view:'video-pack',selectedId:actor.slug,refresh:true});
+  const card=()=>host.querySelector('[data-state="'+state+'"]');
+  const form=()=>card().querySelector('form');
+  const submit=reason=>{form().elements.reason.value=reason;form().dispatchEvent(new d.window.Event('submit',{bubbles:true,cancelable:true}));};
+  const original=clip.sha256;
+  await draw();
+  submit('  ');
+  assert.equal(d.window.localStorage.length,0);
+  assert.equal(form().elements.reason.getAttribute('aria-invalid'),'true');
+  const reason='끝 프레임에서 눈이 튑니다.\n<다시 확인>';
+  submit(reason);
+  assert.equal(card().querySelector('[data-saved-reason]').textContent,reason);
+  assert.equal(host.querySelector('[data-rejection-count]').textContent,'1편');
+  await view.render({view:'layers',selectedId:actor.slug});await draw();
+  assert.equal(form().elements.reason.value,reason);
+  submit('소매의 잔상이 남습니다.');
+  let copied='';
+  Object.defineProperty(d.window.navigator,'clipboard',{value:{writeText:async text=>{copied=text;}}});
+  host.querySelector('[data-copy-rejections]').click();await new Promise(r=>setImmediate(r));
+  assert.ok(copied.includes(actor.name) && copied.includes('소매의 잔상이 남습니다.') && copied.includes(clip.url));
+  clip.sha256='f'.repeat(64);await draw();assert.equal(form().elements.reason.value,'');
+  clip.sha256=original;await draw();assert.equal(form().elements.reason.value,'소매의 잔상이 남습니다.');
+  data.edition='2026-11-24';await draw();assert.equal(form().elements.reason.value,'');
+  data.edition='2026-11-25';await draw();card().querySelector('[data-undo-rejection]').click();
+  assert.equal(d.window.localStorage.length,0);await draw();assert.equal(form().elements.reason.value,'');
+  assert.equal(host.querySelector('[data-rejection-count]').textContent,'0편');
+  d.window.close();
+});
+
+test('storage failure leaves the typed reason available without marking the clip rejected',async()=>{
+  const data=JSON.parse(readFileSync(new URL('../artwork/genesis-chat-packs-2026-11-25.json',import.meta.url)));
+  const actor=data.characters.find(a=>Object.keys(a.clips).length);
+  const {d,host,view}=setup(undefined,async()=>data);
+  await view.render({view:'video-pack',selectedId:actor.slug});
+  d.window.Storage.prototype.setItem=()=>{throw Error('Storage unavailable');};
+  const form=host.querySelector('.chat-rejection form');
+  form.elements.reason.value='첫 프레임 재검토';
+  form.dispatchEvent(new d.window.Event('submit',{bubbles:true,cancelable:true}));
+  assert.equal(form.elements.reason.value,'첫 프레임 재검토');
+  assert.ok(!form.closest('figure').hasAttribute('data-rejected'));
+  assert.match(form.closest('.chat-rejection').querySelector('[role=status]').textContent,/저장하지 못했습니다/);
+  d.window.close();
 });
 
 test('pack plus profile identity, Korean search and art kinds stay independent',()=>{
