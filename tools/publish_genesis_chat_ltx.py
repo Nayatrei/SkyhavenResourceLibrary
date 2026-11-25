@@ -11,7 +11,10 @@ from PIL import Image
 from publish_genesis_chat_packs import COLLECTION, MEDIA, MOODS, archive, read, video_info
 
 EDITION = '2026-11-25'
-ZHUGE_ART_SHA = '4426d9638f595a6ec14e140589acee316b0076d9688a5f9133228f560ca02b54'
+ART_RECORDS = {
+    'zhuge-liang': '4426d9638f595a6ec14e140589acee316b0076d9688a5f9133228f560ca02b54',
+    'cao-cao': 'e792a68066f4277377890f431841a66b237962f6f078816ad96f67921075e145',
+}
 STATES = {f'{activity}-{mood}' for activity in ('listening', 'speaking') for mood in MOODS}
 SITE = Path(__file__).resolve().parents[1]
 
@@ -96,21 +99,32 @@ def build(resources, handoff, packs, art_record=None):
                                   if line.startswith('**') and ':** ' in line)
                 actor['sceneNote'] = {'mood': '화남', 'art': paragraphs['원화 동기'],
                                       'performance': paragraphs['말하기 연기 참고'], 'citation': '삼국지연의 제73회'}
-    zhuge = actors['zhuge-liang']
-    if zhuge['clips']:
-        source = (art_record or edition_dir/(ZHUGE_ART_SHA+'.json')).read_bytes()
-        archive(source, '.json', edition_dir, ZHUGE_ART_SHA)
+    paths = [art_record] if isinstance(art_record, Path) else art_record or []
+    for path in paths:
+        source = path.read_bytes()
+        slug = json.loads(source)['characterId']
+        archive(source, '.json', edition_dir, ART_RECORDS[slug])
+    for slug, record_sha in ART_RECORDS.items():
+        actor = actors[slug]
+        if not actor['clips']:
+            continue
+        source = (edition_dir/(record_sha+'.json')).read_bytes()
+        if hashlib.sha256(source).hexdigest() != record_sha:
+            raise ValueError(f'Archived art record differs from handoff: {slug}')
         record = json.loads(source)
-        if record['characterId'] != zhuge['slug'] or record['regularCallAvatar']['sha256'] != zhuge['portrait']['sha256']:
+        if record['characterId'] != slug or record['regularCallAvatar']['sha256'] != actor['portrait']['sha256']:
             raise ValueError('Character art record does not match the portrait')
         references = {}
         for item in record['assets']:
             sha = item['imageGen']['sha256']
             mood = item['emotion']
-            if any(zhuge['expressionsByState'][mode+'-'+mood]['sha256'] != sha for mode in ('listening','speaking')):
+            if any(actor['expressionsByState'][mode+'-'+mood]['sha256'] != sha for mode in ('listening','speaking')):
                 raise ValueError(f'Character art record does not match the {mood} frame')
-            references[sha] = item['novelReference']
-        zhuge['expressionSource'] = {'recordSHA256': ZHUGE_ART_SHA, 'references': references}
+            reference = item['novelReference'].copy()
+            if slug == 'cao-cao' and mood == 'surprised':
+                reference['sceneKo'] = '적벽에서 정욱의 경고를 듣고 다가오는 배의 위험을 깨닫는 조조'
+            references[sha] = reference
+        actor['expressionSource'] = {'recordSHA256': record_sha, 'references': references}
     catalog = {'edition': EDITION, 'resourceSHA256': hashlib.sha256(handoff.read_bytes()).hexdigest(),
                'batches': batches, 'characters': list(actors.values())}
     body = (json.dumps(catalog, ensure_ascii=False, indent=2)+'\n').encode()
@@ -133,7 +147,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--resources', type=Path, required=True)
     parser.add_argument('--characters', type=Path, required=True)
-    parser.add_argument('--art-record', type=Path, help='Original Zhuge Liang art record for first-time archival')
+    parser.add_argument('--art-record', type=Path, action='append', help='Original character art record for first-time archival (repeatable)')
     parser.add_argument('packs', type=Path, nargs='+')
     args = parser.parse_args()
     build(args.resources, args.characters, args.packs, args.art_record)
