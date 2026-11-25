@@ -1,4 +1,4 @@
-import {chatTabs, renderReview, reviewViews} from './skyhaven-genesis-chat-packs.mjs?v=20261124-packs4';
+import {ltxEdition, chatTabs, renderReview, reviewViews} from './skyhaven-genesis-chat-packs.mjs?v=20261125-ltx';
 export const CHAT_ART_API='/comfy/skyhaven/api/library/genesis-chat-art';
 const PAGE_SIZE=48;
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -11,7 +11,8 @@ export function filterChatArt(catalog,{kind='characters',pack='',query=''}={}){
   return catalog.items.filter(item=>item.kind===(kind==='backgrounds'?'background':'character')&&(!pack||item.packId===pack)
     &&words.every(word=>[item.name,item.nameEn,item.packId,item.profileId,catalog.packs[item.packId].name,catalog.packs[item.packId].nameEn].join(' ').toLocaleLowerCase().includes(word)));
 }
-export function createGenesisChatArt({host,fetchJSON,isActive,loadReview=async()=>{const r=await fetch(new URL('../artwork/genesis-chat-packs.json',import.meta.url),{cache:'no-cache'});if(!r.ok)throw new Error('영상 Pack HTTP '+r.status);return r.json();},getURL=()=>location.href,replaceURL=url=>history.replaceState(null,'',url),navigate=hash=>{location.hash=hash;}}){
+export function createGenesisChatArt({host,fetchJSON,isActive,loadReview=async(edition='')=>{const file=edition===ltxEdition?'genesis-chat-packs-'+ltxEdition+'.json':'genesis-chat-packs.json';const r=await fetch(new URL('../artwork/'+file,import.meta.url),{cache:'no-cache'});if(!r.ok)throw new Error('영상 Pack HTTP '+r.status);return r.json();},getURL=()=>location.href,replaceURL=url=>history.replaceState(null,'',url),navigate=hash=>{location.hash=hash;}}){
+  const editionFor = view => view!=='clip-library' && new URL(getURL()).searchParams.get('edition')===ltxEdition ? ltxEdition : '';
   let reviewCatalog,reviewSelection='',catalog,pending,kind='characters',pack='',query='',scope='all',page=0,dialog,version=0;
   const route=()=>kind==='backgrounds'?'#environments/genesis-chat/backgrounds':'#characters/genesis-chat/characters';
   const heading=()=>`<div class="library-heading"><h1>${kind==='backgrounds'?'GenesisChat 표지·배경':'GenesisChat 원화'}</h1></div>`;
@@ -28,7 +29,8 @@ export function createGenesisChatArt({host,fetchJSON,isActive,loadReview=async()
     host.append(dialog);dialog.showModal();dialog.querySelector('[data-chat-close]').focus({preventScroll:true});
     if(item.kind==='character'){
       const opened=dialog;
-      Promise.resolve(reviewCatalog || loadReview()).then(result=>{
+      const edition=editionFor('video-pack');
+      Promise.resolve(reviewCatalog && (reviewCatalog.edition || '')===edition ? reviewCatalog : loadReview(edition)).then(result=>{
         if(dialog!==opened || !opened.open)return;
         reviewCatalog=result;
         const actor=result.characters.find(a=>a.packId===item.packId && a.profileId===item.profileId);
@@ -43,7 +45,7 @@ export function createGenesisChatArt({host,fetchJSON,isActive,loadReview=async()
   function draw(){
     dialog?.remove();dialog=null;
     if(reviewViews.includes(kind)){
-      if(reviewCatalog)host.innerHTML=renderReview(reviewCatalog,{view:kind,selectedId:reviewSelection,query,scope,pack});
+      if(reviewCatalog)host.innerHTML=renderReview(reviewCatalog,{view:kind,selectedId:reviewSelection,query,scope,pack,pageURL:getURL()});
       return;
     }
     const rows=scope==='all'?filterChatArt(catalog,{kind,pack,query}):[],pages=Math.max(1,Math.ceil(rows.length/PAGE_SIZE));page=Math.min(page,pages-1);
@@ -57,9 +59,10 @@ export function createGenesisChatArt({host,fetchJSON,isActive,loadReview=async()
     if(reviewViews.includes(nextKind)){
       dialog?.remove();dialog=null;kind=nextKind;reviewSelection=selectedId;query=search;pack=nextPack;scope=nextScope;
       try{
-        if(!reviewCatalog || refresh){
+        const edition=editionFor(kind);
+        if(!reviewCatalog || (reviewCatalog.edition || '')!==edition || refresh){
           host.innerHTML='<p role="status">자료를 읽고 있습니다…</p>';
-          const result=await loadReview();if(current!==version || !isActive())return;reviewCatalog=result;
+          const result=await loadReview(edition);if(current!==version || !isActive())return;reviewCatalog=result;
         }
         draw();
       }catch(error){if(current===version && isActive())host.innerHTML=chatTabs(kind)+'<p role="alert">자료를 읽지 못했습니다. '+esc(error.message)+'</p><button data-chat-retry>다시 읽기</button>';}
@@ -85,7 +88,13 @@ export function createGenesisChatArt({host,fetchJSON,isActive,loadReview=async()
     else {const direction=button.dataset.chatPage;page+=direction==='next'?1:-1;draw();const target=host.querySelector(`[data-chat-page="${direction}"]`);(target.disabled?host.querySelector(`[data-chat-page="${direction==='next'?'previous':'next'}"]`):target)?.focus({preventScroll:true});}
   });
   host.addEventListener('change',event=>{
-    if(!isActive()||event.target.id!=='chat-pack-choice')return;
+    if(!isActive())return;
+    if(event.target.matches('[data-clip-loop]')){
+      const video=event.target.closest('figure').querySelector('video');
+      video.loop=event.target.checked;
+      return;
+    }
+    if(event.target.id!=='chat-pack-choice')return;
     pack=event.target.value;
     const url=new URL(getURL());
     if(pack)url.searchParams.set('chatPack',pack);else url.searchParams.delete('chatPack');

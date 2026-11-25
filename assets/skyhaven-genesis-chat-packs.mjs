@@ -1,3 +1,4 @@
+export const ltxEdition = '2026-11-25';
 export const reviewViews = ['expressions', 'layers', 'video-pack', 'clip-library'];
 const labels = {characters:'인물 원화', backgrounds:'표지·배경', expressions:'표정', layers:'장면 레이어', 'video-pack':'영상 Pack', 'clip-library':'기존 영상'};
 const moods = {neutral:'중립', happy:'기쁨', angry:'분노', sad:'슬픔', surprised:'놀람'};
@@ -12,7 +13,7 @@ function safeMedia(value) {
   if (!value) return '';
   const url = new URL(value, 'https://genesischat.online');
   const trusted = (url.origin === 'https://genesischat.online' && url.pathname.startsWith('/content/images/'))
-    || (url.origin === 'https://comfy.genesisframeworks.com' && /^\/comfy\/skyhaven\/files\/Library\/Art\/GenesisChat\/PortraitReview\/[a-f0-9]{64}\.(png|webp|webm)$/.test(url.pathname));
+    || (url.origin === 'https://comfy.genesisframeworks.com' && /^\/comfy\/skyhaven\/files\/Library\/Art\/GenesisChat\/PortraitReview\/(?:2026-11-25\/)?[a-f0-9]{64}\.(png|webp|webm)$/.test(url.pathname));
   return trusted && !url.search && !url.hash && !url.username && !url.password ? esc(url.href) : '';
 }
 function still(asset, title) {
@@ -25,20 +26,32 @@ function player(clip, title) {
   return `<video controls playsinline preload="none" poster="${safeMedia(clip.poster)}" src="${url}" aria-label="${esc(title)}"></video><a href="${url}" target="_blank" rel="noopener">원본 영상</a>`;
 }
 function grid(cards) { return '<div class="chat-review-grid">' + cards.join('') + '</div>'; }
+function expressionCards(actor) {
+  return grid(Object.entries(moods).map(([key,label]) => {
+    if (!actor.expressionsByState) return `<figure><figcaption>${label}</figcaption>${still(actor.expressions[key], actor.name+' · '+label)}</figure>`;
+    const listening = actor.expressionsByState['listening-'+key];
+    const speaking = actor.expressionsByState['speaking-'+key];
+    const variants = listening.sha256 === speaking.sha256 ? [['듣기·말하기', listening]] : [['듣기', listening], ['말하기', speaking]];
+    return variants.map(([mode,asset]) => `<figure data-expression-sha="${esc(asset.sha256)}"><figcaption>${label} · ${mode}</figcaption>${still(asset, actor.name+' · '+mode+' · '+label)}</figure>`).join('');
+  }));
+}
 function cards(actor, view) {
-  if (view === 'expressions') return grid(Object.entries(moods).map(([key,label]) =>
-    `<figure><figcaption>${label}</figcaption>${still(actor.expressions[key], actor.name+' · '+label)}</figure>`));
+  const current = Boolean(actor.expressionsByState);
+  if (view === 'expressions') return expressionCards(actor);
   if (view === 'layers') return grid(Object.entries(names).map(([key,label]) => {
     const layer = actor.layers[key];
-    return `<figure><figcaption>${label}</figcaption>${key === 'mid' && layer ? player(layer, actor.name+' · 중경') : still(layer, actor.name+' · '+label)}</figure>`;
+    return `<figure><figcaption>${label}</figcaption>${key === 'mid' && layer?.poster ? player(layer, actor.name+' · 중경') : still(layer, actor.name+' · '+label)}${layer?.original ? `<a href="${safeMedia(layer.original.url)}" target="_blank" rel="noopener">제작 원본</a>` : ''}</figure>`;
   }));
   return ['listening','speaking'].map(activity => {
     const mode = activity === 'listening' ? '듣기' : '말하기';
-    return `<h3>${mode} · ${activity === 'listening' ? '6' : '1'}초</h3>` + grid(Object.entries(moods).map(([key,label]) => {
+    return `<h3>${mode} · ${activity === 'listening' ? 6 : current ? 3 : 1}초</h3>` + grid(Object.entries(moods).map(([key,label]) => {
       const state = activity+'-'+key, clip = actor.clips[state];
-      const review = Number.isFinite(clip?.score) ? `제작 검수 ${clip.score}점` : '사용자 리뷰 대기';
+      const review = Number.isFinite(clip?.score) ? `${current ? '원화팀' : '제작 검수'} ${clip.score}점` : '사용자 리뷰 대기';
       const expression = safeMedia(clip?.expression?.url);
-      return `<figure data-state="${state}"><figcaption>${label} <small lang="en">${state}</small></figcaption>${clip ? player(clip, actor.name+' · '+mode+' · '+label) + `<small>${review} · ${Number(clip.batch)}차</small>${expression ? `<a href="${expression}" target="_blank" rel="noopener">표정 원화</a>` : ''}` : '<p>미인계</p>'}</figure>`;
+      const loop = current ? '<label><input type="checkbox" data-clip-loop> 반복 재생</label>' : '';
+      const warning = clip?.nativeReviewReason === 'qa-mouth-review' ? '<small>자동 경고 · 입 움직임 검토</small>' : '';
+      const note = clip?.artNote ? `<p>${esc(clip.artNote)}</p>` : '';
+      return `<figure data-state="${state}"><figcaption>${label} <small lang="en">${state}</small></figcaption>${clip ? player(clip, actor.name+' · '+mode+' · '+label) + loop + warning + note + `<small>${review} · ${Number(clip.batch)}차</small>${expression ? `<a href="${expression}" target="_blank" rel="noopener">표정 원화</a>` : ''}` : '<p>미인계</p>'}</figure>`;
     }));
   }).join('');
 }
@@ -47,15 +60,25 @@ function oldLibrary(revisions, needle, scope, pack) {
   return filtered.map(r => `<details class="chat-clip-revision"><summary>${esc(r.name)} · ${esc(r.revision)} (${r.clips.length}편)</summary>${grid(r.clips.map(c =>
     `<figure><figcaption>${esc(c.state)} · ${Number(c.duration)}초</figcaption>${player({...c, poster:r.poster}, r.name+' · '+c.state)}</figure>`))}</details>`).join('') || '<p>이 조건에 맞는 영상이 없습니다.</p>';
 }
-export function renderReview(data, {view, selectedId='',query='',scope='all',pack=''}) {
+function editionLinks(view, actor, edition, pageURL) {
+  return '<nav class="character-view-tabs" aria-label="검토판">'+[
+    [ltxEdition,'11월 25일 · ImageGen / LTX'], ['', '11월 24일 · 기존 40편']
+  ].map(([id,label])=>{
+    const url=new URL(pageURL);
+    if(id)url.searchParams.set('edition',id);else url.searchParams.delete('edition');
+    return `<a href="${esc(url.pathname+url.search+hash(view,actor))}" ${id===edition?'aria-current="page"':''}>${label}</a>`;
+  }).join('')+'</nav>';
+}
+export function renderReview(data, {view, selectedId='',query='',scope='all',pack='',pageURL='https://skyhaven.genesisframeworks.com/'}) {
   const needle=query.trim().toLocaleLowerCase();
   const actors = data.characters.filter(a => scope === 'all' && (!pack || a.packId === pack) && [a.name,a.nameEn,a.slug].join(' ').toLocaleLowerCase().includes(needle));
   const actor = actors.find(a => a.slug === selectedId) || (needle || !selectedId ? actors[0] : null);
   const intro = '<div class="library-heading"><h1>GenesisChat '+labels[view]+'</h1></div>'+chatTabs(view, view === 'clip-library' ? '' : actor?.slug);
   if (view === 'clip-library') return intro+'<section class="character-art-archive">'+oldLibrary(data.revisions,needle,scope,pack)+'</section>';
+  const editions = editionLinks(view,actor?.slug || '',data.edition || '',pageURL);
   const count = data.characters.reduce((total, entry) => total + Object.keys(entry.clips).length, 0);
   const summary = view === 'video-pack' ? `<p class="character-art-results">제작팀 인계 ${count} / ${data.characters.length * 10}편 · 최종 검토 대기</p>` : '';
   const menu = actors.map(a => `<a href="${hash(view,a.slug)}" ${actor === a ? 'aria-current="page"' : ''}>${esc(a.name)}${view === 'video-pack' ? ' '+Object.keys(a.clips).length+'/10' : ''}</a>`).join('');
-  const selected = actor ? `<section class="chat-review-actor" data-actor="${esc(actor.slug)}"><header>${still(actor.portrait,actor.name+' 원화')}<div><h2>${esc(actor.name)}</h2><p>${view === 'layers' && actor.layers.mid ? '제갈량 검수 샘플 · zhuge-ten-state-v1' : '삼국지 · 통화 영상 검수 후보'}</p><nav aria-label="${esc(actor.name)} 자료">${['expressions','layers','video-pack'].map(v => `<a href="${hash(v,actor.slug)}" ${view===v?'aria-current="page"':''}>${labels[v]}</a>`).join(' ')}</nav></div></header>${view === 'video-pack' ? '<details class="chat-clip-revision"><summary>인물 표정과 장면 레이어</summary>'+cards(actor,'expressions')+cards(actor,'layers')+'</details>' : ''}${cards(actor,view)}</section>` : '<p>이 조건에 맞는 캐릭터가 없습니다.</p>';
-  return intro+`<div class="character-art-archive">${summary}<nav class="character-view-tabs chat-review-actors" aria-label="캐릭터 선택">${menu}</nav>${selected}</div>`;
+  const selected = actor ? `<section class="chat-review-actor" data-actor="${esc(actor.slug)}"><header>${still(actor.portrait,actor.name+' 원화')}<div><h2>${esc(actor.name)}</h2><p>${view === 'layers' && actor.layers.mid?.poster ? '제갈량 검수 샘플 · zhuge-ten-state-v1' : '삼국지 · 통화 영상 검수 후보'}</p><nav aria-label="${esc(actor.name)} 자료">${['expressions','layers','video-pack'].map(v => `<a href="${hash(v,actor.slug)}" ${view===v?'aria-current="page"':''}>${labels[v]}</a>`).join(' ')}</nav></div></header>${view === 'video-pack' ? '<details class="chat-clip-revision"><summary>인물 표정과 장면 레이어</summary>'+cards(actor,'expressions')+cards(actor,'layers')+'</details>' : ''}${cards(actor,view)}</section>` : '<p>이 조건에 맞는 캐릭터가 없습니다.</p>';
+  return intro+editions+`<div class="character-art-archive">${summary}<nav class="character-view-tabs chat-review-actors" aria-label="캐릭터 선택">${menu}</nav>${selected}</div>`;
 }
