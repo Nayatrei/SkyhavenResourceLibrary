@@ -1,0 +1,1994 @@
+{
+  "batches": [
+    {
+      "batch": 1,
+      "sha256": "210624a9001737502d80d4a6ca08bcf3b37d91d6ef4fa4eeda8f9d432d3840ad"
+    },
+    {
+      "batch": 2,
+      "sha256": "a05f5386aec2fb18b9ea81ae41da446dd84f0ab2577b1e7784f639ece7728f9a"
+    },
+    {
+      "batch": 3,
+      "sha256": "280737375afd0bb544f23e86ef572b3f9c58cac0fd9c340e385405e144cd096d"
+    }
+  ],
+  "characters": [
+    {
+      "slug": "liu-bei",
+      "packId": "historic_figures_three_kingdoms_china",
+      "profileId": "ai_gen_ai_gen_x111mxfk3",
+      "name": "유비",
+      "nameEn": "Liu Bei",
+      "portrait": {
+        "url": "https://genesischat.online/content/images/avatars/historic_figures_three_kingdoms_china/liu-bei.webp",
+        "sha256": "dc50de0d9abd925c57937b7c7c758a4e1c1f8b70e394b46ed41693fcb26e3418"
+      },
+      "expressions": {
+        "neutral": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/54823d6f7c2698f7713303be38307ea99fe2a7ccfb6231f7e9e563b8f35ab9f3.png",
+          "sha256": "54823d6f7c2698f7713303be38307ea99fe2a7ccfb6231f7e9e563b8f35ab9f3",
+          "bytes": 663262
+        },
+        "happy": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/f42facaa4040689d270914545d5282d046190e86f2343a1afb54258174dd6f28.png",
+          "sha256": "f42facaa4040689d270914545d5282d046190e86f2343a1afb54258174dd6f28",
+          "bytes": 663053
+        },
+        "angry": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/c25220ace3b60f48ca112b59b6deb8a80ea5c34cf9a77ecfa4928dfbeb789b55.png",
+          "sha256": "c25220ace3b60f48ca112b59b6deb8a80ea5c34cf9a77ecfa4928dfbeb789b55",
+          "bytes": 660579
+        },
+        "sad": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/06858178ac6139d327d0130e273926911f22703a413a4c85d8d478a57c6a9e43.png",
+          "sha256": "06858178ac6139d327d0130e273926911f22703a413a4c85d8d478a57c6a9e43",
+          "bytes": 659966
+        },
+        "surprised": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2c1436266204ee224efdf9e46af8b065545e1cc0229c7b4848535be8c33084b6.png",
+          "sha256": "2c1436266204ee224efdf9e46af8b065545e1cc0229c7b4848535be8c33084b6",
+          "bytes": 660834
+        }
+      },
+      "layers": {},
+      "clips": {
+        "listening-angry": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/0d2cbb8d5da80d368040a65ed02b9068cf252946bde2268043e24716ee6ebccc.webm",
+          "sha256": "0d2cbb8d5da80d368040a65ed02b9068cf252946bde2268043e24716ee6ebccc",
+          "bytes": 7723994,
+          "duration": 6.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/abe8a2cb7ca2d5298116a9149c74ff48d07e907a409f1c6bfcfb0a8ffd3a99c4.webp",
+          "batch": 1,
+          "score": 84
+        },
+        "listening-happy": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/85dd57e2cfe239ca5b36c48c4fb07b41c1a3c233e2a5f283e815e3767beb97c7.webm",
+          "sha256": "85dd57e2cfe239ca5b36c48c4fb07b41c1a3c233e2a5f283e815e3767beb97c7",
+          "bytes": 7561402,
+          "duration": 6.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/b8528e850f0f02d7da244a9a5ad9bc16d97ac583f801abe4138bb088ac87802c.webp",
+          "batch": 1,
+          "score": 88
+        },
+        "listening-neutral": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/b4c9018dbf48fa0e357f3472d8b97ecb397f8bea4e57249e090c415332aa998f.webm",
+          "sha256": "b4c9018dbf48fa0e357f3472d8b97ecb397f8bea4e57249e090c415332aa998f",
+          "bytes": 7349834,
+          "duration": 6.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/131e488dce8f86828b5a99b1c2795f23faf60b41fdb42772f01bfa9697fff74b.webp",
+          "batch": 1,
+          "score": 86
+        },
+        "listening-sad": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/de0db3255a01dfd9cafa26c81cf789f624ca64f89cc8a14973d4f13e84facd4d.webm",
+          "sha256": "de0db3255a01dfd9cafa26c81cf789f624ca64f89cc8a14973d4f13e84facd4d",
+          "bytes": 6556353,
+          "duration": 6.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/c24d45c0633cd7d949393865bcd09eda2ef09469cb38b564569b86b1e985a008.webp",
+          "batch": 1,
+          "score": 87
+        },
+        "listening-surprised": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/9b9e62b5b6223e25f998c402c0ff228af8256740f02c68cb83f234eec0baa9cd.webm",
+          "sha256": "9b9e62b5b6223e25f998c402c0ff228af8256740f02c68cb83f234eec0baa9cd",
+          "bytes": 6191208,
+          "duration": 6.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/eb48a0259823774e7142e60d5e869414be1757cef3c9cbbf0003eb6329a07229.webp",
+          "batch": 1,
+          "score": 82
+        },
+        "speaking-angry": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/9d10fd434c0e2b7da95da15c1b13031c1f900f5186c8532ac9608e5580e11a16.webm",
+          "sha256": "9d10fd434c0e2b7da95da15c1b13031c1f900f5186c8532ac9608e5580e11a16",
+          "bytes": 212242,
+          "duration": 1.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/90bd91d76681c73a46e673f31f85fe07dfb29dbc97a0660280974fde41279a62.webp",
+          "batch": 1,
+          "score": 86
+        },
+        "speaking-happy": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/ca159714f6b9e27bbfe755ea7f1e548b1de2bf73452a5cc89d579889501e226a.webm",
+          "sha256": "ca159714f6b9e27bbfe755ea7f1e548b1de2bf73452a5cc89d579889501e226a",
+          "bytes": 216569,
+          "duration": 1.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/6982c0ad67aa0e126efa2140b5770fca522618cb6ba193902b503b429936372a.webp",
+          "batch": 1,
+          "score": 89
+        },
+        "speaking-neutral": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/7e645355c1cc4e3a0d1679ee20c46805a774c147ebd846ef28d256abfddc4ef9.webm",
+          "sha256": "7e645355c1cc4e3a0d1679ee20c46805a774c147ebd846ef28d256abfddc4ef9",
+          "bytes": 218462,
+          "duration": 1.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/82ea58a98e757c4a4bde7a6506608bff421c8de0a7a16b7f2c2120f9897483cf.webp",
+          "batch": 1,
+          "score": 85
+        },
+        "speaking-sad": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/7de748dc0383c5f57668ed6fd2144733f5c7dfbf345cdb94e39df4312e55d4cb.webm",
+          "sha256": "7de748dc0383c5f57668ed6fd2144733f5c7dfbf345cdb94e39df4312e55d4cb",
+          "bytes": 212221,
+          "duration": 1.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/e123f088786d22c115fb74e378106a5f2fbdd8095f67f6a7c5c48fa22c9d2dc1.webp",
+          "batch": 1,
+          "score": 87
+        },
+        "speaking-surprised": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/8814e45961240b3dd216df0f2a5172864398c200d3375f05afaf455a5edee8cc.webm",
+          "sha256": "8814e45961240b3dd216df0f2a5172864398c200d3375f05afaf455a5edee8cc",
+          "bytes": 213022,
+          "duration": 1.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/ee8a04e4841a0cf077048b92250e93acdaf605e58816d268e7d4b40330fdef1f.webp",
+          "batch": 1,
+          "score": 85
+        }
+      }
+    },
+    {
+      "slug": "guan-yu",
+      "packId": "historic_figures_three_kingdoms_china",
+      "profileId": "ai_gen_ai_gen_erigyhy25",
+      "name": "관우",
+      "nameEn": "Guan Yu",
+      "portrait": {
+        "url": "https://genesischat.online/content/images/avatars/historic_figures_three_kingdoms_china/guan-yu.webp",
+        "sha256": "e2cb773d0125370d15a2a905bec6c4649bef5e55fd7bc5cbeb57dfdf38f20888"
+      },
+      "expressions": {
+        "neutral": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/996132b00bba7753871a6e88968bd5aeb20464075fd3046af4421ebc61561738.png",
+          "sha256": "996132b00bba7753871a6e88968bd5aeb20464075fd3046af4421ebc61561738",
+          "bytes": 617356
+        },
+        "happy": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/57651f3dd22e312635d922fc2eadecdb6d4e1307b9023a8624cf55d6af4d1f08.png",
+          "sha256": "57651f3dd22e312635d922fc2eadecdb6d4e1307b9023a8624cf55d6af4d1f08",
+          "bytes": 622720
+        },
+        "angry": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/5e96e139193036ff2e54b0f7003ca5754ee3eb0f34bef6840b8b3199cda3050a.png",
+          "sha256": "5e96e139193036ff2e54b0f7003ca5754ee3eb0f34bef6840b8b3199cda3050a",
+          "bytes": 622443
+        },
+        "sad": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/3b1f8b886590cbfdd8fd74213771a5000035f5cb7cd71c43d412f6a8a96d16c2.png",
+          "sha256": "3b1f8b886590cbfdd8fd74213771a5000035f5cb7cd71c43d412f6a8a96d16c2",
+          "bytes": 622553
+        },
+        "surprised": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/4d3ceef72fee78f5b2b5e210901ae9dec3d1984539fa51a123fa2e7f9d544c7d.png",
+          "sha256": "4d3ceef72fee78f5b2b5e210901ae9dec3d1984539fa51a123fa2e7f9d544c7d",
+          "bytes": 622956
+        }
+      },
+      "layers": {},
+      "clips": {
+        "listening-angry": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/56c3a044c042e3c5268a1440e9d33d92cac598675689f1ba28ce186cebce67c7.webm",
+          "sha256": "56c3a044c042e3c5268a1440e9d33d92cac598675689f1ba28ce186cebce67c7",
+          "bytes": 6430736,
+          "duration": 6.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/837d4145f428de34cab6859b7a5dd89c9fbd03986aea6628a84c6e28de96a906.webp",
+          "batch": 3,
+          "score": 80
+        },
+        "listening-happy": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/10591b56398e002ca351863a4b6faf294dede1c967787f76d575595ed3456bc6.webm",
+          "sha256": "10591b56398e002ca351863a4b6faf294dede1c967787f76d575595ed3456bc6",
+          "bytes": 5880004,
+          "duration": 6.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/966e9197acad868805489453e7bf80a67d773f457c7531ee8730afbb1de1a2c2.webp",
+          "batch": 3,
+          "score": 78
+        },
+        "listening-neutral": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/e35f1a381b9000d44b8f04662b2e904d3b06d20816573cfb89859a12752b60d4.webm",
+          "sha256": "e35f1a381b9000d44b8f04662b2e904d3b06d20816573cfb89859a12752b60d4",
+          "bytes": 6029355,
+          "duration": 6.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/1d4fcb8b2115710b493aa3bcc3e88540083b7099e11d7e237b50d8276092c6c8.webp",
+          "batch": 3,
+          "score": 89
+        },
+        "listening-sad": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/574dd67a8669e8c4ff618094d25c28800a390172feb0c4d281be86b5b1d5fbca.webm",
+          "sha256": "574dd67a8669e8c4ff618094d25c28800a390172feb0c4d281be86b5b1d5fbca",
+          "bytes": 7326403,
+          "duration": 6.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/6b0f92290793b114ef9aa20d27dfd6b8122382d1c958835a7636bfb3797af6d7.webp",
+          "batch": 3,
+          "score": 73
+        },
+        "listening-surprised": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/79d9bae833f3ed48d3abbc95ec6bf6ee570e35aa5fc4eb2825153c4d5e9856f5.webm",
+          "sha256": "79d9bae833f3ed48d3abbc95ec6bf6ee570e35aa5fc4eb2825153c4d5e9856f5",
+          "bytes": 6251141,
+          "duration": 6.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/8cf655c8826f0fc2c7c01f92eda49bd5bd992b317e4268d5589cebc470e66f38.webp",
+          "batch": 3,
+          "score": 67
+        },
+        "speaking-neutral": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/3a7a824270db5ff1b01c50e239b47cb2d85f99603896e220fb4ae87fa24dc49c.webm",
+          "sha256": "3a7a824270db5ff1b01c50e239b47cb2d85f99603896e220fb4ae87fa24dc49c",
+          "bytes": 218394,
+          "duration": 1.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/7eee3a7d5dbe049d555f99ea272522e1023d3bd0f28080816139723ee15fda7c.webp",
+          "batch": 3,
+          "score": 85
+        }
+      }
+    },
+    {
+      "slug": "zhang-fei",
+      "packId": "historic_figures_three_kingdoms_china",
+      "profileId": "ai_gen_ai_gen_mih5l32ye",
+      "name": "장비",
+      "nameEn": "Zhang Fei",
+      "portrait": {
+        "url": "https://genesischat.online/content/images/avatars/historic_figures_three_kingdoms_china/zhang-fei.webp",
+        "sha256": "2589e2fcbc0ee50ea2874d6cf26f3e8badcf22d1c927f67a49c25344209405e8"
+      },
+      "expressions": {
+        "neutral": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/d8513b829598db30e543075856f682d1e1460976b73eb00b7460f032c33d07eb.png",
+          "sha256": "d8513b829598db30e543075856f682d1e1460976b73eb00b7460f032c33d07eb",
+          "bytes": 729665
+        },
+        "happy": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/c26873e787f1a26ee5153a335ff89cb1adf8bba01866154b64ea3de929a23bac.png",
+          "sha256": "c26873e787f1a26ee5153a335ff89cb1adf8bba01866154b64ea3de929a23bac",
+          "bytes": 732353
+        },
+        "angry": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2b36e3c39123d619204750163500d1f3b6ba4f45c5245665de945f18aaffab78.png",
+          "sha256": "2b36e3c39123d619204750163500d1f3b6ba4f45c5245665de945f18aaffab78",
+          "bytes": 731517
+        },
+        "sad": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/65c9660c47e6d0a485a586d7eb07c3aa0c5c435398d5a54e12d9ad27d4bdbec8.png",
+          "sha256": "65c9660c47e6d0a485a586d7eb07c3aa0c5c435398d5a54e12d9ad27d4bdbec8",
+          "bytes": 731769
+        },
+        "surprised": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/1a95b93e690d810f2c3cc3c255316e41d0429f456f8dbef263b6d83ce9936f00.png",
+          "sha256": "1a95b93e690d810f2c3cc3c255316e41d0429f456f8dbef263b6d83ce9936f00",
+          "bytes": 728842
+        }
+      },
+      "layers": {},
+      "clips": {
+        "listening-angry": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/22bc04ca057f73a370f162808df6a4adba829b4f301ab815f2ceba81e3dc0395.webm",
+          "sha256": "22bc04ca057f73a370f162808df6a4adba829b4f301ab815f2ceba81e3dc0395",
+          "bytes": 9367658,
+          "duration": 6.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/eea5d0e8a22d755f35e14bbea811a21cff86aef67c1b4b36ed5bf90f041c6e42.webp",
+          "batch": 2,
+          "score": 85
+        },
+        "listening-happy": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/4c1aa29f6d8d76d3bcc64502d7dd17717cb25ec02b0958fd1e0d2b4d983e9a21.webm",
+          "sha256": "4c1aa29f6d8d76d3bcc64502d7dd17717cb25ec02b0958fd1e0d2b4d983e9a21",
+          "bytes": 10885282,
+          "duration": 6.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/d5062b9bc1fdcb0be7985abdeff02d8ea89016c5c46eafbb5d1791b4454f573b.webp",
+          "batch": 2,
+          "score": 78
+        },
+        "listening-neutral": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/b197be18662846dc8e125dfb1e461fb0127e3e995c7a9cf775c7aed1bf98e362.webm",
+          "sha256": "b197be18662846dc8e125dfb1e461fb0127e3e995c7a9cf775c7aed1bf98e362",
+          "bytes": 9549909,
+          "duration": 6.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/b49c28b3e2895572bab344e0e78c01e117abb74da7e4eb1c921c29373ab65241.webp",
+          "batch": 2,
+          "score": 86
+        },
+        "listening-sad": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/e5a93c83ad55d6614408884608969d4b089c47e1b56c5c1eba221fee29d1c605.webm",
+          "sha256": "e5a93c83ad55d6614408884608969d4b089c47e1b56c5c1eba221fee29d1c605",
+          "bytes": 10162086,
+          "duration": 6.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/7368438f854ff1d63021536a5b5f2f83c4dadc6e5fe6657cb864d9b73b9cfb86.webp",
+          "batch": 2,
+          "score": 70
+        },
+        "listening-surprised": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/ee03500e318656c6355d8081e690bc4493afa93988f147a0e974e92bb03acff2.webm",
+          "sha256": "ee03500e318656c6355d8081e690bc4493afa93988f147a0e974e92bb03acff2",
+          "bytes": 9955213,
+          "duration": 6.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/72f54ba7e4e5a3d9de0ab9e637ab30bea3ce3080bb3e90d9bfe64ec4a21200d7.webp",
+          "batch": 2,
+          "score": 76
+        },
+        "speaking-angry": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/22c5d53c995d536bb16504d98076c2bc92d0a3189ebabafbb7b2a6a7d205bcf5.webm",
+          "sha256": "22c5d53c995d536bb16504d98076c2bc92d0a3189ebabafbb7b2a6a7d205bcf5",
+          "bytes": 271173,
+          "duration": 1.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/9233e4bb0714df03b18e467377892f2795e8a4a8cf7b30fa2f12266e135da747.webp",
+          "batch": 2,
+          "score": 80
+        },
+        "speaking-happy": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/2c0c7a03d25ea208e98dab22a76942052975a188a5074951a6ba69aeaa073dd2.webm",
+          "sha256": "2c0c7a03d25ea208e98dab22a76942052975a188a5074951a6ba69aeaa073dd2",
+          "bytes": 285507,
+          "duration": 1.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/bded2ee2fee417d4a02ccf4ff3cfec910a7346e53223ee50a63d57e54993e340.webp",
+          "batch": 2,
+          "score": 91
+        },
+        "speaking-neutral": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/5a890383152e881cf15d00657e4062c7430b333d3d63440a448798a04d3a56f4.webm",
+          "sha256": "5a890383152e881cf15d00657e4062c7430b333d3d63440a448798a04d3a56f4",
+          "bytes": 284584,
+          "duration": 1.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/eeaa488062b1aca23764a359259cd742577e625e118286e39d3f04f6477facaf.webp",
+          "batch": 2,
+          "score": 85
+        },
+        "speaking-sad": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/b93ece87b7a6e77a7dc102ca0278729470fae5be219bbfc430d9dd436f5b63c2.webm",
+          "sha256": "b93ece87b7a6e77a7dc102ca0278729470fae5be219bbfc430d9dd436f5b63c2",
+          "bytes": 270691,
+          "duration": 1.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/cd97f21e2efcf003eac9a163202867db0348abcec871ecd3e0239780a4711cb0.webp",
+          "batch": 2,
+          "score": 85
+        },
+        "speaking-surprised": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/d83f3845f41fc4a0d6c8c3b1318730f8c108929788b2dc9e69c7588a84ebcf78.webm",
+          "sha256": "d83f3845f41fc4a0d6c8c3b1318730f8c108929788b2dc9e69c7588a84ebcf78",
+          "bytes": 275251,
+          "duration": 1.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/978870f766b2342b8efd907e00e1fa008b8817e2fc13e59c59a0b3b1e035aa97.webp",
+          "batch": 2,
+          "score": 84
+        }
+      }
+    },
+    {
+      "slug": "zhuge-liang",
+      "packId": "historic_figures_three_kingdoms_china",
+      "profileId": "ai_gen_ai_gen_52xnow9dw",
+      "name": "제갈량",
+      "nameEn": "Zhuge Liang",
+      "portrait": {
+        "url": "https://genesischat.online/content/images/avatars/historic_figures_three_kingdoms_china/zhuge-liang.webp",
+        "sha256": "b7439f2ea1e8ebc022601e6c1840568760cb1c2fbb538d5a54c573af4764876d"
+      },
+      "expressions": {
+        "neutral": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/05ca94844fc59abf6d9c701d00a8e24385ba4ffd48bbfc1791870b598d56d983.png",
+          "sha256": "05ca94844fc59abf6d9c701d00a8e24385ba4ffd48bbfc1791870b598d56d983",
+          "bytes": 616624
+        },
+        "happy": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/a126dbdc233d3f14de1c690ee3be999e491a3ce75f6a1b23f98ca7fcee9b3896.png",
+          "sha256": "a126dbdc233d3f14de1c690ee3be999e491a3ce75f6a1b23f98ca7fcee9b3896",
+          "bytes": 622106
+        },
+        "angry": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/e51c4b2a332ad2f21fe7af0c2f56e73d55bb5bbb2914525077f5332080e4c4b5.png",
+          "sha256": "e51c4b2a332ad2f21fe7af0c2f56e73d55bb5bbb2914525077f5332080e4c4b5",
+          "bytes": 617042
+        },
+        "sad": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/afdc0abbe34fc22f8e79ed87b8c2380af49cfc67fce5e992bcf10efd8605cc18.png",
+          "sha256": "afdc0abbe34fc22f8e79ed87b8c2380af49cfc67fce5e992bcf10efd8605cc18",
+          "bytes": 621509
+        },
+        "surprised": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/5ecfb0dc98c4565d70d1c17c4fc312439306607bf736e10270fbbd4fe512b9de.png",
+          "sha256": "5ecfb0dc98c4565d70d1c17c4fc312439306607bf736e10270fbbd4fe512b9de",
+          "bytes": 623672
+        }
+      },
+      "layers": {
+        "far": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/e61ef89c96bcc2fb0805b6c9a76d1197adac02502b13725228dcff2cfbedac92.png",
+          "sha256": "e61ef89c96bcc2fb0805b6c9a76d1197adac02502b13725228dcff2cfbedac92",
+          "bytes": 736322
+        },
+        "mid": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/91d169808974f5f090229842825bc98e1ced1daa489b85f0a211c664d80b66f9.webm",
+          "sha256": "91d169808974f5f090229842825bc98e1ced1daa489b85f0a211c664d80b66f9",
+          "bytes": 63529,
+          "duration": 6.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/1aaea49eb8f2b81416773ab3dd662793c5f9e5371bf7cf9f6533ac6512fef586.webp"
+        },
+        "near": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/aac356d8d00068bbd3fabd49c68b5de162a7f96e5843cefb4e1bb1d394bcab72.png",
+          "sha256": "aac356d8d00068bbd3fabd49c68b5de162a7f96e5843cefb4e1bb1d394bcab72",
+          "bytes": 147979
+        }
+      },
+      "clips": {
+        "listening-happy": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/42c1a87b88e1112858cb7151e316d903545cfa94db4a830cad919c74db43dc90.webm",
+          "sha256": "42c1a87b88e1112858cb7151e316d903545cfa94db4a830cad919c74db43dc90",
+          "bytes": 5719946,
+          "duration": 6.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/c6f5c7729c2c6df8431ee78cbbcb4f6ec60f0a48e0e4a00464bded7d387c5065.webp",
+          "batch": 3,
+          "score": 87
+        },
+        "listening-neutral": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/3318f0ce18dc52ab22b15e39643e6b2be3a9a2552033c4bcfb4797210050e790.webm",
+          "sha256": "3318f0ce18dc52ab22b15e39643e6b2be3a9a2552033c4bcfb4797210050e790",
+          "bytes": 6336285,
+          "duration": 6.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/5decd728ccd184f3125a018647b63425500d4b684f6669a44442c959d1c49fd5.webp",
+          "batch": 3,
+          "score": 90
+        }
+      }
+    },
+    {
+      "slug": "cao-cao",
+      "packId": "historic_figures_three_kingdoms_china",
+      "profileId": "ai_gen_ai_gen_caocao123",
+      "name": "조조",
+      "nameEn": "Cao Cao",
+      "portrait": {
+        "url": "https://genesischat.online/content/images/avatars/historic_figures_three_kingdoms_china/cao-cao.webp",
+        "sha256": "5fe30963f56f20ca460b0ad70850704a44d1f811e462ce1527ec1f429bd18a90"
+      },
+      "expressions": {
+        "neutral": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/77992f314ea3126996e099cfe65773afe027c580746941cbf4f5c6d26c32caeb.png",
+          "sha256": "77992f314ea3126996e099cfe65773afe027c580746941cbf4f5c6d26c32caeb",
+          "bytes": 561380
+        }
+      },
+      "layers": {},
+      "clips": {
+        "listening-neutral": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/210b9ae281a3b37064e8d0dc7e6c1aab56311f15751fe1e83159425bb1b42cc3.webm",
+          "sha256": "210b9ae281a3b37064e8d0dc7e6c1aab56311f15751fe1e83159425bb1b42cc3",
+          "bytes": 5226269,
+          "duration": 6.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/9280bae4c8992b8315f817e5f4b3824ad38cae0212a2d751dc3eb36bc579555b.webp",
+          "batch": 3,
+          "score": 88
+        }
+      }
+    },
+    {
+      "slug": "sun-quan",
+      "packId": "historic_figures_three_kingdoms_china",
+      "profileId": "ai_gen_ai_gen_1cjw34ujr",
+      "name": "손권",
+      "nameEn": "Sun Quan",
+      "portrait": {
+        "url": "https://genesischat.online/content/images/avatars/historic_figures_three_kingdoms_china/sun-quan.webp",
+        "sha256": "9b934b7e354625e0ab3032fc4a0679b0ce45d52e34134aaf3f9a32dd5e764fe6"
+      },
+      "expressions": {
+        "neutral": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/e58604d8cb8464fee36c677b61ce5e4eb99c2c9a5963e60ae3a9161fa538f264.png",
+          "sha256": "e58604d8cb8464fee36c677b61ce5e4eb99c2c9a5963e60ae3a9161fa538f264",
+          "bytes": 725440
+        }
+      },
+      "layers": {},
+      "clips": {}
+    },
+    {
+      "slug": "zhou-yu",
+      "packId": "historic_figures_three_kingdoms_china",
+      "profileId": "ai_gen_ai_gen_vz0n7oz9e",
+      "name": "주유",
+      "nameEn": "Zhou Yu",
+      "portrait": {
+        "url": "https://genesischat.online/content/images/avatars/historic_figures_three_kingdoms_china/zhou-yu.webp",
+        "sha256": "16c743e75e12caaee4a73db63648e95f3d1ceed9ecfb1e49a8c315515857800e"
+      },
+      "expressions": {
+        "neutral": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/49daae4dd825e26f9858dcdd1119f1bafb3265e36bc288e6959acda5c0b1bd6a.png",
+          "sha256": "49daae4dd825e26f9858dcdd1119f1bafb3265e36bc288e6959acda5c0b1bd6a",
+          "bytes": 734248
+        }
+      },
+      "layers": {},
+      "clips": {}
+    },
+    {
+      "slug": "zhao-yun",
+      "packId": "historic_figures_three_kingdoms_china",
+      "profileId": "ai_gen_ai_gen_8my194084",
+      "name": "조운",
+      "nameEn": "Zhao Yun",
+      "portrait": {
+        "url": "https://genesischat.online/content/images/avatars/historic_figures_three_kingdoms_china/zhao-yun.webp",
+        "sha256": "e8231298458d81a0e283e881eaa2840c99fd7d6b9fc85a0530adfa28e11f8679"
+      },
+      "expressions": {
+        "neutral": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/32e06ca18e9fa338c6d94c8948b71eba94f99175e329dadd50700a1e316116e7.png",
+          "sha256": "32e06ca18e9fa338c6d94c8948b71eba94f99175e329dadd50700a1e316116e7",
+          "bytes": 706674
+        }
+      },
+      "layers": {},
+      "clips": {}
+    },
+    {
+      "slug": "lu-bu",
+      "packId": "historic_figures_three_kingdoms_china",
+      "profileId": "three-kingdoms-lu-bu",
+      "name": "여포",
+      "nameEn": "Lü Bu",
+      "portrait": {
+        "url": "https://genesischat.online/content/images/avatars/historic_figures_three_kingdoms_china/lu-bu.webp",
+        "sha256": "63e933918d47c25c3fc05f507d7818340329caa365887331ffa7c0e3b760ed28"
+      },
+      "expressions": {
+        "neutral": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/cc4d6b7dc6edd6f46900c3aa39cc75dc2a4051ab48a03312425783a2aa0a8a58.png",
+          "sha256": "cc4d6b7dc6edd6f46900c3aa39cc75dc2a4051ab48a03312425783a2aa0a8a58",
+          "bytes": 694403
+        }
+      },
+      "layers": {},
+      "clips": {
+        "listening-neutral": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/846fa413f855de26c2dfd0a647d391d92a2aff2d939551bb464bdd977495ebc1.webm",
+          "sha256": "846fa413f855de26c2dfd0a647d391d92a2aff2d939551bb464bdd977495ebc1",
+          "bytes": 10953337,
+          "duration": 6.0,
+          "poster": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/00fb5e6dd0b66df6e459ec387e6f22746bb629cc751dfd2a93bed20cfed8c55d.webp",
+          "batch": 3,
+          "score": 88
+        }
+      }
+    },
+    {
+      "slug": "diaochan",
+      "packId": "historic_figures_three_kingdoms_china",
+      "profileId": "three-kingdoms-diaochan",
+      "name": "초선",
+      "nameEn": "Diaochan",
+      "portrait": {
+        "url": "https://genesischat.online/content/images/avatars/historic_figures_three_kingdoms_china/diaochan.webp",
+        "sha256": "faae36b32d5d6caeb58c503f5322c1884a33bb82e239a4e41ac93dfae247d4ce"
+      },
+      "expressions": {
+        "neutral": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/a1f3473ae5f59a92de879843c89483a6cc6b0e1c3c6a0a5a9fa3eb8c345dbef1.png",
+          "sha256": "a1f3473ae5f59a92de879843c89483a6cc6b0e1c3c6a0a5a9fa3eb8c345dbef1",
+          "bytes": 573625
+        },
+        "happy": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/8c904083b78cb6466c951e49c9cd014dbea4496f10a925e0d0f026d54d47c06d.png",
+          "sha256": "8c904083b78cb6466c951e49c9cd014dbea4496f10a925e0d0f026d54d47c06d",
+          "bytes": 575645
+        },
+        "angry": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/6d3ad25dc6dc50aa8bcc984b62eb727fa078bfb6ecd3bde9c302099ded27450a.png",
+          "sha256": "6d3ad25dc6dc50aa8bcc984b62eb727fa078bfb6ecd3bde9c302099ded27450a",
+          "bytes": 575519
+        },
+        "sad": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/579990abc39000d24601918128c32b65f132dfa071062e8e33cbd9e2feeac7e0.png",
+          "sha256": "579990abc39000d24601918128c32b65f132dfa071062e8e33cbd9e2feeac7e0",
+          "bytes": 576776
+        },
+        "surprised": {
+          "url": "https://comfy.genesisframeworks.com/comfy/skyhaven/files/Library/Art/GenesisChat/PortraitReview/3b16fcba1395e51a0b564a1f8a5fa6a48510e86b5d485e7d422a0da3f8a87e71.png",
+          "sha256": "3b16fcba1395e51a0b564a1f8a5fa6a48510e86b5d485e7d422a0da3f8a87e71",
+          "bytes": 578410
+        }
+      },
+      "layers": {},
+      "clips": {}
+    }
+  ],
+  "revisions": [
+    {
+      "packId": "ap-us-history",
+      "profileId": "ap-us-history_abraham-lincoln",
+      "revision": "abraham-lincoln-liveportrait-expression-five-state-v1",
+      "name": "에이브러햄 링컨",
+      "nameEn": "Abraham Lincoln",
+      "poster": "https://genesischat.online/content/images/living-portraits/ap-us-history/ap-us-history_abraham-lincoln/liveportrait-clips/abraham-lincoln-liveportrait-expression-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/ap-us-history/ap-us-history_abraham-lincoln/liveportrait-clips/abraham-lincoln-liveportrait-expression-five-state-v1/listening-neutral.mp4",
+          "duration": 10.125,
+          "sha256": "936322c58057cacd3a1048cade1d32463850b99d7430fb59fd26d1ecfa7db3f2"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/ap-us-history/ap-us-history_abraham-lincoln/liveportrait-clips/abraham-lincoln-liveportrait-expression-five-state-v1/speaking-neutral.mp4",
+          "duration": 10.125,
+          "sha256": "e7f15c050331e6492390848683d6a2433fba077bcd595cf7ddeb3c048d192106"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/ap-us-history/ap-us-history_abraham-lincoln/liveportrait-clips/abraham-lincoln-liveportrait-expression-five-state-v1/speaking-happy.mp4",
+          "duration": 10.125,
+          "sha256": "788549622c2d27f71bce61734eb7ca89e1cc35f243772d576d527f6b89501682"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/ap-us-history/ap-us-history_abraham-lincoln/liveportrait-clips/abraham-lincoln-liveportrait-expression-five-state-v1/speaking-angry.mp4",
+          "duration": 10.125,
+          "sha256": "cabc3c41a418da862d15be85d90626921dfb9d92547faf3aa931879d87e0b413"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/ap-us-history/ap-us-history_abraham-lincoln/liveportrait-clips/abraham-lincoln-liveportrait-expression-five-state-v1/speaking-sad.mp4",
+          "duration": 10.125,
+          "sha256": "b4d40741c68219fa76a03de222a7fa4007fb0241abd773ae59b213bdb99cdaa6"
+        }
+      ]
+    },
+    {
+      "packId": "ap-us-history",
+      "profileId": "ap-us-history_george-washington",
+      "revision": "george-washington-liveportrait-expression-five-state-v1",
+      "name": "조지 워싱턴",
+      "nameEn": "George Washington",
+      "poster": "https://genesischat.online/content/images/living-portraits/ap-us-history/ap-us-history_george-washington/liveportrait-clips/george-washington-liveportrait-expression-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/ap-us-history/ap-us-history_george-washington/liveportrait-clips/george-washington-liveportrait-expression-five-state-v1/listening-neutral.mp4",
+          "duration": 10.125,
+          "sha256": "72e1dd5f1cad34dc91a9a62e0312c7b23364f21abb35785c8909de5c7b9379f0"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/ap-us-history/ap-us-history_george-washington/liveportrait-clips/george-washington-liveportrait-expression-five-state-v1/speaking-neutral.mp4",
+          "duration": 10.125,
+          "sha256": "5e4857d036ad452ea28c60f8af187f1731256ca4f44396e4163272f4abb3f3c4"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/ap-us-history/ap-us-history_george-washington/liveportrait-clips/george-washington-liveportrait-expression-five-state-v1/speaking-happy.mp4",
+          "duration": 10.125,
+          "sha256": "1702f1eedb9edbc64d0cfebc8d2e91e96b1e0b0919934b712b4e6c6a6d8498e1"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/ap-us-history/ap-us-history_george-washington/liveportrait-clips/george-washington-liveportrait-expression-five-state-v1/speaking-angry.mp4",
+          "duration": 10.125,
+          "sha256": "f33e5e9bed3d2ea843b9b2f8e7f5173e1459b5e2bf9fa78c7d6588837fd2730f"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/ap-us-history/ap-us-history_george-washington/liveportrait-clips/george-washington-liveportrait-expression-five-state-v1/speaking-sad.mp4",
+          "duration": 10.125,
+          "sha256": "81474183039389537c9409a6ff7e2e62d4423a7bb8ff435211b2e9590f35cac8"
+        }
+      ]
+    },
+    {
+      "packId": "ap-us-history",
+      "profileId": "ap-us-history_martin-luther-king-jr",
+      "revision": "martin-luther-king-jr-liveportrait-expression-five-state-v1",
+      "name": "마틴 루서 킹 주니어",
+      "nameEn": "Martin Luther King Jr.",
+      "poster": "https://genesischat.online/content/images/living-portraits/ap-us-history/ap-us-history_martin-luther-king-jr/liveportrait-clips/martin-luther-king-jr-liveportrait-expression-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/ap-us-history/ap-us-history_martin-luther-king-jr/liveportrait-clips/martin-luther-king-jr-liveportrait-expression-five-state-v1/listening-neutral.mp4",
+          "duration": 10.125,
+          "sha256": "36a55a56e774784bbf11c8d34219a1b27516c80e3d7da68ab0958c55540427bb"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/ap-us-history/ap-us-history_martin-luther-king-jr/liveportrait-clips/martin-luther-king-jr-liveportrait-expression-five-state-v1/speaking-neutral.mp4",
+          "duration": 10.125,
+          "sha256": "628448690b41de13514ea6952d7c787e33ea426447bc7bf955b6393215a85e18"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/ap-us-history/ap-us-history_martin-luther-king-jr/liveportrait-clips/martin-luther-king-jr-liveportrait-expression-five-state-v1/speaking-happy.mp4",
+          "duration": 10.125,
+          "sha256": "679b09cc0cdae4892113b7b6a1a17f772c28ea787aca70080aecce751a4bb9b6"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/ap-us-history/ap-us-history_martin-luther-king-jr/liveportrait-clips/martin-luther-king-jr-liveportrait-expression-five-state-v1/speaking-angry.mp4",
+          "duration": 10.125,
+          "sha256": "d6ecca63c9c247e717230d50d83b1b4ed29a945e5210b103871585ed0d47b517"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/ap-us-history/ap-us-history_martin-luther-king-jr/liveportrait-clips/martin-luther-king-jr-liveportrait-expression-five-state-v1/speaking-sad.mp4",
+          "duration": 10.125,
+          "sha256": "e33148ddb689a6d56b59ee64ab57d42e398838e8303603311df7cc9c0e8e41d2"
+        }
+      ]
+    },
+    {
+      "packId": "bible-characters-judges",
+      "profileId": "deborah",
+      "revision": "bible-priority-20261024-five-state-v1",
+      "name": "드보라",
+      "nameEn": "Deborah",
+      "poster": "https://genesischat.online/content/images/living-portraits/bible-characters-judges/deborah/liveportrait-clips/bible-priority-20261024-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-judges/deborah/liveportrait-clips/bible-priority-20261024-five-state-v1/listening-neutral.mp4",
+          "duration": 5.0,
+          "sha256": "4360d1fe2bc995208f480cd8f19d3157c3528d2ffdb4764e56de59c4cb0f281f"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-judges/deborah/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-neutral.mp4",
+          "duration": 6.0,
+          "sha256": "4c5a8675b8450419554aa416c5eac73ddb22f2e1f286fc19042928751a372b51"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-judges/deborah/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-happy.mp4",
+          "duration": 6.0,
+          "sha256": "151c746abeb609673fb16c85432c5818452d4f5a06513de24af5678621d938f5"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-judges/deborah/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-angry.mp4",
+          "duration": 6.0,
+          "sha256": "fb1830ee5942c5a1f33fddca2eca196b565e788a250d36f0cc932a2e83360de3"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-judges/deborah/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-sad.mp4",
+          "duration": 6.0,
+          "sha256": "da0c0a508763976c3ed15db73f90228cbf31e61c62d4a65a9c30f437d98845c0"
+        }
+      ]
+    },
+    {
+      "packId": "bible-characters-judges",
+      "profileId": "gideon",
+      "revision": "bible-priority-20261024-five-state-v1",
+      "name": "기드온",
+      "nameEn": "Gideon",
+      "poster": "https://genesischat.online/content/images/living-portraits/bible-characters-judges/gideon/liveportrait-clips/bible-priority-20261024-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-judges/gideon/liveportrait-clips/bible-priority-20261024-five-state-v1/listening-neutral.mp4",
+          "duration": 5.0,
+          "sha256": "bb972e20bdb4e5d8e375986039946376e1e2d61666203c12e42a5a946150ab9d"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-judges/gideon/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-neutral.mp4",
+          "duration": 5.0,
+          "sha256": "23be12ffa6cfeadb7f351d360d399092200b88d157c62224d79147e3e4322351"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-judges/gideon/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-happy.mp4",
+          "duration": 5.0,
+          "sha256": "193eb60da708b8b6e8433f7d225eae9706f6519a8cb14f7bf76da443b40f2b90"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-judges/gideon/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-angry.mp4",
+          "duration": 5.0,
+          "sha256": "e57341151eec96c00d38ddd48cb1e5cda86708b23671b5308b4c386dd649c0c6"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-judges/gideon/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-sad.mp4",
+          "duration": 5.0,
+          "sha256": "21f408b9ba29825cb0b42cba1e9b41447e9b3680a9d4da4a42f3afab1d6718df"
+        }
+      ]
+    },
+    {
+      "packId": "bible-characters-judges",
+      "profileId": "samson",
+      "revision": "bible-priority-20261024-five-state-v1",
+      "name": "삼손",
+      "nameEn": "Samson",
+      "poster": "https://genesischat.online/content/images/living-portraits/bible-characters-judges/samson/liveportrait-clips/bible-priority-20261024-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-judges/samson/liveportrait-clips/bible-priority-20261024-five-state-v1/listening-neutral.mp4",
+          "duration": 5.0,
+          "sha256": "3c23528b2ead69c6bbbe721486061cacefecb74cbc412f82da2adba45aa1348a"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-judges/samson/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-neutral.mp4",
+          "duration": 5.0,
+          "sha256": "6f17d0653fb99408becab38f0acd3932d3cf16b6932235bde20849ca86872732"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-judges/samson/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-happy.mp4",
+          "duration": 5.0,
+          "sha256": "721fbc09c0ffe669b19e23ceb2ee2c5a30796651cf16494fdbef717fd622efee"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-judges/samson/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-angry.mp4",
+          "duration": 5.0,
+          "sha256": "ca45838f63185e389f19c3b6b3ca62b24c8dd55037bfa737b6d38c95bfeb9cd7"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-judges/samson/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-sad.mp4",
+          "duration": 5.0,
+          "sha256": "75e1a0051c7cbf996cb1b82047918274421acdfb17556066559729f5c2d48ba4"
+        }
+      ]
+    },
+    {
+      "packId": "bible-characters-kings",
+      "profileId": "athaliah",
+      "revision": "bible-priority-20261024-five-state-v1",
+      "name": "아달랴",
+      "nameEn": "Athaliah",
+      "poster": "https://genesischat.online/content/images/living-portraits/bible-characters-kings/athaliah/liveportrait-clips/bible-priority-20261024-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-kings/athaliah/liveportrait-clips/bible-priority-20261024-five-state-v1/listening-neutral.mp4",
+          "duration": 5.0,
+          "sha256": "99ddaf782cc26d351b2598e00ec5b71f22f7489f566212bced76150a935783c4"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-kings/athaliah/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-neutral.mp4",
+          "duration": 5.0,
+          "sha256": "5430287e8a404978e93d2dd6c929eec4f662031448bea1a973cb13115ad2d090"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-kings/athaliah/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-happy.mp4",
+          "duration": 5.0,
+          "sha256": "3d45d27a4e6495f3ef4e87659493ae9630af1cd36d624cbd1ef99a6124808254"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-kings/athaliah/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-angry.mp4",
+          "duration": 5.0,
+          "sha256": "6eea413340078cf1fa16c5bbc5bcb8f65df83a4ebca751cb8b1b3dec02dbb598"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-kings/athaliah/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-sad.mp4",
+          "duration": 5.0,
+          "sha256": "ac5158230f74abf555651724929dce997a1728ef18c63f0a062060ffea2fdd86"
+        }
+      ]
+    },
+    {
+      "packId": "bible-characters-kings",
+      "profileId": "hezekiah",
+      "revision": "bible-priority-20261024-five-state-v1",
+      "name": "히스기야",
+      "nameEn": "Hezekiah",
+      "poster": "https://genesischat.online/content/images/living-portraits/bible-characters-kings/hezekiah/liveportrait-clips/bible-priority-20261024-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-kings/hezekiah/liveportrait-clips/bible-priority-20261024-five-state-v1/listening-neutral.mp4",
+          "duration": 5.0,
+          "sha256": "ee7c5cd5a25b8d0f7e3508ccbebd3263014d8a02542b64d86f6689aadfd388ad"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-kings/hezekiah/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-neutral.mp4",
+          "duration": 6.0,
+          "sha256": "75812cb54576f7d884344ad533b3a1328213231f1bebba1270232f0271571472"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-kings/hezekiah/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-happy.mp4",
+          "duration": 6.0,
+          "sha256": "c21ef0c96af485b1ff3b403471f407ae13eaeb277322399fd12d37215a4f9ab6"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-kings/hezekiah/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-angry.mp4",
+          "duration": 6.0,
+          "sha256": "7a08c1b71c7ceccdb3101903c06dccf95391c37f3da818ee0580512f77471bde"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-kings/hezekiah/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-sad.mp4",
+          "duration": 6.0,
+          "sha256": "df9d725db1547f724430d8025c604741aa9e504a1626999ea98d9cf05208dbf8"
+        }
+      ]
+    },
+    {
+      "packId": "bible-characters-kings",
+      "profileId": "josiah",
+      "revision": "bible-priority-20261024-five-state-v1",
+      "name": "요시야",
+      "nameEn": "Josiah",
+      "poster": "https://genesischat.online/content/images/living-portraits/bible-characters-kings/josiah/liveportrait-clips/bible-priority-20261024-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-kings/josiah/liveportrait-clips/bible-priority-20261024-five-state-v1/listening-neutral.mp4",
+          "duration": 5.0,
+          "sha256": "7c446d20b1217626608d775cd69aa684946b826d67b29f1af2fadbc58262f47c"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-kings/josiah/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-neutral.mp4",
+          "duration": 5.0,
+          "sha256": "269b070629d951e7afc957205e81aaebaf054416916b25a46488825dd4a48a37"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-kings/josiah/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-happy.mp4",
+          "duration": 5.0,
+          "sha256": "d74129ab2b7c237bb70a790dbeb7f04feb7babea28be3ed02d001e9a190c5607"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-kings/josiah/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-angry.mp4",
+          "duration": 5.0,
+          "sha256": "f33a15debb01cd677de12008d215b80a9153e1823a7765c3526dabf3210ecf09"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-kings/josiah/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-sad.mp4",
+          "duration": 5.0,
+          "sha256": "d1e94b87941b971d6173f1115aa36ce7266043bd8cd63831334dc827561b4887"
+        }
+      ]
+    },
+    {
+      "packId": "bible-characters-new-testament",
+      "profileId": "nt_char_001",
+      "revision": "bible-priority-20261024-five-state-v1",
+      "name": "마리아 (예수의 어머니)",
+      "nameEn": "Mary (Mother of Jesus)",
+      "poster": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_001/liveportrait-clips/bible-priority-20261024-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_001/liveportrait-clips/bible-priority-20261024-five-state-v1/listening-neutral.mp4",
+          "duration": 5.0,
+          "sha256": "5fa17564f2efeff0b85d80225be2d23e49042426498dd7cffdcf5a17f4145e37"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_001/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-neutral.mp4",
+          "duration": 5.0,
+          "sha256": "f2eb893315a84cf3ea8063f23d24764c0b9e2adecd39489a781a2192bf65eb3c"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_001/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-happy.mp4",
+          "duration": 5.0,
+          "sha256": "b1e10b28875a920152254411bf359e76dcc01371ca22269d7c07bb44503a250a"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_001/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-angry.mp4",
+          "duration": 5.0,
+          "sha256": "09acc2196f8ce01211a321aca5f616c6236bddf95d12efd612a62fd1757f7c48"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_001/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-sad.mp4",
+          "duration": 5.0,
+          "sha256": "77fe8c8d000e729b498b5cd0ff395d7aa8e685673f9b48f1bb8ff19f98a8d95f"
+        }
+      ]
+    },
+    {
+      "packId": "bible-characters-new-testament",
+      "profileId": "nt_char_003",
+      "revision": "bible-priority-20261024-five-state-v1",
+      "name": "베드로 (시몬 베드로)",
+      "nameEn": "Peter (Simon Peter)",
+      "poster": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_003/liveportrait-clips/bible-priority-20261024-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_003/liveportrait-clips/bible-priority-20261024-five-state-v1/listening-neutral.mp4",
+          "duration": 5.0,
+          "sha256": "a769e13ec8df5807ac32b4ed0949a90b70e15c707a32a0851aac3ad61dc38db7"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_003/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-neutral.mp4",
+          "duration": 6.0,
+          "sha256": "8fecae846a2234704738d43816819ce64e8a00b0d16742a104f9017f115f1fc9"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_003/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-happy.mp4",
+          "duration": 6.0,
+          "sha256": "f99eec89f4706460130902f9fc48e214e16852eef3174888aca5750d437fc2df"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_003/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-angry.mp4",
+          "duration": 6.0,
+          "sha256": "fadcd402c805d93dc40f028325a29c96c8a07c590e7c26b497a66b8f4878acf4"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_003/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-sad.mp4",
+          "duration": 6.0,
+          "sha256": "685219068681df1262e67792f51494e07124a7dec41412c9136ed2edcb0347fa"
+        }
+      ]
+    },
+    {
+      "packId": "bible-characters-new-testament",
+      "profileId": "nt_char_004",
+      "revision": "bible-priority-20261024-five-state-v1",
+      "name": "요한 (사도)",
+      "nameEn": "John (Apostle)",
+      "poster": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_004/liveportrait-clips/bible-priority-20261024-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_004/liveportrait-clips/bible-priority-20261024-five-state-v1/listening-neutral.mp4",
+          "duration": 5.0,
+          "sha256": "3b9becf9e512d805ea14d12f1b746709eb9b6d153dd556b50d8338c2e6271875"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_004/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-neutral.mp4",
+          "duration": 5.0,
+          "sha256": "7b99ba8cb85c176984a7adf0e48b994f8b20b11e81274fb478273bd504039ea5"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_004/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-happy.mp4",
+          "duration": 5.0,
+          "sha256": "3e5faec5d4d5d3b963d9c6c95f1fbc0053777cf4668295581453b51b653b27dd"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_004/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-angry.mp4",
+          "duration": 5.0,
+          "sha256": "ed4b75915d9b01aa4c0c7c0be4a4c89d1156ea912c7ab4fc1b24eb5fa43f5bb7"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_004/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-sad.mp4",
+          "duration": 5.0,
+          "sha256": "f4ee44d145fd46186743cb8bc5e43337074d54f3587b790d9737e928d6418402"
+        }
+      ]
+    },
+    {
+      "packId": "bible-characters-new-testament",
+      "profileId": "nt_char_012",
+      "revision": "bible-priority-20261024-five-state-v1",
+      "name": "바울 (다소의 사울)",
+      "nameEn": "Paul (Saul of Tarsus)",
+      "poster": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_012/liveportrait-clips/bible-priority-20261024-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_012/liveportrait-clips/bible-priority-20261024-five-state-v1/listening-neutral.mp4",
+          "duration": 5.0,
+          "sha256": "d63e3786250e6630a3e72634ccbf3c9d27d38fe30aaee41d5789ea228fa739ed"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_012/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-neutral.mp4",
+          "duration": 5.0,
+          "sha256": "27a8da16ff55a366fbbfb860829662fbc563ee011d1c5adb2fb400ef2b1a4a27"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_012/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-happy.mp4",
+          "duration": 5.0,
+          "sha256": "06a1b0b2dc5d5fab8dda73f2a31573d8c79a94983a9e2431d160a238cd771798"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_012/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-angry.mp4",
+          "duration": 5.0,
+          "sha256": "9303b985d9d20493691ac8831acec078cf8d95c75b573252ec70eca9132ae8c1"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_012/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-sad.mp4",
+          "duration": 5.0,
+          "sha256": "6bfba5465b1d22a424db0563fa403618ba5492df6bda8b4f8897bff8b293f094"
+        }
+      ]
+    },
+    {
+      "packId": "bible-characters-new-testament",
+      "profileId": "nt_char_014",
+      "revision": "bible-priority-20261024-five-state-v1",
+      "name": "막달라 마리아",
+      "nameEn": "Mary Magdalene",
+      "poster": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_014/liveportrait-clips/bible-priority-20261024-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_014/liveportrait-clips/bible-priority-20261024-five-state-v1/listening-neutral.mp4",
+          "duration": 5.0,
+          "sha256": "d756fc73c2b53cfc62bcc85d6cf0fd915f7855785e7a037f169a3209c2e144e2"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_014/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-neutral.mp4",
+          "duration": 5.0,
+          "sha256": "f35051a5ad3d846447e5f1afb2b5c4a0e8900b075f5b4d7fbc86b7b407c032aa"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_014/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-happy.mp4",
+          "duration": 5.0,
+          "sha256": "ddcf751d4eb5087f657465db228caeb1d6b8f39da59d13547bbd3b78aec31fea"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_014/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-angry.mp4",
+          "duration": 5.0,
+          "sha256": "d30932850af2b96ca9e8e147e5a70860dec01691d21227736faf40a0550eff20"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_014/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-sad.mp4",
+          "duration": 5.0,
+          "sha256": "7d97ce1619d7c3565f992bde4a80f7bdedb3c6200d40933609cfbdeab11d8bbe"
+        }
+      ]
+    },
+    {
+      "packId": "bible-characters-new-testament",
+      "profileId": "nt_char_015",
+      "revision": "bible-priority-20261024-five-state-v1",
+      "name": "마르다",
+      "nameEn": "Martha",
+      "poster": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_015/liveportrait-clips/bible-priority-20261024-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_015/liveportrait-clips/bible-priority-20261024-five-state-v1/listening-neutral.mp4",
+          "duration": 5.0,
+          "sha256": "87186626c50723871ae632a27f8e554e65f30ba968854380097570cfa154fb84"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_015/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-neutral.mp4",
+          "duration": 5.0,
+          "sha256": "2b6717a364d952896053829da26a7d8e823faa41f8246eb15d6b183bcfe2b2f6"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_015/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-happy.mp4",
+          "duration": 5.0,
+          "sha256": "b367d5a798e566a2a6d0a72000c05dec5b5d98c35a6d9cbe2b5e7344274d2aa5"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_015/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-angry.mp4",
+          "duration": 5.0,
+          "sha256": "6006032c1e408db11ed6177d6528e432215f1670b494ade730e507217edf080c"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-new-testament/nt_char_015/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-sad.mp4",
+          "duration": 5.0,
+          "sha256": "6839cb258aa211511043ef4cb58151b4347e0c468e7cf3b3a19e041cad319985"
+        }
+      ]
+    },
+    {
+      "packId": "bible-characters-old-testament",
+      "profileId": "ai_gen_ai_gen_21jpwutud",
+      "revision": "bible-priority-20261024-five-state-v1",
+      "name": "모세",
+      "nameEn": "Moses",
+      "poster": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_21jpwutud/liveportrait-clips/bible-priority-20261024-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_21jpwutud/liveportrait-clips/bible-priority-20261024-five-state-v1/listening-neutral.mp4",
+          "duration": 5.0,
+          "sha256": "572cc59b97c65d2c23a96be95ceb83bd0d7a302a074a39087ba9250d84b40a0a"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_21jpwutud/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-neutral.mp4",
+          "duration": 6.0,
+          "sha256": "2b240973b5836de806410bb62d1cb52114fe4bcf273819dba7b65fab24fe4b8c"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_21jpwutud/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-happy.mp4",
+          "duration": 6.0,
+          "sha256": "1014b40e0cdcfddbbd43ba3e6ad2a0845694c398b721722ab781017ed74940cb"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_21jpwutud/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-angry.mp4",
+          "duration": 6.0,
+          "sha256": "093966d2ea34a263aff5775efb54165a9d37752307c0e00484b9719f831f67e4"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_21jpwutud/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-sad.mp4",
+          "duration": 6.0,
+          "sha256": "32287ba4a034bc554cc5057b55ffd9966c94ba4ec8f085c9a60320c06b133cdc"
+        }
+      ]
+    },
+    {
+      "packId": "bible-characters-old-testament",
+      "profileId": "ai_gen_ai_gen_21jpwutud",
+      "revision": "moses-liveportrait-expression-five-state-v1",
+      "name": "모세",
+      "nameEn": "Moses",
+      "poster": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_21jpwutud/liveportrait-clips/moses-liveportrait-expression-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_21jpwutud/liveportrait-clips/moses-liveportrait-expression-five-state-v1/listening-neutral.mp4",
+          "duration": 10.125,
+          "sha256": "bfc9a1d09d3aae4d64caed8a3c245c4dfa75c9eb3a5dfcafc24dd04c8778da95"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_21jpwutud/liveportrait-clips/moses-liveportrait-expression-five-state-v1/speaking-neutral.mp4",
+          "duration": 10.125,
+          "sha256": "b0cab5047ba859d05c24d69a162ffacaee3823d58920d08b11aa156503d93536"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_21jpwutud/liveportrait-clips/moses-liveportrait-expression-five-state-v1/speaking-happy.mp4",
+          "duration": 10.125,
+          "sha256": "b9db6c8b18fe9400b56cf52612caa0da0b12f4cd4da01c43dcc916baf476d8b6"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_21jpwutud/liveportrait-clips/moses-liveportrait-expression-five-state-v1/speaking-angry.mp4",
+          "duration": 10.125,
+          "sha256": "837a65a8b055db366305b2c97516bbe5cb5fd0dd9bb2f96a9939b7f65207d239"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_21jpwutud/liveportrait-clips/moses-liveportrait-expression-five-state-v1/speaking-sad.mp4",
+          "duration": 10.125,
+          "sha256": "98e6e0ed602d62fb986c85772c7c0d2665c5e62df06907b9ed000ecd72cdd3c7"
+        }
+      ]
+    },
+    {
+      "packId": "bible-characters-old-testament",
+      "profileId": "ai_gen_ai_gen_49e3ge352",
+      "revision": "abraham-liveportrait-expression-five-state-v1",
+      "name": "아브라함",
+      "nameEn": "Abraham",
+      "poster": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_49e3ge352/liveportrait-clips/abraham-liveportrait-expression-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_49e3ge352/liveportrait-clips/abraham-liveportrait-expression-five-state-v1/listening-neutral.mp4",
+          "duration": 10.125,
+          "sha256": "21b4aa5697b22843ec2f67c54bcea992edf96b9771108a2902cd93344e3086ea"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_49e3ge352/liveportrait-clips/abraham-liveportrait-expression-five-state-v1/speaking-neutral.mp4",
+          "duration": 10.125,
+          "sha256": "10142d27c2369c6bc5e5f51e47e60d3f5a80446ef6d85780fb1251b605f7d901"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_49e3ge352/liveportrait-clips/abraham-liveportrait-expression-five-state-v1/speaking-happy.mp4",
+          "duration": 10.125,
+          "sha256": "9ff0795e6bc82297c68d7a1a2f3783c1be1fa4da32f4acaf486f274495ef7e8b"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_49e3ge352/liveportrait-clips/abraham-liveportrait-expression-five-state-v1/speaking-angry.mp4",
+          "duration": 10.125,
+          "sha256": "51a4303393e6f0bc0b6192dbcaa9e9c7efa49552ebec6f0aa19c19d43de1c125"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_49e3ge352/liveportrait-clips/abraham-liveportrait-expression-five-state-v1/speaking-sad.mp4",
+          "duration": 10.125,
+          "sha256": "3d7bff6ac5b8171afe8e006c779c85bd4ef01a9a479d7e7056965840aa0bc8b3"
+        }
+      ]
+    },
+    {
+      "packId": "bible-characters-old-testament",
+      "profileId": "ai_gen_ai_gen_4pomoscte",
+      "revision": "bible-priority-20261024-five-state-v1",
+      "name": "다니엘",
+      "nameEn": "Daniel",
+      "poster": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_4pomoscte/liveportrait-clips/bible-priority-20261024-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_4pomoscte/liveportrait-clips/bible-priority-20261024-five-state-v1/listening-neutral.mp4",
+          "duration": 5.0,
+          "sha256": "3285d6012a05a865504f7106fc3c2c885cec88c632d1f0783d9ca55e7e81c2e0"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_4pomoscte/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-neutral.mp4",
+          "duration": 5.0,
+          "sha256": "94fc127a12efe80bd16994a27af9374e72f2b57ad79e74b715d83297024191f7"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_4pomoscte/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-happy.mp4",
+          "duration": 5.0,
+          "sha256": "65be643a087cc912c6a43b0380f3f3e838327e768f4154dfb34d9ca7d68ed3de"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_4pomoscte/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-angry.mp4",
+          "duration": 5.0,
+          "sha256": "1440659560f9296b30e217be50c8451a1f6b7f84f7a325341b9d50b56621ee78"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_4pomoscte/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-sad.mp4",
+          "duration": 5.0,
+          "sha256": "6151e1b988e1628ff1f1b04f42f6e60c193132923ed952ea44388c08771fc89a"
+        }
+      ]
+    },
+    {
+      "packId": "bible-characters-old-testament",
+      "profileId": "ai_gen_ai_gen_5omw1jp16",
+      "revision": "bible-priority-20261024-five-state-v1",
+      "name": "다윗",
+      "nameEn": "David",
+      "poster": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_5omw1jp16/liveportrait-clips/bible-priority-20261024-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_5omw1jp16/liveportrait-clips/bible-priority-20261024-five-state-v1/listening-neutral.mp4",
+          "duration": 5.0,
+          "sha256": "9ccb3ce56569fef7295a0244dd81613e74fac13ec71d28a040c08f149fc4da12"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_5omw1jp16/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-neutral.mp4",
+          "duration": 5.0,
+          "sha256": "06b5616ba32852b30d3e37c6fd02520a29ea59e4716d44d898a8d8db4e218e1c"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_5omw1jp16/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-happy.mp4",
+          "duration": 5.0,
+          "sha256": "dd5242a8cf80ae9104cbc7fa0ed2f29654799fcae13c95e985e23805f949fc40"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_5omw1jp16/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-angry.mp4",
+          "duration": 5.0,
+          "sha256": "2f539579356bd180625aeb551be92e89609e07449ff8f3390fd0527e89a9aab4"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_5omw1jp16/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-sad.mp4",
+          "duration": 5.0,
+          "sha256": "6c7b81a8081a7dea55f1608a3d8246aa94f36b9083c173001ad7eb9208a601e6"
+        }
+      ]
+    },
+    {
+      "packId": "bible-characters-old-testament",
+      "profileId": "ai_gen_ai_gen_5omw1jp16",
+      "revision": "david-liveportrait-expression-five-state-v1",
+      "name": "다윗",
+      "nameEn": "David",
+      "poster": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_5omw1jp16/liveportrait-clips/david-liveportrait-expression-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_5omw1jp16/liveportrait-clips/david-liveportrait-expression-five-state-v1/listening-neutral.mp4",
+          "duration": 10.125,
+          "sha256": "48c9f40bba4cf3006b694e8dee24082fbc61e37402b9d331b6be6051e3265f2d"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_5omw1jp16/liveportrait-clips/david-liveportrait-expression-five-state-v1/speaking-neutral.mp4",
+          "duration": 10.125,
+          "sha256": "4a3f72f67b3b3e69b9db39a757c426f0020de38680929ef61eecc36dd61bac4f"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_5omw1jp16/liveportrait-clips/david-liveportrait-expression-five-state-v1/speaking-happy.mp4",
+          "duration": 10.125,
+          "sha256": "beab41d6cee7f248f9f137e595ec51001d03b69a09a73bc5ee8e8d0c6a64e956"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_5omw1jp16/liveportrait-clips/david-liveportrait-expression-five-state-v1/speaking-angry.mp4",
+          "duration": 10.125,
+          "sha256": "8717f8c8c270106ba06ae47dc757fdf462cc0928df293bd2f6f96695d18b335a"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_5omw1jp16/liveportrait-clips/david-liveportrait-expression-five-state-v1/speaking-sad.mp4",
+          "duration": 10.125,
+          "sha256": "ee5005ecc89108ed1d3a07d1302b2fe0c823aa24d00c8d883ee70d51e1e4ca9c"
+        }
+      ]
+    },
+    {
+      "packId": "bible-characters-old-testament",
+      "profileId": "ai_gen_ai_gen_98veifxpv",
+      "revision": "solomon-liveportrait-expression-five-state-v1",
+      "name": "솔로몬",
+      "nameEn": "Solomon",
+      "poster": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_98veifxpv/liveportrait-clips/solomon-liveportrait-expression-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_98veifxpv/liveportrait-clips/solomon-liveportrait-expression-five-state-v1/listening-neutral.mp4",
+          "duration": 10.125,
+          "sha256": "c803b8923adf99c05829bcd151ce4d6ae12f219ca907a48c72fbd76f3a97df8a"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_98veifxpv/liveportrait-clips/solomon-liveportrait-expression-five-state-v1/speaking-neutral.mp4",
+          "duration": 10.125,
+          "sha256": "a65ba86ee8627fb0bbecd9ad6e13abc500828a839295c56a157c8ce52edec9a9"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_98veifxpv/liveportrait-clips/solomon-liveportrait-expression-five-state-v1/speaking-happy.mp4",
+          "duration": 10.125,
+          "sha256": "f5937178a4f3bfd813b4eaacd1c5d1bba8621edef8be9005d4153ead0772c21d"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_98veifxpv/liveportrait-clips/solomon-liveportrait-expression-five-state-v1/speaking-angry.mp4",
+          "duration": 10.125,
+          "sha256": "40bc0d669fc15201979eb78d366c9bf078f4d40046a2033fe29bc8abdbca0384"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_98veifxpv/liveportrait-clips/solomon-liveportrait-expression-five-state-v1/speaking-sad.mp4",
+          "duration": 10.125,
+          "sha256": "dc28c5569235eac244ac0ca4fc5a5d2d31aa4202911953e122d7ad6819c763c1"
+        }
+      ]
+    },
+    {
+      "packId": "bible-characters-old-testament",
+      "profileId": "ai_gen_ai_gen_cofg2s3yn",
+      "revision": "bible-priority-20261024-five-state-v1",
+      "name": "욥",
+      "nameEn": "Job",
+      "poster": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_cofg2s3yn/liveportrait-clips/bible-priority-20261024-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_cofg2s3yn/liveportrait-clips/bible-priority-20261024-five-state-v1/listening-neutral.mp4",
+          "duration": 5.0,
+          "sha256": "e82c090b1f09416bb4ecfc306e11893f55afaaa788dc838f469886917e571132"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_cofg2s3yn/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-neutral.mp4",
+          "duration": 5.0,
+          "sha256": "147f3fd6fe74b1d0e2efeeeb0e7e205b54a81fafc8fa148825467da4677b9f5b"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_cofg2s3yn/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-happy.mp4",
+          "duration": 5.0,
+          "sha256": "83afbf8859271b59c04bbf4057e5d32b44de1e76bbc2f2201a2ba8be6dd6f4f7"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_cofg2s3yn/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-angry.mp4",
+          "duration": 5.0,
+          "sha256": "55f20843f4a6a20d99ba7e019ffea72789f4de49e674aef63b022be42fb63fa4"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_cofg2s3yn/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-sad.mp4",
+          "duration": 5.0,
+          "sha256": "3b47d57202f6a18f59a3ea8031404e54ff9fe7a4288307bbabf8d55719851add"
+        }
+      ]
+    },
+    {
+      "packId": "bible-characters-old-testament",
+      "profileId": "ai_gen_ai_gen_y8lfrijcy",
+      "revision": "esther-liveportrait-expression-five-state-v1",
+      "name": "에스더",
+      "nameEn": "Esther",
+      "poster": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_y8lfrijcy/liveportrait-clips/esther-liveportrait-expression-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_y8lfrijcy/liveportrait-clips/esther-liveportrait-expression-five-state-v1/listening-neutral.mp4",
+          "duration": 10.125,
+          "sha256": "e33d2b3825f4f0381deec179a4ddbbef22ecf66c84c5a3d5c4300d3687d3055b"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_y8lfrijcy/liveportrait-clips/esther-liveportrait-expression-five-state-v1/speaking-neutral.mp4",
+          "duration": 10.125,
+          "sha256": "660373eb339508b045313b36dec06556ab430499cb28dc73d8791bbdd445b53f"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_y8lfrijcy/liveportrait-clips/esther-liveportrait-expression-five-state-v1/speaking-happy.mp4",
+          "duration": 10.125,
+          "sha256": "e1787626a2abc5d054ea52a9e5fca99489c2a3d4559233ecb97e5c978ed6fb7f"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_y8lfrijcy/liveportrait-clips/esther-liveportrait-expression-five-state-v1/speaking-angry.mp4",
+          "duration": 10.125,
+          "sha256": "16baa1ce19365a01c03eda580ac6cc95052d39286638ad112d16cd03b4c842b8"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/ai_gen_ai_gen_y8lfrijcy/liveportrait-clips/esther-liveportrait-expression-five-state-v1/speaking-sad.mp4",
+          "duration": 10.125,
+          "sha256": "23272a119ccf74b26f5c4854f3b4cd9f45b95ab2c1843d338ee4a6748cc98247"
+        }
+      ]
+    },
+    {
+      "packId": "bible-characters-old-testament",
+      "profileId": "noah",
+      "revision": "bible-priority-20261024-five-state-v1",
+      "name": "노아",
+      "nameEn": "Noah",
+      "poster": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/noah/liveportrait-clips/bible-priority-20261024-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/noah/liveportrait-clips/bible-priority-20261024-five-state-v1/listening-neutral.mp4",
+          "duration": 5.0,
+          "sha256": "4097b7dd4ae1036e3628fc36034601a37b4102c5771863c066fe69296894e86e"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/noah/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-neutral.mp4",
+          "duration": 6.0,
+          "sha256": "201d5688fa729565b3de1d20ca71f12236cae01fa8b2b29ee44af20d62debdb3"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/noah/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-happy.mp4",
+          "duration": 6.0,
+          "sha256": "30ad8d9e02819e8d339bd63bf7ce2fe0807606b0a680659adeafa7a4e17ef047"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/noah/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-angry.mp4",
+          "duration": 6.0,
+          "sha256": "70979c30326790f0a04ad16348a8188c3baacfc40d671750a924faeecc635bed"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/bible-characters-old-testament/noah/liveportrait-clips/bible-priority-20261024-five-state-v1/speaking-sad.mp4",
+          "duration": 6.0,
+          "sha256": "dc76a4ab7c4d73f1017706a2e86e04e6e068f3010eee2d08ec6cbceb67160c72"
+        }
+      ]
+    },
+    {
+      "packId": "historic_figures_three_kingdoms_china",
+      "profileId": "ai_gen_ai_gen_52xnow9dw",
+      "revision": "zhuge-liang-liveportrait-alpha-ten-state-v1",
+      "name": "제갈량",
+      "nameEn": "Zhuge Liang",
+      "poster": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_52xnow9dw/liveportrait-clips/zhuge-liang-liveportrait-alpha-ten-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_52xnow9dw/liveportrait-clips/zhuge-liang-liveportrait-alpha-ten-state-v1/listening-neutral.webm",
+          "duration": 6.0,
+          "sha256": "18b9c83fac2725ff8bf99ec7ef78dcdc0e068cdf3d746cb378530e9e819eb940"
+        },
+        {
+          "state": "listening-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_52xnow9dw/liveportrait-clips/zhuge-liang-liveportrait-alpha-ten-state-v1/listening-happy.webm",
+          "duration": 6.0,
+          "sha256": "1fb45c0d4d3acd24b195133dc7f97a5197a1638b5d8394f1cc36069bf8083dda"
+        },
+        {
+          "state": "listening-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_52xnow9dw/liveportrait-clips/zhuge-liang-liveportrait-alpha-ten-state-v1/listening-angry.webm",
+          "duration": 6.0,
+          "sha256": "405c641ed48364251944bb06145254f8331d11d9fbaa8191011b533748d74326"
+        },
+        {
+          "state": "listening-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_52xnow9dw/liveportrait-clips/zhuge-liang-liveportrait-alpha-ten-state-v1/listening-sad.webm",
+          "duration": 6.0,
+          "sha256": "35ac103778322d8a4206bd387837dd73670159b18467ed3724aebbc94e588d63"
+        },
+        {
+          "state": "listening-surprised",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_52xnow9dw/liveportrait-clips/zhuge-liang-liveportrait-alpha-ten-state-v1/listening-surprised.webm",
+          "duration": 6.0,
+          "sha256": "900988f34486bddee2fa1dc63e8de2b261d672dd7af625e47aeca2dbed8990f9"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_52xnow9dw/liveportrait-clips/zhuge-liang-liveportrait-alpha-ten-state-v1/speaking-neutral.webm",
+          "duration": 1.0,
+          "sha256": "a047f57387144b701029d37d8dc9859c357c2ae1ce83f88b4c469001aa9aeb32"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_52xnow9dw/liveportrait-clips/zhuge-liang-liveportrait-alpha-ten-state-v1/speaking-happy.webm",
+          "duration": 1.0,
+          "sha256": "567aa25af1b0e2a7caa9ee8cfebb4c7e51e62044cb2bcbcc1e4c005be345b453"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_52xnow9dw/liveportrait-clips/zhuge-liang-liveportrait-alpha-ten-state-v1/speaking-angry.webm",
+          "duration": 1.0,
+          "sha256": "427f8e49126e9911db34575653324964c9ac9e40bc531a4a162a2d677420f273"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_52xnow9dw/liveportrait-clips/zhuge-liang-liveportrait-alpha-ten-state-v1/speaking-sad.webm",
+          "duration": 1.0,
+          "sha256": "44fb70ab0b2ab8b9188ad2af6b034d310ad06829f9ca97beb3b6dac4b3e683e0"
+        },
+        {
+          "state": "speaking-surprised",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_52xnow9dw/liveportrait-clips/zhuge-liang-liveportrait-alpha-ten-state-v1/speaking-surprised.webm",
+          "duration": 1.0,
+          "sha256": "f81a00ff3b399762b23b958c002dbb8d0bdcee06142d09982c8801bc1ce1a439"
+        }
+      ]
+    },
+    {
+      "packId": "historic_figures_three_kingdoms_china",
+      "profileId": "ai_gen_ai_gen_52xnow9dw",
+      "revision": "zhuge-liang-liveportrait-alpha-ten-state-v1-stacked",
+      "name": "제갈량",
+      "nameEn": "Zhuge Liang",
+      "poster": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_52xnow9dw/liveportrait-clips/zhuge-liang-liveportrait-alpha-ten-state-v1-stacked/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_52xnow9dw/liveportrait-clips/zhuge-liang-liveportrait-alpha-ten-state-v1-stacked/listening-neutral.mp4",
+          "duration": 6.0,
+          "sha256": "3ae80f3e1da9419ed947f589a912e763b673459794e3a7b5fb92abe2ea4517cb"
+        },
+        {
+          "state": "listening-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_52xnow9dw/liveportrait-clips/zhuge-liang-liveportrait-alpha-ten-state-v1-stacked/listening-happy.mp4",
+          "duration": 6.0,
+          "sha256": "9ce2122b9d881d4b69046ee9c99861a2098687cb62c8c4aa80417ad9919e3962"
+        },
+        {
+          "state": "listening-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_52xnow9dw/liveportrait-clips/zhuge-liang-liveportrait-alpha-ten-state-v1-stacked/listening-angry.mp4",
+          "duration": 6.0,
+          "sha256": "712615b5ea7f153617f9846a199bd91f12ce4db271aa0afb854f6a0525e37bc6"
+        },
+        {
+          "state": "listening-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_52xnow9dw/liveportrait-clips/zhuge-liang-liveportrait-alpha-ten-state-v1-stacked/listening-sad.mp4",
+          "duration": 6.0,
+          "sha256": "af9f2a54c576ca2a5c10411616356f8f6ecdb656feac1612342cf8e2d82028df"
+        },
+        {
+          "state": "listening-surprised",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_52xnow9dw/liveportrait-clips/zhuge-liang-liveportrait-alpha-ten-state-v1-stacked/listening-surprised.mp4",
+          "duration": 6.0,
+          "sha256": "46e1fb4d37aa0cc07e2a20200fc12bb83998dceda82daf7691980224c80da613"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_52xnow9dw/liveportrait-clips/zhuge-liang-liveportrait-alpha-ten-state-v1-stacked/speaking-neutral.mp4",
+          "duration": 1.0,
+          "sha256": "35fd1d7fb9d3ab3f4237200dab6c8a1ff23e0c6fa85fe31ae22ca24d8786aea5"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_52xnow9dw/liveportrait-clips/zhuge-liang-liveportrait-alpha-ten-state-v1-stacked/speaking-happy.mp4",
+          "duration": 1.0,
+          "sha256": "56edd761d87fd0e00d553df5f6e72cf8708d5ca8fdc9ada5fb4376d4f46c86b9"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_52xnow9dw/liveportrait-clips/zhuge-liang-liveportrait-alpha-ten-state-v1-stacked/speaking-angry.mp4",
+          "duration": 1.0,
+          "sha256": "0bb6ba1a5435f4d811fdf65f991af287b610d7664908d00d2095ff07b57a4e57"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_52xnow9dw/liveportrait-clips/zhuge-liang-liveportrait-alpha-ten-state-v1-stacked/speaking-sad.mp4",
+          "duration": 1.0,
+          "sha256": "4269d6adab3a14a2f75f377da524ffca13f5a58ecb5d2e3f4f7035fb888e6480"
+        },
+        {
+          "state": "speaking-surprised",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_52xnow9dw/liveportrait-clips/zhuge-liang-liveportrait-alpha-ten-state-v1-stacked/speaking-surprised.mp4",
+          "duration": 1.0,
+          "sha256": "84ec9479fc99e517b64b22018ee09df09625f74af582073321db8dee09eddfe8"
+        }
+      ]
+    },
+    {
+      "packId": "historic_figures_three_kingdoms_china",
+      "profileId": "ai_gen_ai_gen_52xnow9dw",
+      "revision": "zhuge-liang-liveportrait-expression-five-state-v1",
+      "name": "제갈량",
+      "nameEn": "Zhuge Liang",
+      "poster": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_52xnow9dw/liveportrait-clips/zhuge-liang-liveportrait-expression-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_52xnow9dw/liveportrait-clips/zhuge-liang-liveportrait-expression-five-state-v1/listening-neutral.mp4",
+          "duration": 6.042,
+          "sha256": "c05a75592a9095f8d5d49468deb56de16a8f0bcdd2c0a549c6dbc04762054a9a"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_52xnow9dw/liveportrait-clips/zhuge-liang-liveportrait-expression-five-state-v1/speaking-neutral.mp4",
+          "duration": 6.0,
+          "sha256": "7f408f0fde8b558d9b4a8a2caa7a9929b3ee65a976678395bac6733b532b43e4"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_52xnow9dw/liveportrait-clips/zhuge-liang-liveportrait-expression-five-state-v1/speaking-happy.mp4",
+          "duration": 6.0,
+          "sha256": "da17c4c9ab28c2a8431d0d6d71d1e16659d7b9794ca36b5e70d0259a84245331"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_52xnow9dw/liveportrait-clips/zhuge-liang-liveportrait-expression-five-state-v1/speaking-angry.mp4",
+          "duration": 6.0,
+          "sha256": "c1e77b8a97bfc87ddfd3a0289c89f6b434113437d9c92380e6714dc0da6da881"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_52xnow9dw/liveportrait-clips/zhuge-liang-liveportrait-expression-five-state-v1/speaking-sad.mp4",
+          "duration": 6.0,
+          "sha256": "09fb5b5deb18b111be53b872e679b48218ff7d3e1a83f182f31efc503a8d76c9"
+        }
+      ]
+    },
+    {
+      "packId": "historic_figures_three_kingdoms_china",
+      "profileId": "ai_gen_ai_gen_mih5l32ye",
+      "revision": "zhang-fei-liveportrait-expression-five-state-v1",
+      "name": "장비",
+      "nameEn": "Zhang Fei",
+      "poster": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_mih5l32ye/liveportrait-clips/zhang-fei-liveportrait-expression-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_mih5l32ye/liveportrait-clips/zhang-fei-liveportrait-expression-five-state-v1/listening-neutral.mp4",
+          "duration": 5.0,
+          "sha256": "64e7e78904d4774212b4f97b80d8e799be02c9a7bc03487cce6ec62d8898d349"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_mih5l32ye/liveportrait-clips/zhang-fei-liveportrait-expression-five-state-v1/speaking-neutral.mp4",
+          "duration": 10.125,
+          "sha256": "95242a9e5a329942660dc2d96ceb8bdc2fbc13d7c6148b8ecf6d9829b5addc28"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_mih5l32ye/liveportrait-clips/zhang-fei-liveportrait-expression-five-state-v1/speaking-happy.mp4",
+          "duration": 10.125,
+          "sha256": "faa4c63bedeb88e4a389d7b5cb27e32ba82ba9d6256246d6242b81b3de758499"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_mih5l32ye/liveportrait-clips/zhang-fei-liveportrait-expression-five-state-v1/speaking-angry.mp4",
+          "duration": 10.125,
+          "sha256": "5ae474cdbd08749f34eba9048c107821eeba48e038a6da8443c521d3a619ebea"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/ai_gen_ai_gen_mih5l32ye/liveportrait-clips/zhang-fei-liveportrait-expression-five-state-v1/speaking-sad.mp4",
+          "duration": 10.125,
+          "sha256": "782dfdf51045f8c99f707516a31104f7a15091052dedbc95e33aac81103ac179"
+        }
+      ]
+    },
+    {
+      "packId": "historic_figures_three_kingdoms_china",
+      "profileId": "three-kingdoms-diaochan",
+      "revision": "diaochan-liveportrait-comfy-five-state-v1",
+      "name": "초선",
+      "nameEn": "Diaochan",
+      "poster": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/three-kingdoms-diaochan/liveportrait-clips/diaochan-liveportrait-comfy-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/three-kingdoms-diaochan/liveportrait-clips/diaochan-liveportrait-comfy-five-state-v1/listening-neutral.mp4",
+          "duration": 6.042,
+          "sha256": "368d4873c5d06dca33dac31329f3c84d601dbf6b24997cf211b6dfcddcdab0b5"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/three-kingdoms-diaochan/liveportrait-clips/diaochan-liveportrait-comfy-five-state-v1/speaking-neutral.mp4",
+          "duration": 6.042,
+          "sha256": "5b9f4636aa32bef38b9be5d4b79e79b95fb0d7e0d6a971ba9f598a20a467c403"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/three-kingdoms-diaochan/liveportrait-clips/diaochan-liveportrait-comfy-five-state-v1/speaking-happy.mp4",
+          "duration": 6.042,
+          "sha256": "4c9c62fd50f6e0b0732e7e23d3758e43929a424e7c93d00e1d5840e9b6ca113f"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/three-kingdoms-diaochan/liveportrait-clips/diaochan-liveportrait-comfy-five-state-v1/speaking-angry.mp4",
+          "duration": 6.042,
+          "sha256": "35722b865e7888d7bfa49aa68711b3e58f0c738e607b439016802048313356eb"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/historic_figures_three_kingdoms_china/three-kingdoms-diaochan/liveportrait-clips/diaochan-liveportrait-comfy-five-state-v1/speaking-sad.mp4",
+          "duration": 6.042,
+          "sha256": "eb5968c078066114cdae3bd54c5b20f1e6b74ed30e2271e56eb3a938183ea09f"
+        }
+      ]
+    },
+    {
+      "packId": "pioneering-scientists",
+      "profileId": "pioneering-scientists_albert-einstein",
+      "revision": "albert-einstein-liveportrait-expression-five-state-v1",
+      "name": "알베르트 아인슈타인",
+      "nameEn": "Albert Einstein",
+      "poster": "https://genesischat.online/content/images/living-portraits/pioneering-scientists/pioneering-scientists_albert-einstein/liveportrait-clips/albert-einstein-liveportrait-expression-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/pioneering-scientists/pioneering-scientists_albert-einstein/liveportrait-clips/albert-einstein-liveportrait-expression-five-state-v1/listening-neutral.mp4",
+          "duration": 10.125,
+          "sha256": "f7820f26d58646da11272ccd338c29f171301eae96bf67d7012e15d94d58b4f9"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/pioneering-scientists/pioneering-scientists_albert-einstein/liveportrait-clips/albert-einstein-liveportrait-expression-five-state-v1/speaking-neutral.mp4",
+          "duration": 10.125,
+          "sha256": "df858d5d36cf98798ba6349ead360f9007ae16415b0a61a4e811bb24ad68a95f"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/pioneering-scientists/pioneering-scientists_albert-einstein/liveportrait-clips/albert-einstein-liveportrait-expression-five-state-v1/speaking-happy.mp4",
+          "duration": 10.125,
+          "sha256": "d783de81a799dde0209c844a36b6c12d7ac6b61525cfca1fad353531e58157c2"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/pioneering-scientists/pioneering-scientists_albert-einstein/liveportrait-clips/albert-einstein-liveportrait-expression-five-state-v1/speaking-angry.mp4",
+          "duration": 10.125,
+          "sha256": "2ebc63745ada1be80633f6fb4474ad8bab37d347fe9249b2be98f82654db0302"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/pioneering-scientists/pioneering-scientists_albert-einstein/liveportrait-clips/albert-einstein-liveportrait-expression-five-state-v1/speaking-sad.mp4",
+          "duration": 10.125,
+          "sha256": "8be9596f1aa59d5d89869270baa25f5d713384f228dee5f9e7f01de23a602f84"
+        }
+      ]
+    },
+    {
+      "packId": "pioneering-scientists",
+      "profileId": "pioneering-scientists_isaac-newton",
+      "revision": "isaac-newton-liveportrait-expression-five-state-v1",
+      "name": "아이작 뉴턴",
+      "nameEn": "Isaac Newton",
+      "poster": "https://genesischat.online/content/images/living-portraits/pioneering-scientists/pioneering-scientists_isaac-newton/liveportrait-clips/isaac-newton-liveportrait-expression-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/pioneering-scientists/pioneering-scientists_isaac-newton/liveportrait-clips/isaac-newton-liveportrait-expression-five-state-v1/listening-neutral.mp4",
+          "duration": 10.125,
+          "sha256": "96cb8bd2f93fa3c23a9c2d84a9f4f7e4cfd592bc17295c69b898ccd20825ef07"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/pioneering-scientists/pioneering-scientists_isaac-newton/liveportrait-clips/isaac-newton-liveportrait-expression-five-state-v1/speaking-neutral.mp4",
+          "duration": 10.125,
+          "sha256": "dc538b9f2458c56aeecd2017b348f2d23ea6550f1398fd8cb23ec0f3a2cd7edc"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/pioneering-scientists/pioneering-scientists_isaac-newton/liveportrait-clips/isaac-newton-liveportrait-expression-five-state-v1/speaking-happy.mp4",
+          "duration": 10.125,
+          "sha256": "556adf4a12ecab70c52e71156ce1b844a7bfd8c98b60f27a255af4b057f5d7ca"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/pioneering-scientists/pioneering-scientists_isaac-newton/liveportrait-clips/isaac-newton-liveportrait-expression-five-state-v1/speaking-angry.mp4",
+          "duration": 10.125,
+          "sha256": "0c8df1003b7feddce650701f5264627134efb7f40bcc5eeb9d6c0a6a11c03671"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/pioneering-scientists/pioneering-scientists_isaac-newton/liveportrait-clips/isaac-newton-liveportrait-expression-five-state-v1/speaking-sad.mp4",
+          "duration": 10.125,
+          "sha256": "62d5eec7ebdf8919d6e7b198d979ca3be110b01616e5f4facc3b176217436961"
+        }
+      ]
+    },
+    {
+      "packId": "pioneering-scientists",
+      "profileId": "pioneering-scientists_marie-curie",
+      "revision": "marie-curie-liveportrait-expression-five-state-v1",
+      "name": "마리 퀴리",
+      "nameEn": "Marie Curie",
+      "poster": "https://genesischat.online/content/images/living-portraits/pioneering-scientists/pioneering-scientists_marie-curie/liveportrait-clips/marie-curie-liveportrait-expression-five-state-v1/poster.png",
+      "clips": [
+        {
+          "state": "listening-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/pioneering-scientists/pioneering-scientists_marie-curie/liveportrait-clips/marie-curie-liveportrait-expression-five-state-v1/listening-neutral.mp4",
+          "duration": 10.125,
+          "sha256": "9542965218fbf30feecc4804f97028532cb047a99f014cdf33968efb496f4b70"
+        },
+        {
+          "state": "speaking-neutral",
+          "url": "https://genesischat.online/content/images/living-portraits/pioneering-scientists/pioneering-scientists_marie-curie/liveportrait-clips/marie-curie-liveportrait-expression-five-state-v1/speaking-neutral.mp4",
+          "duration": 10.125,
+          "sha256": "c69f9f66d7c90b8ba28a46bf129533b7b8776b8b2c648b8c25527302bfc1d50c"
+        },
+        {
+          "state": "speaking-happy",
+          "url": "https://genesischat.online/content/images/living-portraits/pioneering-scientists/pioneering-scientists_marie-curie/liveportrait-clips/marie-curie-liveportrait-expression-five-state-v1/speaking-happy.mp4",
+          "duration": 10.125,
+          "sha256": "9a8aa117469b14722f14dcb6114fc536c100ee750acd2bfad657e6ceb1b291ec"
+        },
+        {
+          "state": "speaking-angry",
+          "url": "https://genesischat.online/content/images/living-portraits/pioneering-scientists/pioneering-scientists_marie-curie/liveportrait-clips/marie-curie-liveportrait-expression-five-state-v1/speaking-angry.mp4",
+          "duration": 10.125,
+          "sha256": "cfee77e17218b1d50bf7303e11b62597e40398e4ff9a2c5de14cfd4b9d6f44b0"
+        },
+        {
+          "state": "speaking-sad",
+          "url": "https://genesischat.online/content/images/living-portraits/pioneering-scientists/pioneering-scientists_marie-curie/liveportrait-clips/marie-curie-liveportrait-expression-five-state-v1/speaking-sad.mp4",
+          "duration": 10.125,
+          "sha256": "e20e46285fb764863dd0314db859d19489ff8c63d127a9f363c89c71eefd66e6"
+        }
+      ]
+    }
+  ]
+}

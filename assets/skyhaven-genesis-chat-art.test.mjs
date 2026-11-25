@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
+import {readFileSync} from 'node:fs';
+import {renderReview} from './skyhaven-genesis-chat-packs.mjs';
 import {CHAT_ART_API,createGenesisChatArt,filterChatArt} from './skyhaven-genesis-chat-art.mjs';
 
 const item=(pack,id)=>({id:JSON.stringify([pack,id]),kind:'character',packId:pack,profileId:id,name:'인물 '+id,nameEn:id,image:{path:`public/content/images/avatars/${pack}/${id}.webp`,url:`https://genesischat.online/content/images/avatars/${pack}/${id}.webp`,sourceHash:'abc',width:1024,height:1536}});
@@ -20,6 +22,27 @@ function choosePack(host,window,value){
   select.value=value;
   select.dispatchEvent(new window.Event('change',{bubbles:true}));
 }
+
+test('the delivered cast keeps its own clips, missing states and scene plates',()=>{
+  const data=JSON.parse(readFileSync(new URL('../artwork/genesis-chat-packs.json',import.meta.url)));
+  const {JSDOM}=createRequire(import.meta.url)('jsdom');
+  const hashes=new Set();
+  for(const actor of data.characters){
+    const page=JSDOM.fragment(renderReview(data,{view:'video-pack',selectedId:actor.slug}));
+    assert.equal(page.querySelector('.chat-review-actor').dataset.actor,actor.slug);
+    assert.equal(page.querySelectorAll('figure[data-state]').length,10);
+    for(const figure of page.querySelectorAll('figure[data-state]')){
+      const clip=actor.clips[figure.dataset.state],video=figure.querySelector('video');
+      if(!clip){assert.equal(video,null);assert.match(figure.textContent,/미인계/);continue;}
+      assert.equal(video.getAttribute('src'),clip.url);
+      assert.equal(video.getAttribute('poster'),clip.poster);
+      assert.ok(!hashes.has(clip.sha256));hashes.add(clip.sha256);
+    }
+    const layers=JSDOM.fragment(renderReview(data,{view:'layers',selectedId:actor.slug}));
+    assert.equal(layers.querySelectorAll('video').length,actor.layers.mid?1:0);
+  }
+  assert.equal(hashes.size,data.batches.length*10);
+});
 
 test('pack plus profile identity, Korean search and art kinds stay independent',()=>{
   assert.equal(filterChatArt(catalog,{query:'shared'}).length,2);
