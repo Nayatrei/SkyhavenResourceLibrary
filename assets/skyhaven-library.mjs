@@ -2,7 +2,8 @@ import {factoryCatalog,loadFactoryFinals} from './skyhaven-factory-finals.mjs?v=
 import {humanoidMotion,libraryScopes,assetScope,inLibraryScope,cleanName,matches,filterPacks,filterPackItems,formatBytes,sortPackItems,candidateMotions,rankMotions,recommendedMotions,readState,filterEntities,smokeMotions} from './skyhaven-library-state.mjs?v=20261119-navigation-v1';
 import {createCatalogCache} from './skyhaven-library-cache.mjs?v=20261028-art-v1';
 import {createCharacterArtArchive,linkedArt} from './skyhaven-character-art.mjs?v=20261119-navigation-v1';
-import {createGenesisChatArt} from './skyhaven-genesis-chat-art.mjs?v=20261119-navigation-v1';
+import {createGenesisChatArt} from './skyhaven-genesis-chat-art.mjs?v=20261124-packs';
+import {reviewViews} from './skyhaven-genesis-chat-packs.mjs';
 import {createOwnedAssetList} from './skyhaven-owned-assets.mjs?v=20261119-navigation-v1';
 import {commandNavigation} from './skyhaven-command.mjs?v=20261119-navigation-v1';
 import {createEnvironmentView,environmentPacks,defaultEnvironmentPack,environmentSnapshot} from './skyhaven-environments.mjs?v=20261119-navigation-v1';
@@ -68,13 +69,13 @@ const fileRows=files=>files.map(f=>`<div class="asset-file"><span><a class="raw-
 const thumb=v=>v?.thumbnail?.ready?`<img ${v.factoryFinal?`src="${esc(v.thumbnail.url)}"`:mediaSrc(v.thumbnail.url)} alt="${esc(v.name)} 정면 모델" loading="lazy">`:'<span class="model-placeholder" aria-label="저장된 원본 미리보기 없음">◇</span>';
 function navigation(){
   for(const link of nav.querySelectorAll('[data-library-view]')){
-    if(link.dataset.libraryView===activeView)link.setAttribute('aria-current','page');
+    if(link.dataset.libraryView===activeView||(reviewViews.includes(activeView.split('/')[2])&&link.dataset.libraryView==='characters/genesis-chat/characters'))link.setAttribute('aria-current','page');
     else link.removeAttribute('aria-current');
   }
   for(const menu of nav.querySelectorAll('details'))menu.classList.toggle('current',!!menu.querySelector('[aria-current]'));
   for(const button of $('scope-filters').querySelectorAll('button'))button.setAttribute('aria-pressed',String(button.dataset.scope===state.scope));
   $('scope-filters').hidden=['owned','agents','manual','maintenance'].includes(category);
-  $('search').placeholder=chatArtRoute()?'GenesisChat 원화 검색':category==='owned'?'보유 에셋 검색':'에셋, 컬렉션 검색';
+  $('search').placeholder=chatArtRoute()?'GenesisChat 자료 검색':category==='owned'?'보유 에셋 검색':'에셋, 컬렉션 검색';
   const scopeOnly={scope:state.scope};
   const groups=collectionViews.has(activeView)?[
     ...filterEntities(data.entities,scopeOnly,category),...filterPacks(data.packs,scopeOnly,category),
@@ -372,7 +373,7 @@ async function route(){
   if(category==='concepts')category='files';
   activeView=category;
   if(parts[1]==='genesis-chat'&&['characters','environments'].includes(category)){
-    const kind=parts[2]==='backgrounds'||category==='environments'?'backgrounds':'characters';
+    const kind=parts[2]==='backgrounds'||category==='environments'?'backgrounds':reviewViews.includes(parts[2])?parts[2]:'characters';
     category=kind==='backgrounds'?'environments':'characters';
     activeView=`${category}/genesis-chat/${kind}`;
   }else if(category==='characters'&&parts[1]==='art')activeView='characters/art';
