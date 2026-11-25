@@ -88,6 +88,13 @@ def build(resources, handoff, packs):
                         reviewStatus='owner-review-pending')
             actor['clips'][state] = clip
             used.add(clip['sha256'])
+            if row['actor'] == 'guan-yu' and state == 'speaking-angry':
+                source = (pack.parent/'guan-yu-angry-source.ko.md').read_bytes()
+                archive(source, '.md', edition_dir, 'b283bffad7424ebe96c32d49fd10b8338766994a9c768eda23327e82b3dcd9e3')
+                paragraphs = dict(line[2:].split(':** ', 1) for line in source.decode('utf-8-sig').splitlines()
+                                  if line.startswith('**') and ':** ' in line)
+                actor['sceneNote'] = {'mood': '화남', 'art': paragraphs['원화 동기'],
+                                      'performance': paragraphs['말하기 연기 참고'], 'citation': '삼국지연의 제73회'}
     catalog = {'edition': EDITION, 'resourceSHA256': hashlib.sha256(handoff.read_bytes()).hexdigest(),
                'batches': batches, 'characters': list(actors.values())}
     body = (json.dumps(catalog, ensure_ascii=False, indent=2)+'\n').encode()

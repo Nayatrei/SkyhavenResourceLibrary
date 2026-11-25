@@ -81,6 +81,21 @@ test('the ImageGen edition keeps distinct expression sources, scene originals an
   }
 });
 
+test('only the dated Guan Yu detail credits the painting and performance scenes separately',()=>{
+  const {JSDOM}=createRequire(import.meta.url)('jsdom');
+  const current=JSON.parse(readFileSync(new URL('../artwork/genesis-chat-packs-2026-11-25.json',import.meta.url)));
+  const legacy=JSON.parse(readFileSync(new URL('../artwork/genesis-chat-packs.json',import.meta.url)));
+  for(const kind of ['expressions','layers','video-pack']){
+    const header=JSDOM.fragment(renderReview(current,{view:kind,selectedId:'guan-yu'})).querySelector('.chat-review-actor header');
+    const [art,performance,source]=header.querySelectorAll('p');
+    assert.match(art.textContent,/화남 원화 동기.*제갈근.*손권 측 혼담/);
+    assert.match(performance.textContent,/말하기 연기 참고.*군수품 화재.*부사인과 미방/);
+    assert.equal(source.querySelector('cite').textContent,'삼국지연의 제73회');
+  }
+  const old=JSDOM.fragment(renderReview(legacy,{view:'video-pack',selectedId:'guan-yu'}));
+  assert.doesNotMatch(old.querySelector('.chat-review-actor header').textContent,/혼담|군수품 화재/);
+});
+
 test('pack plus profile identity, Korean search and art kinds stay independent',()=>{
   assert.equal(filterChatArt(catalog,{query:'shared'}).length,2);
   assert.equal(filterChatArt(catalog,{query:'shared',pack:'b'}).length,1);

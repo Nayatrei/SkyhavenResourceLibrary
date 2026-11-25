@@ -60,6 +60,13 @@ function oldLibrary(revisions, needle, scope, pack) {
   return filtered.map(r => `<details class="chat-clip-revision"><summary>${esc(r.name)} · ${esc(r.revision)} (${r.clips.length}편)</summary>${grid(r.clips.map(c =>
     `<figure><figcaption>${esc(c.state)} · ${Number(c.duration)}초</figcaption>${player({...c, poster:r.poster}, r.name+' · '+c.state)}</figure>`))}</details>`).join('') || '<p>이 조건에 맞는 영상이 없습니다.</p>';
 }
+function actorDescription(actor, view) {
+  const note = actor.sceneNote;
+  if (note) return `<p><strong>${esc(note.mood)} 원화 동기</strong> · ${esc(note.art)}</p><p><strong>말하기 연기 참고</strong> · ${esc(note.performance)}</p><p><cite>${esc(note.citation)}</cite></p>`;
+  return view === 'layers' && actor.layers.mid?.poster
+    ? '<p>제갈량 검수 샘플 · zhuge-ten-state-v1</p>'
+    : '<p>삼국지 · 통화 영상 검수 후보</p>';
+}
 function editionLinks(view, actor, edition, pageURL) {
   return '<nav class="character-view-tabs" aria-label="검토판">'+[
     [ltxEdition,'11월 25일 · ImageGen / LTX'], ['', '11월 24일 · 기존 40편']
@@ -79,6 +86,6 @@ export function renderReview(data, {view, selectedId='',query='',scope='all',pac
   const count = data.characters.reduce((total, entry) => total + Object.keys(entry.clips).length, 0);
   const summary = view === 'video-pack' ? `<p class="character-art-results">제작팀 인계 ${count} / ${data.characters.length * 10}편 · 최종 검토 대기</p>` : '';
   const menu = actors.map(a => `<a href="${hash(view,a.slug)}" ${actor === a ? 'aria-current="page"' : ''}>${esc(a.name)}${view === 'video-pack' ? ' '+Object.keys(a.clips).length+'/10' : ''}</a>`).join('');
-  const selected = actor ? `<section class="chat-review-actor" data-actor="${esc(actor.slug)}"><header>${still(actor.portrait,actor.name+' 원화')}<div><h2>${esc(actor.name)}</h2><p>${view === 'layers' && actor.layers.mid?.poster ? '제갈량 검수 샘플 · zhuge-ten-state-v1' : '삼국지 · 통화 영상 검수 후보'}</p><nav aria-label="${esc(actor.name)} 자료">${['expressions','layers','video-pack'].map(v => `<a href="${hash(v,actor.slug)}" ${view===v?'aria-current="page"':''}>${labels[v]}</a>`).join(' ')}</nav></div></header>${view === 'video-pack' ? '<details class="chat-clip-revision"><summary>인물 표정과 장면 레이어</summary>'+cards(actor,'expressions')+cards(actor,'layers')+'</details>' : ''}${cards(actor,view)}</section>` : '<p>이 조건에 맞는 캐릭터가 없습니다.</p>';
+  const selected = actor ? `<section class="chat-review-actor" data-actor="${esc(actor.slug)}"><header>${still(actor.portrait,actor.name+' 원화')}<div><h2>${esc(actor.name)}</h2>${actorDescription(actor,view)}<nav aria-label="${esc(actor.name)} 자료">${['expressions','layers','video-pack'].map(v => `<a href="${hash(v,actor.slug)}" ${view===v?'aria-current="page"':''}>${labels[v]}</a>`).join(' ')}</nav></div></header>${view === 'video-pack' ? '<details class="chat-clip-revision"><summary>인물 표정과 장면 레이어</summary>'+cards(actor,'expressions')+cards(actor,'layers')+'</details>' : ''}${cards(actor,view)}</section>` : '<p>이 조건에 맞는 캐릭터가 없습니다.</p>';
   return intro+editions+`<div class="character-art-archive">${summary}<nav class="character-view-tabs chat-review-actors" aria-label="캐릭터 선택">${menu}</nav>${selected}</div>`;
 }
