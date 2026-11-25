@@ -1,4 +1,5 @@
-import {ltxEdition, chatTabs, renderReview, reviewViews} from './skyhaven-genesis-chat-packs.mjs?v=20261125-ltx-07';
+import {ltxEdition, chatTabs, renderReview, reviewViews} from './skyhaven-genesis-chat-packs.mjs?v=20261125-reasons';
+import {bindClipRejections} from './skyhaven-genesis-chat-rejections.mjs?v=20261125-reasons';
 export const CHAT_ART_API='/comfy/skyhaven/api/library/genesis-chat-art';
 const PAGE_SIZE=48;
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -45,7 +46,10 @@ export function createGenesisChatArt({host,fetchJSON,isActive,loadReview=async(e
   function draw(){
     dialog?.remove();dialog=null;
     if(reviewViews.includes(kind)){
-      if(reviewCatalog)host.innerHTML=renderReview(reviewCatalog,{view:kind,selectedId:reviewSelection,query,scope,pack,pageURL:getURL()});
+      if(reviewCatalog){
+        host.innerHTML=renderReview(reviewCatalog,{view:kind,selectedId:reviewSelection,query,scope,pack,pageURL:getURL()});
+        if(kind==='video-pack')bindClipRejections(host,reviewCatalog);
+      }
       return;
     }
     const rows=scope==='all'?filterChatArt(catalog,{kind,pack,query}):[],pages=Math.max(1,Math.ceil(rows.length/PAGE_SIZE));page=Math.min(page,pages-1);

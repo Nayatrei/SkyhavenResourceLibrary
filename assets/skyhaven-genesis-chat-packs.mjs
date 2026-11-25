@@ -2,6 +2,10 @@ export const ltxEdition = '2026-11-25';
 export const reviewViews = ['expressions', 'layers', 'video-pack', 'clip-library'];
 const labels = {characters:'인물 원화', backgrounds:'표지·배경', expressions:'표정', layers:'장면 레이어', 'video-pack':'영상 Pack', 'clip-library':'기존 영상'};
 const moods = {neutral:'중립', happy:'기쁨', angry:'분노', sad:'슬픔', surprised:'놀람'};
+export function stateLabel(state) {
+  const [activity,mood] = state.split('-');
+  return (activity === 'listening' ? '듣기' : '말하기')+' · '+moods[mood];
+}
 const names = {far:'원경', mid:'중경', near:'근경'};
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[c]));
 const hash = (view, id='') => (view === 'backgrounds' ? '#environments' : '#characters') + '/genesis-chat/' + view + (id ? '/' + encodeURIComponent(id) : '');
@@ -55,12 +59,13 @@ function cards(actor, view) {
     const mode = activity === 'listening' ? '듣기' : '말하기';
     return `<h3>${mode} · ${activity === 'listening' ? 6 : current ? 3 : 1}초</h3>` + grid(Object.entries(moods).map(([key,label]) => {
       const state = activity+'-'+key, clip = actor.clips[state];
-      const review = Number.isFinite(clip?.score) ? `${current ? '원화팀' : '제작 검수'} ${clip.score}점` : '사용자 리뷰 대기';
+      const review = Number.isFinite(clip?.score) ? `${current ? '원화팀' : '제작 검수'} ${clip.score}점` : '<span data-owner-pending>사용자 리뷰 대기</span>';
       const expression = safeMedia(clip?.expression?.url);
       const loop = current ? '<label><input type="checkbox" data-clip-loop> 반복 재생</label>' : '';
       const warning = clip?.nativeReviewReason === 'qa-mouth-review' ? '<small>자동 경고 · 입 움직임 검토</small>' : '';
       const note = clip?.artNote ? `<p>${esc(clip.artNote)}</p>` : '';
-      return `<figure data-state="${state}"><figcaption>${label} <small lang="en">${state}</small></figcaption>${clip ? player(clip, actor.name+' · '+mode+' · '+label) + loop + warning + note + `<small>${review} · ${Number(clip.batch)}차</small>${expression ? `<a href="${expression}" target="_blank" rel="noopener">표정 원화</a>` : ''}` : '<p>미인계</p>'}</figure>`;
+      const editor = clip ? `<div class="chat-rejection"><p data-saved-reason hidden></p><details><summary>탈락 사유 작성</summary><form aria-label="${esc(actor.name)} · ${mode} · ${label} 검토" novalidate><label>탈락 사유<textarea name="reason" rows="3" required></textarea></label><button type="submit">탈락으로 저장</button> <button type="button" data-undo-rejection hidden>탈락 취소</button></form></details><small role="status"></small></div>` : '';
+      return `<figure data-state="${state}"><figcaption>${label} <small lang="en">${state}</small></figcaption>${clip ? player(clip, actor.name+' · '+mode+' · '+label) + loop + warning + note + `<small>${review} · ${Number(clip.batch)}차</small>${editor}${expression ? `<a href="${expression}" target="_blank" rel="noopener">표정 원화</a>` : ''}` : '<p>미인계</p>'}</figure>`;
     }));
   }).join('');
 }
@@ -93,7 +98,7 @@ export function renderReview(data, {view, selectedId='',query='',scope='all',pac
   if (view === 'clip-library') return intro+'<section class="character-art-archive">'+oldLibrary(data.revisions,needle,scope,pack)+'</section>';
   const editions = editionLinks(view,actor?.slug || '',data.edition || '',pageURL);
   const count = data.characters.reduce((total, entry) => total + Object.keys(entry.clips).length, 0);
-  const summary = view === 'video-pack' ? `<p class="character-art-results">제작팀 인계 ${count} / ${data.characters.length * 10}편 · 최종 검토 대기</p>` : '';
+  const summary = view === 'video-pack' ? `<p class="character-art-results">제작팀 인계 ${count} / ${data.characters.length * 10}편</p><details class="chat-clip-revision chat-rejection-log"><summary>내 탈락 목록 <span data-rejection-count></span> · 이 브라우저에 저장</summary><p data-no-rejections>저장한 탈락 사유가 없습니다.</p><textarea aria-label="복사용 탈락 목록" rows="5" readonly hidden></textarea><button type="button" data-copy-rejections hidden>탈락 목록 복사</button><small role="status"></small></details>` : '';
   const menu = actors.map(a => `<a href="${hash(view,a.slug)}" ${actor === a ? 'aria-current="page"' : ''}>${esc(a.name)}${view === 'video-pack' ? ' '+Object.keys(a.clips).length+'/10' : ''}</a>`).join('');
   const selected = actor ? `<section class="chat-review-actor" data-actor="${esc(actor.slug)}"><header>${still(actor.portrait,actor.name+' 원화')}<div><h2>${esc(actor.name)}</h2>${actorDescription(actor,view)}<nav aria-label="${esc(actor.name)} 자료">${['expressions','layers','video-pack'].map(v => `<a href="${hash(v,actor.slug)}" ${view===v?'aria-current="page"':''}>${labels[v]}</a>`).join(' ')}</nav></div></header>${view === 'video-pack' ? '<details class="chat-clip-revision"><summary>인물 표정과 장면 레이어</summary>'+cards(actor,'expressions')+cards(actor,'layers')+'</details>' : ''}${cards(actor,view)}</section>` : '<p>이 조건에 맞는 캐릭터가 없습니다.</p>';
   return intro+editions+`<div class="character-art-archive">${summary}<nav class="character-view-tabs chat-review-actors" aria-label="캐릭터 선택">${menu}</nav>${selected}</div>`;

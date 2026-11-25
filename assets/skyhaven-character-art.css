@@ -22,4 +22,15 @@
 .chat-review-grid p{color:#b4b8aa}
 .chat-clip-revision{margin:0 0 12px}
 .chat-clip-revision summary{padding:10px 0;cursor:pointer}
+.chat-rejection,.chat-rejection label,.chat-rejection textarea{display:block;width:100%}
+.chat-rejection summary{color:#e9d399;cursor:pointer;padding:5px 0}
+.chat-rejection form{display:grid;gap:6px}
+.chat-rejection button,.chat-rejection-log button{min-height:36px;border:1px solid #7a8372;border-radius:4px;color:#f1ebd5;background:#344237;cursor:pointer}
+.chat-rejection [data-undo-rejection]{background:transparent}
+.chat-rejection textarea,.chat-rejection-log textarea{box-sizing:border-box;max-width:100%;padding:6px;color:#f0efe6;background:#18201b;border:1px solid #879084;border-radius:4px;font:inherit;resize:vertical}
+.chat-rejection-log textarea:not([hidden]){display:block;width:100%;margin-bottom:6px}
+.chat-rejection [data-saved-reason]{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;color:#f5d0be}
+.chat-review-grid figure[data-rejected]{outline:1px solid #b78470}
+.chat-rejection [role=status]:empty,.chat-rejection-log [role=status]:empty{display:none}
+.chat-rejection-log [role=status]{display:block}
 @media(max-width:600px){.chat-review-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.chat-review-grid figure{padding:8px}.chat-review-actor>header{gap:12px}}
