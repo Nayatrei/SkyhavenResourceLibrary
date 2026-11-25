@@ -270,3 +270,26 @@ test('untrusted labels are escaped and media must stay on the public GenesisChat
   assert.equal(host.querySelector('script'),null);assert.equal(host.querySelector('img'),null);
   assert.match(host.textContent,/<script>bad\(\)<\/script>/);view.hide();d.window.close();
 });
+
+
+test('the six zoom revisions belong to the rejected originals in the dated edition', () => {
+  const {JSDOM}=createRequire(import.meta.url)('jsdom');
+  const current=JSON.parse(readFileSync(new URL('../artwork/genesis-chat-packs-2026-11-25.json',import.meta.url)));
+  const expected=new Set(['zhuge-liang/listening-happy','zhuge-liang/listening-angry','cao-cao/listening-angry','sun-quan/listening-sad','zhou-yu/listening-angry','lu-bu/listening-happy']);
+  const seen=new Set();
+  for(const actor of current.characters){
+    const page=JSDOM.fragment(renderReview(current,{view:'video-pack',selectedId:actor.slug}));
+    for(const section of page.querySelectorAll('[data-review-candidate]')){
+      const card=section.closest('figure'), state=card.dataset.state;
+      seen.add(actor.slug+'/'+state);
+      assert.equal(card.querySelector('video').src,actor.clips[state].url);
+      assert.ok(card.textContent.includes('No Zoom in and out'));
+      assert.ok(section.textContent.includes('사용자 리뷰 대기'));
+      assert.notEqual(section.querySelector('video').src,actor.clips[state].url);
+      assert.match(section.querySelector('a:last-child').href,/[0-9a-f]{64}\.mp4$/);
+    }
+  }
+  assert.deepEqual(seen,expected);
+  const legacy=JSON.parse(readFileSync(new URL('../artwork/genesis-chat-packs.json',import.meta.url)));
+  assert.doesNotMatch(renderReview(legacy,{view:'video-pack',selectedId:'zhuge-liang'}),/data-review-candidate|줌 수정 6편/);
+});
