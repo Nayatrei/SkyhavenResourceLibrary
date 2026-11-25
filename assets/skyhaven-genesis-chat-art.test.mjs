@@ -50,6 +50,37 @@ test('the delivered cast keeps its own clips, missing states and scene plates',(
   assert.equal(hashes.size,data.batches.length*10);
 });
 
+test('the ImageGen edition keeps distinct expression sources, scene originals and review notes',()=>{
+  const data=JSON.parse(readFileSync(new URL('../artwork/genesis-chat-packs-2026-11-25.json',import.meta.url)));
+  const {JSDOM}=createRequire(import.meta.url)('jsdom');
+  for(const actor of data.characters){
+    const page=JSDOM.fragment(renderReview(data,{view:'video-pack',selectedId:actor.slug}));
+    const expected=new Set(Object.values(actor.expressionsByState).map(asset=>asset.sha256));
+    const images=[...page.querySelectorAll('figure[data-expression-sha]')];
+    assert.equal(images.length,expected.size);
+    assert.deepEqual(new Set(images.map(f=>f.dataset.expressionSha)),expected);
+    const tabs=page.querySelector('nav[aria-label="검토판"]');
+    assert.ok(tabs.querySelector('[aria-current]').href.includes('?edition='+data.edition));
+    assert.equal(tabs.querySelector('a:not([aria-current])').getAttribute('href'),'/#characters/genesis-chat/video-pack/'+actor.slug);
+    const layers=JSDOM.fragment(renderReview(data,{view:'layers',selectedId:actor.slug}));
+    for(const [i,key] of ['far','mid','near'].entries()){
+      const figure=layers.querySelectorAll('figure')[i];
+      assert.equal(figure.querySelector('img').src,actor.layers[key].url);
+      assert.equal(figure.querySelector('a:last-child').href,actor.layers[key].original.url);
+    }
+    for(const [state,clip] of Object.entries(actor.clips)){
+      const figure=page.querySelector('[data-state="'+state+'"]');
+      const video=figure.querySelector('video');
+      assert.equal(video.src,clip.url);
+      assert.equal(video.poster,clip.poster);
+      assert.equal(figure.querySelector('[data-clip-loop]').checked,false);
+      assert.equal(figure.querySelector('a:last-child').href,actor.expressionsByState[state].url);
+      if(clip.artNote)assert.ok(figure.textContent.includes(clip.artNote));
+      if(Number.isFinite(clip.score))assert.ok(figure.textContent.includes('원화팀 '+clip.score+'점'));
+    }
+  }
+});
+
 test('pack plus profile identity, Korean search and art kinds stay independent',()=>{
   assert.equal(filterChatArt(catalog,{query:'shared'}).length,2);
   assert.equal(filterChatArt(catalog,{query:'shared',pack:'b'}).length,1);

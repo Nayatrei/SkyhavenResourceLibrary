@@ -26,7 +26,7 @@ def video_info(path):
     return probe['streams'][0], float(probe['format']['duration'])
 
 
-def archive(data, ext, root, expected=None):
+def archive(data, ext, root, expected=None, *, media_base=MEDIA):
     sha = hashlib.sha256(data).hexdigest()
     if expected and sha != expected:
         raise ValueError(f'Asset fingerprint differs from handoff: {expected}')
@@ -44,7 +44,7 @@ def archive(data, ext, root, expected=None):
             temp.rename(dest)
         finally:
             temp.unlink(missing_ok=True)
-    return {'url': MEDIA + filename, 'sha256': sha, 'bytes': len(data)}
+    return {'url': media_base + filename, 'sha256': sha, 'bytes': len(data)}
 
 
 def video(path, root, expected, seconds=None):
